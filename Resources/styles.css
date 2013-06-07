@@ -1,0 +1,45 @@
+﻿body {
+    background-color:#000;
+    color:#FFF;
+}
+
+canvas {
+    border: 1px solid black;
+    position: relative;
+    background-color:#FFF;
+    cursor:none;
+}
+
+.canvasWrap {
+}
+
+.leftButton, .rightButton, .fireButton {
+    display:inline-block;
+    width:30px;
+    height:30px;
+    margin:5px;
+    float:left;
+    background-color:#FFF;
+    color:#000;
+    border:1px solid #FFF;
+    cursor:pointer;
+}
+
+.leftButton {
+    position:absolute;
+    top:410px;
+    left:15px;
+}
+
+.rightButton {
+    position:absolute;
+    top:410px;
+    left:70px;
+}
+
+.fireButton {
+    position:absolute;
+    top:410px;
+    left:220px;
+}
+

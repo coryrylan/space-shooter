@@ -13,11 +13,13 @@
         context = canvas.getContext('2d');
     var ctx = context;
 
-    // Game loop clock 60fps
-    window.setInterval(function () {
+    // Game loop clock
+    function gameLoop() {
         Game.Draw();
         Game.Update();
-    }, 1000 / 60);
+        requestAnimationFrame(gameLoop);
+    }
+    requestAnimationFrame(gameLoop);
 
     var Game = (function () {
         var s; // bind alias to public settings

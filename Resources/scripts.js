@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
 
     // Game CONSTS
-    var CANVAS_WIDTH = 300;
-    var CANVAS_HEIGHT = 400;
+    var CANVAS_WIDTH = $(window).width(); // 300
+    var CANVAS_HEIGHT = $(window).height(); // 400
     var SHIP_SPEED = 4;
     var GAME_SCORE = 0;
     var LIVES = 3;
@@ -12,6 +12,8 @@
     var canvas = document.getElementById('GameCanvas'),
         context = canvas.getContext('2d');
     var ctx = context;
+    
+    $("#GameCanvas").attr('width', $(window).width()-20).attr('height', $(window).height()-20);
 
     // Game loop clock
     function gameLoop() {
@@ -235,7 +237,7 @@
         function CheckShipCollision() {
             // For every asteroid
             for (var j = 0; j < asteroids.AsteroidArray.length; j++) {
-                if (Game.CheckCollision(asteroids.AsteroidArray[j], _ship)) {
+                if (Game.CheckCollision(_ship, asteroids.AsteroidArray[j])) {
                     asteroids.AsteroidArray.splice(j, 1);
                     CheckLives();
                     console.log("Ship Hit!");
@@ -272,8 +274,8 @@
         
         _asteroidObject.settings.posX = GetRandNum(0, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
-        _asteroidObject.settings.width = 20;
-        _asteroidObject.settings.height = 20;
+        _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 8, CANVAS_WIDTH / 15);
+        _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 8, CANVAS_HEIGHT / 10);
         _asteroidObject.settings.speed = GetRandNum(2, 6);
 
         // PUBLIC Override Object Draw 

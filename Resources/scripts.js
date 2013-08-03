@@ -98,19 +98,38 @@
                 }
             },
 
-            CheckCollision: function (Object1, Object2) {
-                if (checkXposition() && checkYPosition()) {
+            CheckCollision: function (Object1, Object2) { // ship, asteroid
+                if (checkHorizontalCollision() && checkYPosition()) {
                     return true;
                 }
                 else {
                     return false;
                 }
 
-                function checkXposition() {
-                    if (Object1.settings.posX >= Object2.settings.posX && Object1.settings.posX <= Object2.settings.posX + Object2.settings.width) {
+                function checkHorizontalCollision() {
+                    var object1RightSide = Object1.settings.posX + Object1.settings.width;
+                    var object1LeftSide = Object1.settings.posX;
+                    var object2RightSide = Object2.settings.posX + Object2.settings.width;
+                    var object2LeftSide = Object2.settings.posX;
+
+                    if (leftSideCollision() || rightSideCollision()) {
                         return true;
                     }
                     return false;
+
+                    function leftSideCollision() {
+                        if ((object1LeftSide >= object2LeftSide && object1LeftSide <= object2RightSide)) {
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    function rightSideCollision() {
+                        if (object1RightSide >= object2LeftSide && object1RightSide <= object2RightSide) {
+                            return true;
+                        }
+                        return false;
+                    }
                 }
 
                 function checkYPosition() {
@@ -263,6 +282,7 @@
 
         _ship.Draw = function () {
             ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
+            // ctx.strokeRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height); // Test for collision boundries
         }
         
         return _ship;
@@ -339,7 +359,7 @@
         ctx.lineStyle = "#000000";
         ctx.font = "18px sans-serif";
         //ctx.fillText("Use mouse to move paddle left and right.", 180, 180);
-        ctx.fillText("Press Enter to start.", 60, 180);
+        ctx.fillText("Press Enter to start.", ($(window).width() - $(window).width() / 2 - 80), ($(window).height() - $(window).height() / 2 - 20));
     }
 
     function StartNewGame() {

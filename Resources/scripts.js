@@ -142,11 +142,8 @@
         };
     })();
 
-    // Basic Object to represent on the screen, Game Loops
+    // Basic Game Object to represent on the screen, Game Loops ( Astroids, lasers, ship )
     var GameObject = function () {
-        // Privat Vars and Funcs
-        var privateVar = "private";
-
         var s; // bind alias to public settings
         return {
             settings: {
@@ -272,7 +269,6 @@
 
         var imageObj = new Image();
         imageObj.src = 'Resources/jet.JPG';
-        // PUBLIC
 
         var img = new Image();
         img.src = 'Resources/jet.JPG';
@@ -328,8 +324,7 @@
                 _asteroids.AsteroidArray.push(asteroid = new AsteroidObject());
             }
             }, 300);
-        
-        
+             
         // PRIVATE
         function CheckAsteroidBounds() {
             for (var i = 0; i < _asteroids.AsteroidArray.length; i++) {
@@ -439,8 +434,7 @@
 
     // Game IO
     $("#GameCanvas").mousemove(function (e) {
-        //If Play Game
-        if (GAME_STATE === GAME_STATE_ENUM[1]) {
+        if (GAME_STATE === GAME_STATE_ENUM[1]) { //If Play Game
             //ship.settings.posX = e.pageX - 50;
         }
     });
@@ -498,6 +492,7 @@
         }
     }
 
+    // Should be in Ship Object
     function MoveShipLeft() {
         if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
             ship.settings.posX = ship.settings.posX - SHIP_SPEED;

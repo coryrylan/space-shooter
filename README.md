@@ -5,8 +5,9 @@
 
 <h3>Controls</h3>
 <ul>
-  <li>A,S,D,F Up, Right, Down, Left keys to move ship.</li>
+  <li>A,S,D,F, and Up, Right, Down, Left keys to move ship.</li>
   <li>(Space bar) to fire laser.</li>
-  <li>(p) to pause.</li>
+  <li>(P) to pause.</li>
   <li>(Enter) to start game.</li>
+  <li>Touch controls to come soon!</li>
 </ul>

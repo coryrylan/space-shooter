@@ -255,7 +255,7 @@
             for (var j = 0; j < asteroids.AsteroidArray.length; j++) {
                 if (Game.CheckCollision(_ship, asteroids.AsteroidArray[j])) {
                     asteroids.AsteroidArray.splice(j, 1);
-                    CheckLives();
+                    RemoveLife();
                     console.log("Ship Hit!");
                     return 0;
                 }
@@ -402,7 +402,7 @@
         context.fillText("Score:" + GAME_SCORE, 20, 20);
     }
 
-    function CheckLives() {
+    function RemoveLife() {
         if (LIVES > 0) {
             LIVES = LIVES - 1;
         }

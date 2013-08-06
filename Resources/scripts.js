@@ -12,8 +12,8 @@
     var canvas = document.getElementById('GameCanvas'),
         context = canvas.getContext('2d');
     var ctx = context;
-    
-    $("#GameCanvas").attr('width', $(window).width()-20).attr('height', $(window).height()-20);
+
+    $("#GameCanvas").attr('width', $(window).width() - 20).attr('height', $(window).height() - 20);
 
     // Game loop clock
     function gameLoop() {
@@ -62,7 +62,7 @@
 
                 // Game Pause
                 if (GAME_STATE === GAME_STATE_ENUM[2]) {
-                    DrawPauseScreen();
+                    //DrawPauseScreen();
                 }
 
                 // Game Over
@@ -248,7 +248,7 @@
     var Ship = function () {
         // Apply inherited parent class values
         var _ship = new GameObject();
-        
+
         // PRIVATE
         function CheckShipCollision() {
             // For every asteroid
@@ -280,14 +280,14 @@
             ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
             // ctx.strokeRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height); // Test for collision boundries
         }
-        
+
         return _ship;
     }
 
     var AsteroidObject = function () {
         // Apply inherited parent class values
         var _asteroidObject = new GameObject();
-        
+
         _asteroidObject.settings.posX = GetRandNum(0, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
         _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 8, CANVAS_WIDTH / 15);
@@ -318,13 +318,13 @@
         _asteroids.AsteroidArray = new Array();
 
         // Add new asteroids
-        
+
         setInterval(function () {
             if (GAME_STATE === GAME_STATE_ENUM[1]) {
                 _asteroids.AsteroidArray.push(asteroid = new AsteroidObject());
             }
-            }, 300);
-             
+        }, 300);
+
         // PRIVATE
         function CheckAsteroidBounds() {
             for (var i = 0; i < _asteroids.AsteroidArray.length; i++) {
@@ -361,9 +361,11 @@
         LIVES = 3;
         GAME_STATE = GAME_STATE_ENUM[1];
         GAME_SCORE = 0;
+        $("#GameOver").hide();
     }
 
     function PauseGame() {
+        DrawPauseScreen();
         // If playing pause
         if (GAME_STATE === GAME_STATE_ENUM[1]) {
             GAME_STATE = GAME_STATE_ENUM[2];
@@ -374,20 +376,11 @@
     }
 
     function DrawPauseScreen() {
-        ctx.lineWidth = 1;
-        ctx.fillStyle = "#000000";
-        ctx.lineStyle = "#000000";
-        ctx.font = "18px sans-serif";
-        ctx.fillText("Paused", 115, 160);
+        $("#Paused").toggle();
     }
 
     function EndGame() {
-        ctx.lineWidth = 1;
-        ctx.fillStyle = "#000000";
-        ctx.lineStyle = "#000000";
-        ctx.font = "18px sans-serif";
-        ctx.fillText("GAME OVER", 100, 160);
-        ctx.fillText("Press Enter to start new game.", 30, 200);
+        $("#GameOver").show();
     }
 
     function AddScore() {
@@ -395,11 +388,7 @@
     }
 
     function DrawScore() {
-        context.lineWidth = 1;
-        context.fillStyle = "#000000";
-        context.lineStyle = "#000000";
-        context.font = "18px sans-serif";
-        context.fillText("Score:" + GAME_SCORE, 20, 20);
+        $("#Score").html("Score:" + GAME_SCORE);
     }
 
     function RemoveLife() {
@@ -412,11 +401,7 @@
     }
 
     function DrawLives() {
-        context.lineWidth = 1;
-        context.fillStyle = "#000000";
-        context.lineStyle = "#000000";
-        context.font = "18px sans-serif";
-        context.fillText("Lives:" + LIVES, 220, 20);
+        $("#Lives").html("Lives:" + LIVES);
     }
 
     function GetRandColor() {
@@ -523,7 +508,7 @@
     ship.settings.posY = 350;
     ship.settings.height = 25;
     ship.settings.width = 25;
-   
+
     var lasers = new Lasers();
     lasers.settings.width = 1;
     lasers.settings.height = 1;

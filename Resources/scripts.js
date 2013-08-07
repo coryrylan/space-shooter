@@ -6,14 +6,14 @@
     var SHIP_SPEED = 4;
     var GAME_SCORE = 0;
     var LIVES = 3;
-    var ASTEROID_SPEED = 3.5;
+    var ASTEROID_SPEED = 3.8;
     var GAME_STATE_ENUM = ["GAME START", "PLAY", "PAUSE", "GAME OVER"];
     var GAME_STATE = GAME_STATE_ENUM[0].toString();
     var canvas = document.getElementById('GameCanvas'),
         context = canvas.getContext('2d');
     var ctx = context;
 
-    $("#GameCanvas").attr('width', $(window).width() - 20).attr('height', $(window).height() - 20);
+    $("#GameCanvas").attr('width', $(window).width()).attr('height', $(window).height());
 
     // Game loop clock
     function gameLoop() {
@@ -50,7 +50,7 @@
                 // I do not use case statement here because I like the readability of the if's in a block style
                 // Game Start
                 if (GAME_STATE === GAME_STATE_ENUM[0]) {
-                    DrawStartScreen();
+                    //DrawStartScreen();
                 }
 
                 // Game Play
@@ -290,11 +290,11 @@
 
         _asteroidObject.settings.posX = GetRandNum(0, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
-        _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 8, CANVAS_WIDTH / 15);
-        _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 8, CANVAS_HEIGHT / 10);
+        _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 10, CANVAS_WIDTH / 25);
+        _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 10, CANVAS_HEIGHT / 20);
         _asteroidObject.settings.speed = GetRandNum(2, 6);
 
-        // PUBLIC Override Object Draw 
+        // PUBLIC Override Object Draw
         _asteroidObject.Draw = function () {
             ctx.fillStyle = "#000000";
             ctx.beginPath();
@@ -318,12 +318,11 @@
         _asteroids.AsteroidArray = new Array();
 
         // Add new asteroids
-
         setInterval(function () {
             if (GAME_STATE === GAME_STATE_ENUM[1]) {
                 _asteroids.AsteroidArray.push(asteroid = new AsteroidObject());
             }
-        }, 300);
+        }, 140 - (CANVAS_WIDTH/100));
 
         // PRIVATE
         function CheckAsteroidBounds() {
@@ -349,18 +348,18 @@
 
     // Helper Functions
     function DrawStartScreen() {
-        ctx.lineWidth = 1;
-        ctx.fillStyle = "#000000";
-        ctx.lineStyle = "#000000";
-        ctx.font = "18px sans-serif";
-        //ctx.fillText("Use mouse to move paddle left and right.", 180, 180);
-        ctx.fillText("Press Enter to start.", ($(window).width() - $(window).width() / 2 - 80), ($(window).height() - $(window).height() / 2 - 20));
+       $("#StartScreen").show();
+    }
+
+    function HideStartScreen() {
+        $("#StartScreen").hide();
     }
 
     function StartNewGame() {
         LIVES = 3;
         GAME_STATE = GAME_STATE_ENUM[1];
         GAME_SCORE = 0;
+        HideStartScreen();
         $("#GameOver").hide();
     }
 
@@ -418,11 +417,11 @@
     }
 
     // Game IO
-    $("#GameCanvas").mousemove(function (e) {
-        if (GAME_STATE === GAME_STATE_ENUM[1]) { //If Play Game
-            //ship.settings.posX = e.pageX - 50;
-        }
-    });
+    //$("#GameCanvas").mousemove(function (e) {
+    //    if (GAME_STATE === GAME_STATE_ENUM[1]) { //If Play Game
+    //        //ship.settings.posX = e.pageX - 50;
+    //    }
+    //});
 
     // Inactive Key Events
     $(document).keydown(function (e) {

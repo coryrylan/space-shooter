@@ -147,7 +147,7 @@
         var s; // bind alias to public settings
         return {
             settings: {
-                color: "rgba(0, 0, 200, 0.5)",
+                color: "#000000",
                 width: 50,
                 height: 50,
                 posX: 0,
@@ -267,6 +267,30 @@
             CheckShipCollision();
         }
 
+        _ship.MoveLeft =  function() {
+            if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
+                ship.settings.posX = ship.settings.posX - SHIP_SPEED;
+            }
+        }
+
+        _ship.MoveRight = function() {
+            if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && GAME_STATE === GAME_STATE_ENUM[1]) {
+                ship.settings.posX = ship.settings.posX + SHIP_SPEED;
+            }
+        }
+
+        _ship.MoveUp = function() {
+            if (ship.settings.posY > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
+                ship.settings.posY = ship.settings.posY - SHIP_SPEED;
+            }
+        }
+
+        _ship.MoveDown = function () {
+            if (ship.settings.posY < CANVAS_HEIGHT - 40 && GAME_STATE === GAME_STATE_ENUM[1]) {
+                ship.settings.posY = ship.settings.posY + SHIP_SPEED;
+            }
+        }
+
         var imageObj = new Image();
         imageObj.src = 'Resources/jet.JPG';
 
@@ -293,15 +317,17 @@
         _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 10, CANVAS_WIDTH / 25);
         _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 10, CANVAS_HEIGHT / 20);
         _asteroidObject.settings.speed = GetRandNum(2, 6);
-
+        _asteroidObject.settings.color = GetRandColor();
         // PUBLIC Override Object Draw
         _asteroidObject.Draw = function () {
-            ctx.fillStyle = "#000000";
             ctx.beginPath();
-            ctx.strokeRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-            //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-            ctx.closePath();
+            ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+            ctx.fillStyle = _asteroidObject.settings.color;
             ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#3d3d3d';
+            ctx.stroke();
+            ctx.closePath();
         }
 
         // PUBLIC
@@ -457,47 +483,22 @@
     function CheckGameIO() {
         // (Left Arrow)
         if (keyState[37] || keyState[65]) {
-            MoveShipLeft();
+            ship.MoveLeft();
         }
 
         // (Right Arrow)
         if (keyState[39] || keyState[68]) {
-            MoveShipRight();
+            ship.MoveRight();
         }
 
         // (Up Arrow)
         if (keyState[38] || keyState[87]) {
-            MoveShipUp();
+            ship.MoveUp();
         }
 
         // (Down Arrow)
         if (keyState[40] || keyState[83]) {
-            MoveShipDown();
-        }
-    }
-
-    // Should be in Ship Object
-    function MoveShipLeft() {
-        if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
-            ship.settings.posX = ship.settings.posX - SHIP_SPEED;
-        }
-    }
-
-    function MoveShipRight() {
-        if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && GAME_STATE === GAME_STATE_ENUM[1]) {
-            ship.settings.posX = ship.settings.posX + SHIP_SPEED;
-        }
-    }
-
-    function MoveShipUp() {
-        if (ship.settings.posY > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
-            ship.settings.posY = ship.settings.posY - SHIP_SPEED;
-        }
-    }
-
-    function MoveShipDown() {
-        if (ship.settings.posY < CANVAS_HEIGHT - 40 && GAME_STATE === GAME_STATE_ENUM[1]) {
-            ship.settings.posY = ship.settings.posY + SHIP_SPEED;
+            ship.MoveDown();
         }
     }
 

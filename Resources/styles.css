@@ -7,73 +7,33 @@
 }
 
 canvas {
-    position:relative;
-    z-index:0;
-    border: 1px solid black;
-    position: relative;
+    position:fixed; 
+    top:0;
+    left:0;
+    z-index:-1;
     background:#FFF;
     cursor:none;
 }
 
-.notifications div {
-    position:fixed;
-    z-index:1;
-    float:left;
+.label {
     font-size:1.2em;
     color:#000;
 }
 
-#Score {
-    top:20px;
-    left:140px;
-}
-
-#Lives {
-    top:20px;
-    left:20px;
-}
-
-#Paused {
-    display:none;
-    top:40%;
-    left:15%;
-    text-align:center;
-}
-
-#GameOver {
-    display:none;
-    top:40%;
-    left:40%;
-    text-align:center;
-}
-
-.leftButton, .rightButton, .fireButton {
-    display:inline-block;
-    width:30px;
-    height:30px;
-    margin:5px;
+.notifications .label {
     float:left;
-    background-color:#FFF;
+    margin:10px;
+}
+
+#StartScreen, #GameOver, #Paused {
     color:#000;
-    border:1px solid #FFF;
-    cursor:pointer;
+    font-size:1.2em;
+    display:none;
+    clear:both;
+    margin:50% auto;
+    text-align:center;
 }
 
-.leftButton {
-    position:absolute;
-    top:410px;
-    left:15px;
+#StartScreen {
+    display:block;
 }
-
-.rightButton {
-    position:absolute;
-    top:410px;
-    left:70px;
-}
-
-.fireButton {
-    position:absolute;
-    top:410px;
-    left:220px;
-}
-

@@ -312,16 +312,19 @@
         // Apply inherited parent class values
         var _asteroidObject = new GameObject();
 
-        _asteroidObject.settings.posX = GetRandNum(0, CANVAS_WIDTH);
+        //_asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 10, CANVAS_WIDTH / 25);
+        // _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 10, CANVAS_HEIGHT / 20);
+        _asteroidObject.settings.width = 3;
+        _asteroidObject.settings.height = 3;
+        _asteroidObject.settings.posX = GetRandNum(0 -_asteroidObject.settings.height, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
-        _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 10, CANVAS_WIDTH / 25);
-        _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 10, CANVAS_HEIGHT / 20);
         _asteroidObject.settings.speed = GetRandNum(2, 6);
-        _asteroidObject.settings.color = GetRandColor();
+        _asteroidObject.settings.color = "#FFFFFF"; //GetRandColor();
         // PUBLIC Override Object Draw
         _asteroidObject.Draw = function () {
             ctx.beginPath();
-            ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+            // ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+            ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
             ctx.fillStyle = _asteroidObject.settings.color;
             ctx.fill();
             ctx.lineWidth = 2;
@@ -354,7 +357,7 @@
         function CheckAsteroidBounds() {
             for (var i = 0; i < _asteroids.AsteroidArray.length; i++) {
                 if (_asteroids.AsteroidArray[i].settings.posY > CANVAS_HEIGHT + 30) {
-                    _asteroids.AsteroidArray.splice(i, 1); // If laser outside of top bounds remove from array
+                    _asteroids.AsteroidArray.splice(i, 1);
                 }
             }
         }

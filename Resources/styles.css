@@ -11,13 +11,13 @@ canvas {
     top:0;
     left:0;
     z-index:-1;
-    background:#FFF;
+    background:#000;
     cursor:none;
 }
 
 .label {
     font-size:1.2em;
-    color:#000;
+    color:#FFF;
 }
 
 .notifications .label {
@@ -26,7 +26,7 @@ canvas {
 }
 
 #StartScreen, #GameOver, #Paused {
-    color:#000;
+    color:#FFF;
     font-size:1.2em;
     display:none;
     clear:both;

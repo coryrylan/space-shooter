@@ -47,7 +47,6 @@
                 DrawScore();
                 DrawLives();
 
-                // I do not use case statement here because I like the readability of the if's in a block style
                 // Game Start
                 if (GAME_STATE === GAME_STATE_ENUM[0]) {
                     //DrawStartScreen();
@@ -58,6 +57,7 @@
                     ship.Draw();
                     lasers.Draw();
                     asteroids.Draw();
+                    //stars.Draw();
                 }
 
                 // Game Pause
@@ -84,6 +84,7 @@
                 if (GAME_STATE === GAME_STATE_ENUM[1]) {
                     lasers.Update();
                     asteroids.Update();
+                    //stars.Update();
                     ship.Update();
                 }
 
@@ -312,10 +313,10 @@
         // Apply inherited parent class values
         var _asteroidObject = new GameObject();
 
-        //_asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 10, CANVAS_WIDTH / 25);
-        // _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 10, CANVAS_HEIGHT / 20);
-        _asteroidObject.settings.width = 3;
-        _asteroidObject.settings.height = 3;
+        _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 10, CANVAS_WIDTH / 25);
+        _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 10, CANVAS_HEIGHT / 20);
+        //_asteroidObject.settings.width = 3;
+        //_asteroidObject.settings.height = 3;
         _asteroidObject.settings.posX = GetRandNum(0 -_asteroidObject.settings.height, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
         _asteroidObject.settings.speed = GetRandNum(2, 6);
@@ -323,8 +324,8 @@
         // PUBLIC Override Object Draw
         _asteroidObject.Draw = function () {
             ctx.beginPath();
-            // ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-            ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+             ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+            //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
             ctx.fillStyle = _asteroidObject.settings.color;
             ctx.fill();
             ctx.lineWidth = 2;
@@ -374,6 +375,68 @@
         return _asteroids;
     };
 
+    var StarObject = function () {
+        // Apply inherited parent class values
+        var starObject = new GameObject();
+
+        starObject.settings.width = 2;
+        starObject.settings.height = 2;
+        starObject.settings.posX = GetRandNum(0 - starObject.settings.height, CANVAS_WIDTH);
+        starObject.settings.posY = starObject.settings.height;
+        starObject.settings.speed = GetRandNum(2, 6);
+        starObject.settings.color = "#FFFFFF";
+        // PUBLIC Override Object Draw
+        starObject.Draw = function () {
+            ctx.beginPath();
+            ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+            ctx.fillStyle = starObject.settings.color;
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        // PUBLIC
+        starObject.Update = function () {
+            starObject.settings.posY += starObject.settings.speed;
+        }
+
+        return starObject;
+    };
+
+    var Stars = function () {
+        // Apply inherited parent class values
+        var stars = new GameObject();
+        stars.StarArray = new Array();
+
+        // Add new Stars
+        setInterval(function () {
+            if (GAME_STATE === GAME_STATE_ENUM[1]) {
+                stars.StarArray.push(asteroid = new StarObject());
+            }
+        }, 140 - (CANVAS_WIDTH / 100));
+
+        // PRIVATE
+        function CheckStarBounds() {
+            for (var i = 0; i < stars.StarArray.length; i++) {
+                if (stars.StarArray[i].settings.posY > CANVAS_HEIGHT + 30) {
+                    stars.StarArray.splice(i, 1);
+                }
+            }
+        }
+
+        // PUBLIC
+        stars.Update = function () {
+            CheckStarBounds();
+            for (var i = 0; i < stars.StarArray.length; i++) {
+                stars.StarArray[i].Draw();
+                stars.StarArray[i].Update();
+            }
+        }
+
+        return stars;
+    };
 
     // Helper Functions
     function DrawStartScreen() {
@@ -526,6 +589,12 @@
     asteroids.settings.posX = -1;
     asteroids.settings.posY = -1;
 
+    var stars = new Stars();
+    stars.settings.width = 1;
+    stars.settings.height = 1;
+    stars.settings.color = "rgba(0, 0, 0, 1)";
+    stars.settings.posX = -1;
+    stars.settings.posY = -1;
 
     //$(".leftButton").click(function () {
     //    MoveShipLeft();

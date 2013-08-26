@@ -147,6 +147,7 @@
     var GameObject = function () {
         var s; // bind alias to public settings
         return {
+            // Default Settings
             settings: {
                 color: "#000000",
                 width: 50,
@@ -171,15 +172,14 @@
     // Game Objects
     var LaserObject = function (orginFireX, orginFireY) {
         // Apply inherited parent class values
-        var _laserObject = new GameObject();
-        _laserObject.settings.posX = orginFireX + 15;
-        _laserObject.settings.posY = orginFireY - 5;
-        _laserObject.settings.width = 4.5;
-        _laserObject.settings.height = 25;
+        var laserObject = new GameObject();
+        laserObject.settings.posX = orginFireX + 15;
+        laserObject.settings.posY = orginFireY - 5;
+        laserObject.settings.width = 4.5;
+        laserObject.settings.height = 25;
 
-        // Override Object Draw 
-        // PUBLIC
-        _laserObject.Draw = function () {
+        // PUBLIC Override Object Draw 
+        laserObject.Draw = function () {
             ctx.fillStyle = GetRandColor();
             ctx.beginPath();
             ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
@@ -188,23 +188,23 @@
         }
 
         // PUBLIC
-        _laserObject.Update = function () {
-            _laserObject.settings.posY -= 5.05;
+        laserObject.Update = function () {
+            laserObject.settings.posY -= 5.05;
         }
 
-        return _laserObject;
+        return laserObject;
     };
 
     var Lasers = function () {
         // Apply inherited parent class values
-        var _lasers = GameObject.apply(this, arguments)
-        _lasers.LaserArray = new Array();
+        var lasers = GameObject.apply(this, arguments)
+        lasers.LaserArray = new Array();
 
         // PRIVATE
         function CheckLaserBounds() {
-            for (var i = 0; i < _lasers.LaserArray.length; i++) {
-                if (_lasers.LaserArray[i].settings.posY < -5) {
-                    _lasers.LaserArray.shift(); // If laser outside of top bounds remove from array
+            for (var i = 0; i < lasers.LaserArray.length; i++) {
+                if (lasers.LaserArray[i].settings.posY < -5) {
+                    lasers.LaserArray.shift(); // If laser outside of top bounds remove from array
                 }
             }
         }
@@ -212,12 +212,11 @@
         // PRIVATE
         function CheckLaserCollision() {
             // For every laser and asteroid
-            for (var i = 0; i < _lasers.LaserArray.length; i++) {
+            for (var i = 0; i < lasers.LaserArray.length; i++) {
                 for (var j = 0; j < asteroids.AsteroidArray.length; j++) {
-                    if (Game.CheckCollision(_lasers.LaserArray[i], asteroids.AsteroidArray[j])) {
-                        //asteroids.AsteroidArray[j].settings.speed = -5;
+                    if (Game.CheckCollision(lasers.LaserArray[i], asteroids.AsteroidArray[j])) {
                         asteroids.AsteroidArray.splice(j, 1);
-                        _lasers.LaserArray.splice(i, 1);
+                        lasers.LaserArray.splice(i, 1);
                         AddScore();
                         console.log("Asteroid Hit!");
                         return 0;
@@ -227,23 +226,23 @@
         }
 
         // PUBLIC
-        _lasers.Update = function () {
+        lasers.Update = function () {
             CheckLaserBounds();
             CheckLaserCollision()
-            for (var i = 0; i < _lasers.LaserArray.length; i++) {
-                _lasers.LaserArray[i].Draw();
-                _lasers.LaserArray[i].Update();
+            for (var i = 0; i < lasers.LaserArray.length; i++) {
+                lasers.LaserArray[i].Draw();
+                lasers.LaserArray[i].Update();
             }
         }
 
         // PUBLIC 
-        _lasers.Fire = function () {
+        lasers.Fire = function () {
             var orginFireX = ship.settings.posX;
             var orginFireY = ship.settings.posY;
-            _lasers.LaserArray.push(laser = new LaserObject(orginFireX, orginFireY)); // Add new laser object
+            lasers.LaserArray.push(laser = new LaserObject(orginFireX, orginFireY)); // Add new laser object
         }
 
-        return _lasers;
+        return lasers;
     };
 
     var Ship = function () {

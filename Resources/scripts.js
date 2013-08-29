@@ -9,8 +9,8 @@
     var ASTEROID_SPEED = 3.8;
     var GAME_STATE_ENUM = ["GAME START", "PLAY", "PAUSE", "GAME OVER"];
     var GAME_STATE = GAME_STATE_ENUM[0].toString();
-    var canvas = document.getElementById('GameCanvas'),
-        context = canvas.getContext('2d');
+    var canvas = document.getElementById('GameCanvas');
+    var context = canvas.getContext('2d');
     var ctx = context;
 
     $("#GameCanvas").attr('width', $(window).width()).attr('height', $(window).height());
@@ -146,6 +146,7 @@
     // Basic Game Object to represent on the screen, Game Loops ( Astroids, lasers, ship )
     var GameObject = function () {
         var s; // bind alias to public settings
+
         return {
             // Default Settings
             settings: {
@@ -196,7 +197,8 @@
     };
 
     var Lasers = function () {
-        // Apply inherited parent class values
+        // Apply GameObject methods to allow lasers to use
+        var maxLasers = 10;
         var lasers = GameObject.apply(this, arguments)
         lasers.LaserArray = new Array();
 
@@ -237,9 +239,11 @@
 
         // PUBLIC 
         lasers.Fire = function () {
-            var orginFireX = ship.settings.posX;
-            var orginFireY = ship.settings.posY;
-            lasers.LaserArray.push(laser = new LaserObject(orginFireX, orginFireY)); // Add new laser object
+            if (lasers.LaserArray.length < maxLasers) {
+                var orginFireX = ship.settings.posX;
+                var orginFireY = ship.settings.posY;
+                lasers.LaserArray.push(laser = new LaserObject(orginFireX, orginFireY)); // Add new laser object
+            }
         }
 
         return lasers;
@@ -298,6 +302,7 @@
         img.src = 'Resources/jet.JPG';
         img.onload = function () {
             ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
+
         };
 
         _ship.Draw = function () {
@@ -312,14 +317,15 @@
         // Apply inherited parent class values
         var _asteroidObject = new GameObject();
 
-        _asteroidObject.settings.width = GetRandNum(CANVAS_WIDTH / 10, CANVAS_WIDTH / 25);
-        _asteroidObject.settings.height = GetRandNum(CANVAS_HEIGHT / 10, CANVAS_HEIGHT / 20);
+        var range = GetRandNum(30, 100);
+        _asteroidObject.settings.width = range;
+        _asteroidObject.settings.height = range;
         //_asteroidObject.settings.width = 3;
         //_asteroidObject.settings.height = 3;
         _asteroidObject.settings.posX = GetRandNum(0 -_asteroidObject.settings.height, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
         _asteroidObject.settings.speed = GetRandNum(2, 6);
-        _asteroidObject.settings.color = "#FFFFFF"; //GetRandColor();
+        _asteroidObject.settings.color = GetRandomAsteroidColor(); //GetRandColor();
         // PUBLIC Override Object Draw
         _asteroidObject.Draw = function () {
             ctx.beginPath();
@@ -336,6 +342,20 @@
         // PUBLIC
         _asteroidObject.Update = function () {
             _asteroidObject.settings.posY += _asteroidObject.settings.speed;
+        }
+
+        function GetRandomAsteroidColor() {
+            switch (GetRandNum(0, 3)) {
+                case 1:
+                    return "#755D41";
+                    break;
+                case 2:
+                    return "#735B40";
+                    break;
+                case 3:
+                    return "#967754";
+                    break;
+            }
         }
 
         return _asteroidObject;
@@ -507,13 +527,6 @@
         return Math.floor(Math.random() * (max - min + 1)) + min
     }
 
-    // Game IO
-    //$("#GameCanvas").mousemove(function (e) {
-    //    if (GAME_STATE === GAME_STATE_ENUM[1]) { //If Play Game
-    //        //ship.settings.posX = e.pageX - 50;
-    //    }
-    //});
-
     // Inactive Key Events
     $(document).keydown(function (e) {
         //Enter key
@@ -594,8 +607,4 @@
     stars.settings.color = "rgba(0, 0, 0, 1)";
     stars.settings.posX = -1;
     stars.settings.posY = -1;
-
-    //$(".leftButton").click(function () {
-    //    MoveShipLeft();
-    //});
 });

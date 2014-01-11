@@ -1,4 +1,5 @@
 <h1>HTML5 Canvas Arcade Shooter Game</h1>
+<a href="http://splintercode.github.io/HTML5ArcadeShooter/" target="_blank">splintercode.github.io/HTML5ArcadeShooter/</a>
 <p>Small Javascript and html5 canvas game I am currently building</p>
 
 <p>Object of the game dodge the asteroids or shoot them to get the highest score. Each game starts with three lives. <p>

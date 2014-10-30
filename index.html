@@ -6,18 +6,18 @@
 </head>
 <body>
 
-    <canvas id="GameCanvas" width="300" height="400">Please use a modern web browser to play this game. 
-        Download Firefox, Chrome, Safari, IE10+, Opera to play.  
-    </canvas>
-
     <section class="notifications">
+        <canvas id="GameCanvas" width="300" height="400">
+            Please use a modern web browser to play this game.
+            Download Firefox, Chrome, Safari, IE10+, Opera to play.
+        </canvas>
+
         <div id="Score" class="label">Score:</div>
         <div id="Lives" class="label">Lives:</div>
+        <div id="Paused" class="label">Paused</div>
+        <div id="StartScreen" class="label">Press Enter to start new game.</div>
+        <div id="GameOver" class="label">GAME OVER<br />Press Enter to start new game.</div>
     </section>
-
-    <div id="Paused" class="label">Paused</div>
-    <div id="StartScreen" class="label">Press Enter to start new game.</div>
-    <div id="GameOver" class="label">GAME OVER<br />Press Enter to start new game.</div>
 
     <script src="Resources/jquery.js"></script>
     <script src="Resources/requestAnimationFramePolly.js"></script>

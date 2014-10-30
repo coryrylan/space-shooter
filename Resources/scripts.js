@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
 
     // Game CONSTS
-    var CANVAS_WIDTH = $(window).width(); // 300
-    var CANVAS_HEIGHT = $(window).height(); // 400
+    var CANVAS_WIDTH = 720; //$(window).width();
+    var CANVAS_HEIGHT = 480; //$(window).height();
     var SHIP_SPEED = 4;
     var GAME_SCORE = 0;
     var LIVES = 3;
@@ -13,22 +13,22 @@
     var context = canvas.getContext('2d');
     var ctx = context;
 
-    $("#GameCanvas").attr('width', $(window).width()).attr('height', $(window).height());
+    $("#GameCanvas").attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
-    // Game loop clock
+    //#region Main (Game loop)
     function gameLoop() {
         Game.Draw();
         Game.Update();
         requestAnimationFrame(gameLoop);
     }
     requestAnimationFrame(gameLoop);
+    //#endregion
 
     var Game = (function () {
         var s; // bind alias to public settings
         return {
             settings: {
                 numPlayers: 1,
-
             },
 
             init: function () {
@@ -36,20 +36,15 @@
                 this.bindUIActions();
             },
 
-            bindUIActions: function () {
-
-            },
-
             // Draw method calls here
             Draw: function () {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                // Constant Live Drawing
                 DrawScore();
                 DrawLives();
 
                 // Game Start
                 if (GAME_STATE === GAME_STATE_ENUM[0]) {
-                    //DrawStartScreen();
+                    DrawStartScreen();
                 }
 
                 // Game Play
@@ -63,6 +58,7 @@
                 // Game Pause
                 if (GAME_STATE === GAME_STATE_ENUM[2]) {
                     //DrawPauseScreen();
+                    return;
                 }
 
                 // Game Over
@@ -77,33 +73,32 @@
 
                 // Game Start
                 if (GAME_STATE === GAME_STATE_ENUM[0]) {
-
+                    return;
                 }
 
                 // Game Play
                 if (GAME_STATE === GAME_STATE_ENUM[1]) {
                     lasers.Update();
                     asteroids.Update();
-                    //stars.Update();
                     ship.Update();
+                    //stars.Update();
                 }
 
                 // Game Pause
                 if (GAME_STATE === GAME_STATE_ENUM[2]) {
-
+                    return;
                 }
 
                 // Game Over
                 if (GAME_STATE === GAME_STATE_ENUM[3]) {
-
+                    return;
                 }
             },
 
             CheckCollision: function (Object1, Object2) { // ship, asteroid
-                if (checkHorizontalCollision() && checkYPosition()) {
+                if (checkHorizontalCollision() && checkVerticalPosition()) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
 
@@ -133,7 +128,7 @@
                     }
                 }
 
-                function checkYPosition() {
+                function checkVerticalPosition() {
                     if (Object1.settings.posY >= Object2.settings.posY && Object1.settings.posY <= Object2.settings.posY + Object2.settings.height) {
                         return true;
                     }
@@ -143,7 +138,7 @@
         };
     })();
 
-    // Basic Game Object to represent on the screen, Game Loops ( Astroids, lasers, ship )
+    // Basic Game Object to represent on the screen, Game Loops (Astroids, lasers, ship)
     var GameObject = function () {
         var s; // bind alias to public settings
 
@@ -163,17 +158,17 @@
             },
 
             // Draws object on the canvas
-            Draw: function (posX, posY) {
+            Draw: function () {
                 ctx.fillStyle = this.settings.color;
                 ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
             }
         };
     };
 
-    // Game Objects
+    //#region Game Objects
     var LaserObject = function (orginFireX, orginFireY) {
-        // Apply inherited parent class values
         var laserObject = new GameObject();
+
         laserObject.settings.posX = orginFireX + 15;
         laserObject.settings.posY = orginFireY - 5;
         laserObject.settings.width = 4.5;
@@ -186,12 +181,12 @@
             ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
             ctx.closePath();
             ctx.fill();
-        }
+        };
 
         // PUBLIC
         laserObject.Update = function () {
             laserObject.settings.posY -= 5.05;
-        }
+        };
 
         return laserObject;
     };
@@ -199,8 +194,8 @@
     var Lasers = function () {
         // Apply GameObject methods to allow lasers to use
         var maxLasers = 10;
-        var lasers = GameObject.apply(this, arguments)
-        lasers.LaserArray = new Array();
+        var lasers = GameObject.apply(this, arguments); // BUG HERE 
+        lasers.LaserArray = [];
 
         // PRIVATE
         function CheckLaserBounds() {
@@ -230,27 +225,27 @@
         // PUBLIC
         lasers.Update = function () {
             CheckLaserBounds();
-            CheckLaserCollision()
+            CheckLaserCollision();
             for (var i = 0; i < lasers.LaserArray.length; i++) {
                 lasers.LaserArray[i].Draw();
                 lasers.LaserArray[i].Update();
             }
-        }
+        };
 
         // PUBLIC 
         lasers.Fire = function () {
             if (lasers.LaserArray.length < maxLasers) {
                 var orginFireX = ship.settings.posX;
                 var orginFireY = ship.settings.posY;
-                lasers.LaserArray.push(laser = new LaserObject(orginFireX, orginFireY)); // Add new laser object
+                var laser = new LaserObject(orginFireX, orginFireY);
+                lasers.LaserArray.push(laser); // Add new laser object
             }
-        }
+        };
 
         return lasers;
     };
 
     var Ship = function () {
-        // Apply inherited parent class values
         var _ship = new GameObject();
 
         // PRIVATE
@@ -269,37 +264,37 @@
         // PUBLIC
         _ship.Update = function () {
             CheckShipCollision();
-        }
+        };
 
-        _ship.MoveLeft =  function() {
+        _ship.MoveLeft = function () {
             if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX - SHIP_SPEED;
             }
-        }
+        };
 
-        _ship.MoveRight = function() {
+        _ship.MoveRight = function () {
             if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX + SHIP_SPEED;
             }
-        }
+        };
 
-        _ship.MoveUp = function() {
+        _ship.MoveUp = function () {
             if (ship.settings.posY > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY - SHIP_SPEED;
             }
-        }
+        };
 
         _ship.MoveDown = function () {
             if (ship.settings.posY < CANVAS_HEIGHT - 40 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY + SHIP_SPEED;
             }
-        }
+        };
 
         var imageObj = new Image();
-        imageObj.src = 'Resources/jet.JPG';
+        imageObj.src = 'Resources/spaceship.png';
 
         var img = new Image();
-        img.src = 'Resources/jet.JPG';
+        img.src = 'Resources/spaceship.png';
         img.onload = function () {
             ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
 
@@ -308,28 +303,25 @@
         _ship.Draw = function () {
             ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
             // ctx.strokeRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height); // Test for collision boundries
-        }
+        };
 
         return _ship;
-    }
+    };
 
     var AsteroidObject = function () {
-        // Apply inherited parent class values
         var _asteroidObject = new GameObject();
-
         var range = GetRandNum(30, 100);
+
         _asteroidObject.settings.width = range;
         _asteroidObject.settings.height = range;
-        //_asteroidObject.settings.width = 3;
-        //_asteroidObject.settings.height = 3;
-        _asteroidObject.settings.posX = GetRandNum(0 -_asteroidObject.settings.height, CANVAS_WIDTH);
+        _asteroidObject.settings.posX = GetRandNum(0 - _asteroidObject.settings.height, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
         _asteroidObject.settings.speed = GetRandNum(2, 6);
         _asteroidObject.settings.color = GetRandomAsteroidColor(); //GetRandColor();
         // PUBLIC Override Object Draw
         _asteroidObject.Draw = function () {
             ctx.beginPath();
-             ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+            ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
             //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
             ctx.fillStyle = _asteroidObject.settings.color;
             ctx.fill();
@@ -337,12 +329,12 @@
             ctx.strokeStyle = '#3d3d3d';
             ctx.stroke();
             ctx.closePath();
-        }
+        };
 
         // PUBLIC
         _asteroidObject.Update = function () {
             _asteroidObject.settings.posY += _asteroidObject.settings.speed;
-        }
+        };
 
         function GetRandomAsteroidColor() {
             switch (GetRandNum(0, 3)) {
@@ -362,16 +354,16 @@
     };
 
     var Asteroids = function () {
-        // Apply inherited parent class values
         var _asteroids = new GameObject();
-        _asteroids.AsteroidArray = new Array();
+        _asteroids.AsteroidArray = [];
 
         // Add new asteroids
         setInterval(function () {
             if (GAME_STATE === GAME_STATE_ENUM[1]) {
-                _asteroids.AsteroidArray.push(asteroid = new AsteroidObject());
+                var asteroid = new AsteroidObject();
+                _asteroids.AsteroidArray.push(asteroid);
             }
-        }, 140 - (CANVAS_WIDTH/100));
+        }, 140 - (CANVAS_WIDTH / 100));
 
         // PRIVATE
         function CheckAsteroidBounds() {
@@ -389,13 +381,12 @@
                 _asteroids.AsteroidArray[i].Draw();
                 _asteroids.AsteroidArray[i].Update();
             }
-        }
+        };
 
         return _asteroids;
     };
 
     var StarObject = function () {
-        // Apply inherited parent class values
         var starObject = new GameObject();
 
         starObject.settings.width = 2;
@@ -404,6 +395,7 @@
         starObject.settings.posY = starObject.settings.height;
         starObject.settings.speed = GetRandNum(2, 6);
         starObject.settings.color = "#FFFFFF";
+
         // PUBLIC Override Object Draw
         starObject.Draw = function () {
             ctx.beginPath();
@@ -414,25 +406,25 @@
             ctx.strokeStyle = '#FFFFFF';
             ctx.stroke();
             ctx.closePath();
-        }
+        };
 
         // PUBLIC
         starObject.Update = function () {
             starObject.settings.posY += starObject.settings.speed;
-        }
+        };
 
         return starObject;
     };
 
     var Stars = function () {
-        // Apply inherited parent class values
         var stars = new GameObject();
-        stars.StarArray = new Array();
+        stars.StarArray = [];
 
         // Add new Stars
         setInterval(function () {
             if (GAME_STATE === GAME_STATE_ENUM[1]) {
-                stars.StarArray.push(asteroid = new StarObject());
+                var star = new StarObject();
+                stars.StarArray.push(star);
             }
         }, 140 - (CANVAS_WIDTH / 100));
 
@@ -452,14 +444,15 @@
                 stars.StarArray[i].Draw();
                 stars.StarArray[i].Update();
             }
-        }
+        };
 
         return stars;
     };
+    // #endregion
 
-    // Helper Functions
+    //#region Helper Functions
     function DrawStartScreen() {
-       $("#StartScreen").show();
+        $("#StartScreen").show();
     }
 
     function HideStartScreen() {
@@ -476,11 +469,9 @@
 
     function PauseGame() {
         DrawPauseScreen();
-        // If playing pause
         if (GAME_STATE === GAME_STATE_ENUM[1]) {
             GAME_STATE = GAME_STATE_ENUM[2];
-        }
-        else {
+        } else {
             GAME_STATE = GAME_STATE_ENUM[1];
         }
     }
@@ -494,7 +485,7 @@
     }
 
     function AddScore() {
-        GAME_SCORE = GAME_SCORE + 1;
+        GAME_SCORE += 1;
     }
 
     function DrawScore() {
@@ -503,9 +494,8 @@
 
     function RemoveLife() {
         if (LIVES > 0) {
-            LIVES = LIVES - 1;
-        }
-        else {
+            LIVES -= 1;
+        } else {
             GAME_STATE = GAME_STATE_ENUM[3];
         }
     }
@@ -524,13 +514,15 @@
     }
 
     function GetRandNum(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+    //#endregion
 
+    //#region Key Events
     // Inactive Key Events
     $(document).keydown(function (e) {
         //Enter key
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             // If game start or game over allow new game
             if (GAME_STATE === GAME_STATE_ENUM[0] || GAME_STATE === GAME_STATE_ENUM[3]) {
                 StartNewGame();
@@ -539,12 +531,12 @@
         }
 
         // (p) Pause
-        if (e.keyCode == 80) {
+        if (e.keyCode === 80) {
             PauseGame();
         }
 
         // Space bar
-        if (e.keyCode == 32) {
+        if (e.keyCode === 32) {
             lasers.Fire();
         }
     });
@@ -579,6 +571,7 @@
             ship.MoveDown();
         }
     }
+    //#endregion
 
     // Game Object Declarations
     var ship = new Ship();

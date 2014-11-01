@@ -1,5 +1,4 @@
-﻿$(document).ready(function () {
-
+﻿(function() {
     // Game CONSTS
     var CANVAS_WIDTH = 720;
     var CANVAS_HEIGHT = 480;
@@ -520,4 +519,4 @@
 
     var lasers = new Lasers();
     var asteroids = new Asteroids();
-});
+}());

@@ -1,4 +1,4 @@
-﻿(function() {
+﻿(function () {
     // Game CONSTS
     var CANVAS_WIDTH = 720;
     var CANVAS_HEIGHT = 480;
@@ -154,7 +154,7 @@
         ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
     };
 
-    var LaserObject = function (orginFireX, orginFireY) {
+    function Laser(orginFireX, orginFireY) {
         var laserObject = new GameObject();
 
         laserObject.settings.posX = orginFireX + 15;
@@ -163,11 +163,11 @@
         laserObject.settings.height = 25;
 
         laserObject.draw = function () {
-            ctx.fillStyle = getRandColor();
             ctx.beginPath();
+            ctx.fillStyle = getRandColor();
             ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-            ctx.closePath();
             ctx.fill();
+            ctx.closePath();
         };
 
         laserObject.update = function () {
@@ -175,7 +175,7 @@
         };
 
         return laserObject;
-    };
+    }
 
     var Lasers = function () {
         var lasers = {};
@@ -215,6 +215,7 @@
 
         lasers.draw = function () {
             for (var i = 0; i < lasers.laserArray.length; i++) {
+                console.log(lasers.laserArray.length);
                 lasers.laserArray[i].draw();
             }
         };
@@ -223,7 +224,7 @@
             if (lasers.laserArray.length < maxLasers) {
                 var orginFireX = ship.settings.posX;
                 var orginFireY = ship.settings.posY;
-                var laser = new LaserObject(orginFireX, orginFireY);
+                var laser = new Laser(orginFireX, orginFireY);
                 lasers.laserArray.push(laser);
             }
         };
@@ -232,12 +233,12 @@
     };
 
     var Ship = function () {
-        var _ship = new GameObject();
+        var shipObject = new GameObject();
 
         function checkShipCollision() {
             // For every asteroid
             for (var j = 0; j < asteroids.asteroidArray.length; j++) {
-                if (Game.checkCollision(_ship, asteroids.asteroidArray[j])) {
+                if (Game.checkCollision(shipObject, asteroids.asteroidArray[j])) {
                     asteroids.asteroidArray.splice(j, 1);
                     removeLife();
                     console.log("Ship Hit!");
@@ -246,29 +247,29 @@
             }
         }
 
-        _ship.update = function () {
+        shipObject.update = function () {
             checkShipCollision();
         };
 
-        _ship.moveLeft = function () {
+        shipObject.moveLeft = function () {
             if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX - SHIP_SPEED;
             }
         };
 
-        _ship.moveRight = function () {
+        shipObject.moveRight = function () {
             if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX + SHIP_SPEED;
             }
         };
 
-        _ship.moveUp = function () {
+        shipObject.moveUp = function () {
             if (ship.settings.posY > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY - SHIP_SPEED;
             }
         };
 
-        _ship.moveDown = function () {
+        shipObject.moveDown = function () {
             if (ship.settings.posY < CANVAS_HEIGHT - 40 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY + SHIP_SPEED;
             }
@@ -277,33 +278,32 @@
         var img = new Image();
         img.src = 'App/Content/Images/spaceship.png';
         img.onload = function () {
-            ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
+            ctx.drawImage(img, shipObject.settings.posX, shipObject.settings.posY);
         };
 
-        _ship.draw = function () {
-            ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
-            // ctx.strokeRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height); // Test for collision boundries
+        shipObject.draw = function () {
+            ctx.drawImage(img, shipObject.settings.posX, shipObject.settings.posY);
         };
 
-        return _ship;
+        return shipObject;
     };
 
-    var AsteroidObject = function () {
-        var _asteroidObject = new GameObject();
+    var Asteroid = function () {
+        var asteroidObject = new GameObject();
         var range = getRandNum(30, 100);
 
-        _asteroidObject.settings.width = range;
-        _asteroidObject.settings.height = range;
-        _asteroidObject.settings.posX = getRandNum(0 - _asteroidObject.settings.height, CANVAS_WIDTH);
-        _asteroidObject.settings.posY = -_asteroidObject.settings.height;
-        _asteroidObject.settings.speed = getRandNum(2, 6);
-        _asteroidObject.settings.color = GetRandomAsteroidColor();
+        asteroidObject.settings.width = range;
+        asteroidObject.settings.height = range;
+        asteroidObject.settings.posX = getRandNum(0 - asteroidObject.settings.height, CANVAS_WIDTH);
+        asteroidObject.settings.posY = -asteroidObject.settings.height;
+        asteroidObject.settings.speed = getRandNum(2, 6);
+        asteroidObject.settings.color = GetRandomAsteroidColor();
 
-        _asteroidObject.draw = function () {
+        asteroidObject.draw = function () {
             ctx.beginPath();
             ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
             //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-            ctx.fillStyle = _asteroidObject.settings.color;
+            ctx.fillStyle = asteroidObject.settings.color;
             ctx.fill();
             ctx.lineWidth = 2;
             ctx.strokeStyle = '#3d3d3d';
@@ -311,8 +311,8 @@
             ctx.closePath();
         };
 
-        _asteroidObject.update = function () {
-            _asteroidObject.settings.posY += _asteroidObject.settings.speed;
+        asteroidObject.update = function () {
+            asteroidObject.settings.posY += asteroidObject.settings.speed;
         };
 
         function GetRandomAsteroidColor() {
@@ -332,42 +332,42 @@
             return color;
         }
 
-        return _asteroidObject;
+        return asteroidObject;
     };
 
     var Asteroids = function () {
-        var _asteroids = {};
-        _asteroids.asteroidArray = [];
+        var asteroids = {};
+        asteroids.asteroidArray = [];
 
         setInterval(function () {
             if (GAME_STATE === GAME_STATE_ENUM[1]) {
-                var asteroid = new AsteroidObject();
-                _asteroids.asteroidArray.push(asteroid);
+                var asteroid = new Asteroid();
+                asteroids.asteroidArray.push(asteroid);
             }
         }, 140 - (CANVAS_WIDTH / 100));
 
         function checkAsteroidBounds() {
-            for (var i = 0; i < _asteroids.asteroidArray.length; i++) {
-                if (_asteroids.asteroidArray[i].settings.posY > CANVAS_HEIGHT + 30) {
-                    _asteroids.asteroidArray.splice(i, 1);
+            for (var i = 0; i < asteroids.asteroidArray.length; i++) {
+                if (asteroids.asteroidArray[i].settings.posY > CANVAS_HEIGHT + 30) {
+                    asteroids.asteroidArray.splice(i, 1);
                 }
             }
         }
 
-        _asteroids.update = function () {
+        asteroids.update = function () {
             checkAsteroidBounds();
-            for (var i = 0; i < _asteroids.asteroidArray.length; i++) {
-                _asteroids.asteroidArray[i].update();
+            for (var i = 0; i < asteroids.asteroidArray.length; i++) {
+                asteroids.asteroidArray[i].update();
             }
         };
 
-        _asteroids.draw = function () {
-            for (var i = 0; i < _asteroids.asteroidArray.length; i++) {
-                _asteroids.asteroidArray[i].draw();
+        asteroids.draw = function () {
+            for (var i = 0; i < asteroids.asteroidArray.length; i++) {
+                asteroids.asteroidArray[i].draw();
             }
         };
 
-        return _asteroids;
+        return asteroids;
     };
     // #endregion
 

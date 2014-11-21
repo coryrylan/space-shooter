@@ -1,26 +1,27 @@
 ﻿<!DOCTYPE html>
 <html>
-<head runat="server">
+<head>
     <title>Game 1</title>
-    <link href="Resources/styles.css" rel="stylesheet" />
+    <link href="App/Content/Sass/styles.css" rel="stylesheet" />
 </head>
 <body>
+    <main>
+        <section class="notifications">
+            <canvas id="GameCanvas" width="300" height="400">
+                Please use a modern web browser to play this game.
+                Download Firefox, Chrome, Safari, IE10+, Opera to play.
+            </canvas>
 
-    <section class="notifications">
-        <canvas id="GameCanvas" width="300" height="400">
-            Please use a modern web browser to play this game.
-            Download Firefox, Chrome, Safari, IE10+, Opera to play.
-        </canvas>
-
-        <div id="Score" class="label">Score:</div>
-        <div id="Lives" class="label">Lives:</div>
-        <div id="Paused" class="label">Paused</div>
-        <div id="StartScreen" class="label">Press Enter to start new game.</div>
-        <div id="GameOver" class="label">GAME OVER<br />Press Enter to start new game.</div>
-    </section>
-
-    <script src="Resources/jquery.js"></script>
-    <script src="Resources/requestAnimationFramePolly.js"></script>
-    <script src="app.js"></script>
+            <div id="Score" class="label">Score:</div>
+            <div id="Lives" class="label">Lives:</div>
+            <div id="Paused" class="label">Paused</div>
+            <div id="StartScreen" class="label">Press Enter to start new game.</div>
+            <div id="GameOver" class="label">GAME OVER<br />Press Enter to start new game.</div>
+        </section>
+    </main>
+    <script src="App/JavaScript/Libraries/jquery.js"></script>
+    <script src="App/JavaScript/Libraries/requestAnimationFramePolly.js"></script>
+    <script src="App/JavaScript/Src/engine.js"></script>
+    <script src="App/JavaScript/Src/app.js"></script>
 </body>
 </html>

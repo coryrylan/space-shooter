@@ -34,7 +34,6 @@
                 this.bindUIActions();
             },
 
-            // Draw method calls here
             Draw: function () {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 DrawScore();
@@ -64,7 +63,6 @@
                 }
             },
 
-            // Game logic functions here
             Update: function () {
                 CheckGameIO();
 
@@ -136,7 +134,7 @@
                 }
             }
         };
-    })();
+    }());
 
     //#region Game Objects
     // Basic Game Object to represent on the screen, Game Loops (Astroids, lasers, ship)

@@ -1,0 +1,50 @@
+body {
+  background-color: #2d2d2d;
+  color: #FFF;
+  overflow: hidden;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+}
+
+canvas {
+  background: #000;
+  cursor: none;
+}
+
+.label {
+  font-size: 1.2em;
+  color: #FFF;
+}
+
+.notifications {
+  position: relative;
+  display: block;
+  margin: 30px auto 0 auto;
+  width: 720px;
+  height: 480px;
+}
+
+.notifications .label {
+  float: left;
+  margin: 10px;
+  position: absolute;
+}
+
+#Lives {
+  bottom: 0;
+}
+
+#Score {
+  top: 0;
+}
+
+#StartScreen, #GameOver, #Paused {
+  color: #FFF;
+  font-size: 1.2em;
+  display: none;
+  text-align: center;
+}
+
+#StartScreen {
+  display: block;
+}

@@ -184,8 +184,10 @@
     }());
 
     //#region Game Objects
+
+
     // Basic Game Object to represent on the screen, Game Loops (Asteroids, lasers, ship)
-    var GameObject = function () {
+    function GameObject() {
         this.settings = {
             color: "#000000",
             width: 50,
@@ -193,9 +195,9 @@
             posX: 0,
             posY: 0,
         };
-    };
+    }
 
-    GameObject.prototype.draw = function () {
+    GameObject.prototype.draw = function (draw) {
         ctx.fillStyle = this.settings.color;
         ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
     };

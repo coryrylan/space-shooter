@@ -15,8 +15,8 @@
 
     //#region Main (Game loop)
     function gameLoop() {
-        Game.Draw();
-        Game.Update();
+        Game.draw();
+        Game.update();
         requestAnimationFrame(gameLoop);
     }
     requestAnimationFrame(gameLoop);
@@ -34,36 +34,35 @@
                 this.bindUIActions();
             },
 
-            Draw: function () {
+            draw: function () {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                DrawScore();
-                DrawLives();
+                drawScore();
+                drawLives();
 
                 // Game Start
                 if (GAME_STATE === GAME_STATE_ENUM[0]) {
-                    DrawStartScreen();
+                    drawStartScreen();
                 }
 
                 // Game Play
                 if (GAME_STATE === GAME_STATE_ENUM[1]) {
-                    ship.Draw();
+                    ship.draw();
                     lasers.draw();
                     asteroids.draw();
                 }
 
                 // Game Pause
                 if (GAME_STATE === GAME_STATE_ENUM[2]) {
-                    //DrawPauseScreen();
                     return;
                 }
 
                 // Game Over
                 if (GAME_STATE === GAME_STATE_ENUM[3]) {
-                    EndGame();
+                    endGame();
                 }
             },
 
-            Update: function () {
+            update: function () {
                 CheckGameIO();
 
                 // Game Start
@@ -75,7 +74,7 @@
                 if (GAME_STATE === GAME_STATE_ENUM[1]) {
                     lasers.update();
                     asteroids.update();
-                    ship.Update();
+                    ship.update();
                 }
 
                 // Game Pause
@@ -137,31 +136,20 @@
     }());
 
     //#region Game Objects
-    // Basic Game Object to represent on the screen, Game Loops (Astroids, lasers, ship)
+    // Basic Game Object to represent on the screen, Game Loops (Asteroids, lasers, ship)
     var GameObject = function () {
-        var s; // bind alias to public settings
-
-        return {
-            // Default Settings
-            settings: {
-                color: "#000000",
-                width: 50,
-                height: 50,
-                posX: 0,
-                posY: 0,
-            },
-
-            init: function () {
-                s = this.settings;
-                //this.bindUIActions();
-            },
-
-            // Draws object on the canvas
-            Draw: function () {
-                ctx.fillStyle = this.settings.color;
-                ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-            }
+        this.settings = {
+            color: "#000000",
+            width: 50,
+            height: 50,
+            posX: 0,
+            posY: 0,
         };
+    };
+
+    GameObject.prototype.draw = function () {
+        ctx.fillStyle = this.settings.color;
+        ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
     };
 
     var LaserObject = function (orginFireX, orginFireY) {
@@ -173,7 +161,7 @@
         laserObject.settings.height = 25;
 
         laserObject.draw = function () {
-            ctx.fillStyle = GetRandColor();
+            ctx.fillStyle = getRandColor();
             ctx.beginPath();
             ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
             ctx.closePath();
@@ -207,7 +195,7 @@
                     if (Game.checkCollision(lasers.laserArray[i], asteroids.asteroidArray[j])) {
                         asteroids.asteroidArray.splice(j, 1);
                         lasers.laserArray.splice(i, 1);
-                        AddScore();
+                        addScore();
                         console.log("Asteroid Hit!");
                         return 0;
                     }
@@ -249,36 +237,36 @@
             for (var j = 0; j < asteroids.asteroidArray.length; j++) {
                 if (Game.checkCollision(_ship, asteroids.asteroidArray[j])) {
                     asteroids.asteroidArray.splice(j, 1);
-                    RemoveLife();
+                    removeLife();
                     console.log("Ship Hit!");
                     return 0;
                 }
             }
         }
 
-        _ship.Update = function () {
+        _ship.update = function () {
             checkShipCollision();
         };
 
-        _ship.MoveLeft = function () {
+        _ship.moveLeft = function () {
             if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX - SHIP_SPEED;
             }
         };
 
-        _ship.MoveRight = function () {
+        _ship.moveRight = function () {
             if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX + SHIP_SPEED;
             }
         };
 
-        _ship.MoveUp = function () {
+        _ship.moveUp = function () {
             if (ship.settings.posY > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY - SHIP_SPEED;
             }
         };
 
-        _ship.MoveDown = function () {
+        _ship.moveDown = function () {
             if (ship.settings.posY < CANVAS_HEIGHT - 40 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY + SHIP_SPEED;
             }
@@ -290,7 +278,7 @@
             ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
         };
 
-        _ship.Draw = function () {
+        _ship.draw = function () {
             ctx.drawImage(img, _ship.settings.posX, _ship.settings.posY);
             // ctx.strokeRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height); // Test for collision boundries
         };
@@ -300,13 +288,13 @@
 
     var AsteroidObject = function () {
         var _asteroidObject = new GameObject();
-        var range = GetRandNum(30, 100);
+        var range = getRandNum(30, 100);
 
         _asteroidObject.settings.width = range;
         _asteroidObject.settings.height = range;
-        _asteroidObject.settings.posX = GetRandNum(0 - _asteroidObject.settings.height, CANVAS_WIDTH);
+        _asteroidObject.settings.posX = getRandNum(0 - _asteroidObject.settings.height, CANVAS_WIDTH);
         _asteroidObject.settings.posY = -_asteroidObject.settings.height;
-        _asteroidObject.settings.speed = GetRandNum(2, 6);
+        _asteroidObject.settings.speed = getRandNum(2, 6);
         _asteroidObject.settings.color = GetRandomAsteroidColor();
 
         _asteroidObject.draw = function () {
@@ -327,7 +315,7 @@
 
         function GetRandomAsteroidColor() {
             var color = '';
-            switch (GetRandNum(0, 3)) {
+            switch (getRandNum(0, 3)) {
                 case 1:
                     color = "#755D41";
                     break;
@@ -373,7 +361,7 @@
 
         _asteroids.draw = function () {
             for (var i = 0; i < _asteroids.asteroidArray.length; i++) {
-                _asteroids.asteroidArray[i].Draw();
+                _asteroids.asteroidArray[i].draw();
             }
         };
 
@@ -382,24 +370,24 @@
     // #endregion
 
     //#region Helper Functions
-    function DrawStartScreen() {
+    function drawStartScreen() {
         $("#StartScreen").show();
     }
 
-    function HideStartScreen() {
+    function hideStartScreen() {
         $("#StartScreen").hide();
     }
 
-    function StartNewGame() {
+    function startNewGame() {
         LIVES = 3;
         GAME_STATE = GAME_STATE_ENUM[1];
         GAME_SCORE = 0;
-        HideStartScreen();
+        hideStartScreen();
         $("#GameOver").hide();
     }
 
-    function PauseGame() {
-        DrawPauseScreen();
+    function pauseGame() {
+        drawPauseScreen();
         if (GAME_STATE === GAME_STATE_ENUM[1]) {
             GAME_STATE = GAME_STATE_ENUM[2];
         } else {
@@ -407,23 +395,23 @@
         }
     }
 
-    function DrawPauseScreen() {
+    function drawPauseScreen() {
         $("#Paused").toggle();
     }
 
-    function EndGame() {
+    function endGame() {
         $("#GameOver").show();
     }
 
-    function AddScore() {
+    function addScore() {
         GAME_SCORE += 1;
     }
 
-    function DrawScore() {
+    function drawScore() {
         $("#Score").html("Score:" + GAME_SCORE);
     }
 
-    function RemoveLife() {
+    function removeLife() {
         if (LIVES > 0) {
             LIVES -= 1;
         } else {
@@ -431,11 +419,11 @@
         }
     }
 
-    function DrawLives() {
+    function drawLives() {
         $("#Lives").html("Lives:" + LIVES);
     }
 
-    function GetRandColor() {
+    function getRandColor() {
         var letters = '0123456789ABCDEF'.split('');
         var color = '#';
         for (var i = 0; i < 6; i++) {
@@ -444,7 +432,7 @@
         return color;
     }
 
-    function GetRandNum(min, max) {
+    function getRandNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     //#endregion
@@ -456,14 +444,14 @@
         if (e.keyCode === 13) {
             // If game start or game over allow new game
             if (GAME_STATE === GAME_STATE_ENUM[0] || GAME_STATE === GAME_STATE_ENUM[3]) {
-                StartNewGame();
+                startNewGame();
             }
             return false;
         }
 
         // (p) Pause
         if (e.keyCode === 80) {
-            PauseGame();
+            pauseGame();
         }
 
         // Space bar
@@ -484,22 +472,22 @@
     function CheckGameIO() {
         // (Left Arrow)
         if (keyState[37] || keyState[65]) {
-            ship.MoveLeft();
+            ship.moveLeft();
         }
 
         // (Right Arrow)
         if (keyState[39] || keyState[68]) {
-            ship.MoveRight();
+            ship.moveRight();
         }
 
         // (Up Arrow)
         if (keyState[38] || keyState[87]) {
-            ship.MoveUp();
+            ship.moveUp();
         }
 
         // (Down Arrow)
         if (keyState[40] || keyState[83]) {
-            ship.MoveDown();
+            ship.moveDown();
         }
     }
     //#endregion

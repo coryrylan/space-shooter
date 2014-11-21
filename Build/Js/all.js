@@ -197,10 +197,10 @@
         };
     }
 
-    GameObject.prototype.draw = function (draw) {
-        ctx.fillStyle = this.settings.color;
-        ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-    };
+    //GameObject.prototype.draw = function (draw) {
+    //    ctx.fillStyle = this.settings.color;
+    //    ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+    //};
 
     function Laser(orginFireX, orginFireY) {
         var laserObject = new GameObject();
@@ -225,7 +225,7 @@
         return laserObject;
     }
 
-    var Lasers = function () {
+    function Lasers() {
         var lasers = {};
         var maxLasers = 10;
         lasers.laserArray = [];
@@ -263,7 +263,6 @@
 
         lasers.draw = function () {
             for (var i = 0; i < lasers.laserArray.length; i++) {
-                console.log(lasers.laserArray.length);
                 lasers.laserArray[i].draw();
             }
         };
@@ -278,9 +277,9 @@
         };
 
         return lasers;
-    };
+    }
 
-    var Ship = function () {
+    function Ship() {
         var shipObject = new GameObject();
 
         function checkShipCollision() {
@@ -334,9 +333,9 @@
         };
 
         return shipObject;
-    };
+    }
 
-    var Asteroid = function () {
+    function Asteroid() {
         var asteroidObject = new GameObject();
         var range = getRandNum(30, 100);
 
@@ -381,9 +380,9 @@
         }
 
         return asteroidObject;
-    };
+    }
 
-    var Asteroids = function () {
+    function Asteroids() {
         var asteroids = {};
         asteroids.asteroidArray = [];
 
@@ -416,7 +415,7 @@
         };
 
         return asteroids;
-    };
+    }
     // #endregion
 
     //#region Helper Functions

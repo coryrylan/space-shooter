@@ -1,5 +1,5 @@
 #HTML5 Canvas Arcade Shooter Game
-[splintercode.github.io/HTML5ArcadeShooter](http://splintercode.github.io/HTML5ArcadeShooter/)
+[http://splintercode.github.io/space-shooter/](http://splintercode.github.io/space-shooter/)
 Small JavaScript and html5 canvas game. Work in progress.
 
 Objective of the game dodge the asteroids or shoot them to get the highest score. Each game starts with three lives.

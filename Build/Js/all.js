@@ -46,20 +46,21 @@
             clearTimeout(id);
         };
 }());
-(function () {
+(function() {
+    'use strict';
+
     // Game CONSTS
     var CANVAS_WIDTH = 720;
     var CANVAS_HEIGHT = 480;
     var SHIP_SPEED = 4;
     var GAME_SCORE = 0;
     var LIVES = 3;
-    var GAME_STATE_ENUM = ["GAME START", "PLAY", "PAUSE", "GAME OVER"];
+    var GAME_STATE_ENUM = ['GAME START', 'PLAY', 'PAUSE', 'GAME OVER'];
     var GAME_STATE = GAME_STATE_ENUM[0].toString();
     var canvas = document.getElementById('GameCanvas');
-    var context = canvas.getContext('2d');
-    var ctx = context;
+    var ctx = canvas.getContext('2d');
 
-    $("#GameCanvas").attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
+    $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
     //#region Main (Game loop)
     function gameLoop() {
@@ -70,19 +71,19 @@
     requestAnimationFrame(gameLoop);
     //#endregion
 
-    var Game = (function () {
+    var Game = (function() {
         var s; // bind alias to public settings
         return {
             settings: {
                 numPlayers: 1,
             },
 
-            init: function () {
+            init: function() {
                 s = this.settings;
                 this.bindUIActions();
             },
 
-            draw: function () {
+            draw: function() {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 drawScore();
                 drawLives();
@@ -110,7 +111,7 @@
                 }
             },
 
-            update: function () {
+            update: function() {
                 CheckGameIO();
 
                 // Game Start
@@ -136,7 +137,7 @@
                 }
             },
 
-            checkCollision: function (object1, object2) { // ship, asteroid
+            checkCollision: function(object1, object2) { // ship, asteroid
                 if (checkHorizontalCollision() && checkVerticalPosition()) {
                     return true;
                 } else {
@@ -184,23 +185,15 @@
     }());
 
     //#region Game Objects
-
-
-    // Basic Game Object to represent on the screen, Game Loops (Asteroids, lasers, ship)
     function GameObject() {
         this.settings = {
-            color: "#000000",
+            color: '#000000',
             width: 50,
             height: 50,
             posX: 0,
             posY: 0,
         };
     }
-
-    //GameObject.prototype.draw = function (draw) {
-    //    ctx.fillStyle = this.settings.color;
-    //    ctx.fillRect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-    //};
 
     function Laser(orginFireX, orginFireY) {
         var laserObject = new GameObject();
@@ -210,7 +203,7 @@
         laserObject.settings.width = 4.5;
         laserObject.settings.height = 25;
 
-        laserObject.draw = function () {
+        laserObject.draw = function() {
             ctx.beginPath();
             ctx.fillStyle = getRandColor();
             ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
@@ -218,7 +211,7 @@
             ctx.closePath();
         };
 
-        laserObject.update = function () {
+        laserObject.update = function() {
             laserObject.settings.posY -= 5.05;
         };
 
@@ -246,14 +239,14 @@
                         asteroids.asteroidArray.splice(j, 1);
                         lasers.laserArray.splice(i, 1);
                         addScore();
-                        console.log("Asteroid Hit!");
+                        console.log('Asteroid Hit!');
                         return 0;
                     }
                 }
             }
         }
 
-        lasers.update = function () {
+        lasers.update = function() {
             checkLaserBounds();
             checkLaserCollision();
             for (var i = 0; i < lasers.laserArray.length; i++) {
@@ -261,13 +254,13 @@
             }
         };
 
-        lasers.draw = function () {
+        lasers.draw = function() {
             for (var i = 0; i < lasers.laserArray.length; i++) {
                 lasers.laserArray[i].draw();
             }
         };
 
-        lasers.Fire = function () {
+        lasers.Fire = function() {
             if (lasers.laserArray.length < maxLasers) {
                 var orginFireX = ship.settings.posX;
                 var orginFireY = ship.settings.posY;
@@ -288,35 +281,35 @@
                 if (Game.checkCollision(shipObject, asteroids.asteroidArray[j])) {
                     asteroids.asteroidArray.splice(j, 1);
                     removeLife();
-                    console.log("Ship Hit!");
+                    console.log('Ship Hit!');
                     return 0;
                 }
             }
         }
 
-        shipObject.update = function () {
+        shipObject.update = function() {
             checkShipCollision();
         };
 
-        shipObject.moveLeft = function () {
+        shipObject.moveLeft = function() {
             if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX - SHIP_SPEED;
             }
         };
 
-        shipObject.moveRight = function () {
+        shipObject.moveRight = function() {
             if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posX = ship.settings.posX + SHIP_SPEED;
             }
         };
 
-        shipObject.moveUp = function () {
+        shipObject.moveUp = function() {
             if (ship.settings.posY > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY - SHIP_SPEED;
             }
         };
 
-        shipObject.moveDown = function () {
+        shipObject.moveDown = function() {
             if (ship.settings.posY < CANVAS_HEIGHT - 40 && GAME_STATE === GAME_STATE_ENUM[1]) {
                 ship.settings.posY = ship.settings.posY + SHIP_SPEED;
             }
@@ -324,11 +317,11 @@
 
         var img = new Image();
         img.src = 'App/Content/Images/spaceship.png';
-        img.onload = function () {
+        img.onload = function() {
             ctx.drawImage(img, shipObject.settings.posX, shipObject.settings.posY);
         };
 
-        shipObject.draw = function () {
+        shipObject.draw = function() {
             ctx.drawImage(img, shipObject.settings.posX, shipObject.settings.posY);
         };
 
@@ -346,7 +339,7 @@
         asteroidObject.settings.speed = getRandNum(2, 6);
         asteroidObject.settings.color = GetRandomAsteroidColor();
 
-        asteroidObject.draw = function () {
+        asteroidObject.draw = function() {
             ctx.beginPath();
             ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
             //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
@@ -358,7 +351,7 @@
             ctx.closePath();
         };
 
-        asteroidObject.update = function () {
+        asteroidObject.update = function() {
             asteroidObject.settings.posY += asteroidObject.settings.speed;
         };
 
@@ -366,13 +359,13 @@
             var color = '';
             switch (getRandNum(0, 3)) {
                 case 1:
-                    color = "#755D41";
+                    color = '#755D41';
                     break;
                 case 2:
-                    color = "#735B40";
+                    color = '#735B40';
                     break;
                 case 3:
-                    color = "#967754";
+                    color = '#967754';
                     break;
             }
 
@@ -386,7 +379,7 @@
         var asteroids = {};
         asteroids.asteroidArray = [];
 
-        setInterval(function () {
+        setInterval(function() {
             if (GAME_STATE === GAME_STATE_ENUM[1]) {
                 var asteroid = new Asteroid();
                 asteroids.asteroidArray.push(asteroid);
@@ -401,14 +394,14 @@
             }
         }
 
-        asteroids.update = function () {
+        asteroids.update = function() {
             checkAsteroidBounds();
             for (var i = 0; i < asteroids.asteroidArray.length; i++) {
                 asteroids.asteroidArray[i].update();
             }
         };
 
-        asteroids.draw = function () {
+        asteroids.draw = function() {
             for (var i = 0; i < asteroids.asteroidArray.length; i++) {
                 asteroids.asteroidArray[i].draw();
             }
@@ -420,11 +413,11 @@
 
     //#region Helper Functions
     function drawStartScreen() {
-        $("#StartScreen").show();
+        $('#StartScreen').show();
     }
 
     function hideStartScreen() {
-        $("#StartScreen").hide();
+        $('#StartScreen').hide();
     }
 
     function startNewGame() {
@@ -432,7 +425,7 @@
         GAME_STATE = GAME_STATE_ENUM[1];
         GAME_SCORE = 0;
         hideStartScreen();
-        $("#GameOver").hide();
+        $('#GameOver').hide();
     }
 
     function pauseGame() {
@@ -445,11 +438,11 @@
     }
 
     function drawPauseScreen() {
-        $("#Paused").toggle();
+        $('#Paused').toggle();
     }
 
     function endGame() {
-        $("#GameOver").show();
+        $('#GameOver').show();
     }
 
     function addScore() {
@@ -457,7 +450,7 @@
     }
 
     function drawScore() {
-        $("#Score").html("Score:" + GAME_SCORE);
+        $('#Score').html('Score:' + GAME_SCORE);
     }
 
     function removeLife() {
@@ -469,7 +462,7 @@
     }
 
     function drawLives() {
-        $("#Lives").html("Lives:" + LIVES);
+        $('#Lives').html('Lives:' + LIVES);
     }
 
     function getRandColor() {
@@ -488,7 +481,7 @@
 
     //#region Key Events
     // Inactive Key Events
-    $(document).keydown(function (e) {
+    $(document).keydown(function(e) {
         //Enter key
         if (e.keyCode === 13) {
             // If game start or game over allow new game
@@ -510,10 +503,10 @@
     });
 
     var keyState = {};
-    window.addEventListener('keydown', function (e) {
+    window.addEventListener('keydown', function(e) {
         keyState[e.keyCode || e.which] = true;
     }, true);
-    window.addEventListener('keyup', function (e) {
+    window.addEventListener('keyup', function(e) {
         keyState[e.keyCode || e.which] = false;
     }, true);
 
@@ -543,7 +536,7 @@
 
     // Game Object Creation
     var ship = new Ship();
-    ship.settings.color = "rgba(0, 0, 0, 1)";
+    ship.settings.color = 'rgba(0, 0, 0, 1)';
     ship.settings.posY = 350;
     ship.settings.height = 25;
     ship.settings.width = 25;
@@ -551,3 +544,4 @@
     var lasers = new Lasers();
     var asteroids = new Asteroids();
 }());
+

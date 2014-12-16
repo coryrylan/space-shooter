@@ -14,13 +14,13 @@ var sassSource = [
     './App/Content/Sass/**/*.scss'
 ];
 
-gulp.task('watch', function () {
-    gulp.watch(sassSource, ['styles']);
+gulp.task('watch', function() {
+    gulp.watch(sassSource, ['styles']).on('error', catchError);
     gulp.watch(jsSource, ['js']);
     gulp.watch(jsSource, ['hint']);
 });
 
-gulp.task('styles', function () {
+gulp.task('styles', function() {
     return gulp
         .src(sassSource)
         .pipe(plug.rubySass({ style: 'expanded' }))
@@ -31,7 +31,7 @@ gulp.task('styles', function () {
         .pipe(gulp.dest('./Build/Css'));
 });
 
-gulp.task('js', function () {
+gulp.task('js', function() {
     return gulp
         .src(jsLibraries.concat(jsSource))
         .pipe(plug.concat('all.js'))
@@ -41,9 +41,15 @@ gulp.task('js', function () {
         .pipe(gulp.dest('./Build/Js'));
 });
 
-gulp.task('hint', function () {
+gulp.task('hint', function() {
     return gulp
         .src(jsSource)
+        .pipe(plug.jscs()).on('error', catchError)
         .pipe(plug.jshint())
         .pipe(plug.jshint.reporter('jshint-stylish'));
 });
+
+var catchError = function(err) {
+    console.log(err);
+    this.emit('end');
+};

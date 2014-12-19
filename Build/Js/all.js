@@ -49,17 +49,133 @@
 window.ENGINE = (function() {   // Temp until we get a module system in place (RequireJS or aAngularDI)
     'use strict';
 
+    var keyState = {};
+    window.addEventListener('keydown', function(e) {
+        keyState[e.keyCode || e.which] = true;
+    }, true);
+    window.addEventListener('keyup', function(e) {
+        keyState[e.keyCode || e.which] = false;
+    }, true);
+
     function draw() {
 
     }
 
-    function update(instanceUpdate) {
-        gameIO();
-        gameStateUpdate();
-        instanceUpdate();
+    function update() {
+        gameIOUpdate();
     }
 
-    function checkCollision(object1, object2) {
+    // #region Object Factory
+    var factory = {};
+    factory.createGameObject = function() {
+        return new GameObject();
+    };
+
+    function GameObject() {
+        this.settings = {
+            color: '#000000',
+            width: 50,
+            height: 50,
+            posX: 0,
+            posY: 0,
+        };
+    }
+    // #endregion
+
+    // #region Controls
+    var controls = {};
+    var eventActions = {};
+    var keyAction = {
+        space: function() { console.log('Key action space not defined'); },
+        pause: function() { console.log('Key action pause not defined'); },
+        enter: function() { console.log('Key action enter not defined'); }
+    };
+
+    controls.on = function(event, func) {
+        switch (event) {
+            case 'left':
+                eventActions.left = func;
+                break;
+            case 'right':
+                eventActions.right = func;
+                break;
+            case 'up':
+                eventActions.up = func;
+                break;
+            case 'down':
+                eventActions.down = func;
+                break;
+            case 'space':
+                eventActions.down = func;
+                break;
+            case 'pause':
+                eventActions.down = func;
+                break;
+            default:
+                console.log('unknown control event fired');
+        }
+    };
+
+    controls.onkey = function(event, func) {
+        switch (event) {
+            case 'space':
+                keyAction.space = func;
+                break;
+            case 'pause':
+                keyAction.pause = func;
+                break;
+            case 'enter':
+                keyAction.enter = func;
+                break;
+            default:
+                console.log('unknown control event fired');
+        }
+    };
+
+    // Inactive controls
+    $(document).keydown(function(e) {
+        // Enter key
+        if (e.keyCode === 13) {
+            keyAction.enter();
+        }
+
+        // (p) Pause
+        if (e.keyCode === 80) {
+            keyAction.pause();
+        }
+
+        // Space bar
+        if (e.keyCode === 32) {
+            keyAction.space();
+        }
+    });
+
+    function gameIOUpdate() {
+        // (Left Arrow)
+        if (keyState[37] || keyState[65]) {
+            eventActions.left();
+        }
+
+        // (Right Arrow)
+        if (keyState[39] || keyState[68]) {
+            eventActions.right();
+        }
+
+        // (Up Arrow)
+        if (keyState[38] || keyState[87]) {
+            eventActions.up();
+        }
+
+        // (Down Arrow)
+        if (keyState[40] || keyState[83]) {
+            eventActions.down();
+        }
+    }
+    // #endregion 
+
+    // #region Util
+    var util = {};
+    util.checkCollision = function(object1, object2) {
         if (checkHorizontalCollision() && checkVerticalPosition()) {
             return true;
         } else {
@@ -102,40 +218,15 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
                 return false;
             }
         }
-    }
-
-    function gameIO() {
-
-    }
-
-    function gameStateUpdate() {
-
-    }
-
-    // Factory and default objects
-    function createGameObject() {
-        return new GameObject();
-    }
-
-    function GameObject() {
-        this.settings = {
-            color: '#000000',
-            width: 50,
-            height: 50,
-            posX: 0,
-            posY: 0,
-        };
-    }
+    };
+    // #endregion
 
     return {
         draw: draw,
         update: update,
-        util: {
-            checkCollision: checkCollision
-        },
-        factory: {
-            createGameObject: createGameObject
-        }
+        util: util,
+        factory: factory,
+        controls: controls
     };
 }());
 
@@ -199,7 +290,9 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
             },
 
             update: function() {
-                CheckGameIO();
+                //CheckGameIO();
+
+                ENGINE.update();
 
                 // Game Start
                 if (GAME_STATE === GAME_STATE_ENUM[0]) {
@@ -225,6 +318,36 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
             }
         };
     }());
+
+    ENGINE.controls.on('left', function() {
+        ship.moveLeft();
+    });
+
+    ENGINE.controls.on('right', function() {
+        ship.moveRight();
+    });
+
+    ENGINE.controls.on('up', function() {
+        ship.moveUp();
+    });
+
+    ENGINE.controls.on('down', function() {
+        ship.moveDown();
+    });
+
+    ENGINE.controls.onkey('space', function() {
+        lasers.Fire();
+    });
+
+    ENGINE.controls.onkey('pause', function() {
+        pauseGame();
+    });
+
+    ENGINE.controls.onkey('enter', function() {
+        if (GAME_STATE === GAME_STATE_ENUM[0] || GAME_STATE === GAME_STATE_ENUM[3]) {
+            startNewGame();
+        }
+    });
 
     //#region Game Objects
     function Laser(orginFireX, orginFireY) {
@@ -508,61 +631,6 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     function getRandNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    //#endregion
-
-    //#region Key Events
-    // Inactive Key Events
-    $(document).keydown(function(e) {
-        //Enter key
-        if (e.keyCode === 13) {
-            // If game start or game over allow new game
-            if (GAME_STATE === GAME_STATE_ENUM[0] || GAME_STATE === GAME_STATE_ENUM[3]) {
-                startNewGame();
-            }
-            return false;
-        }
-
-        // (p) Pause
-        if (e.keyCode === 80) {
-            pauseGame();
-        }
-
-        // Space bar
-        if (e.keyCode === 32) {
-            lasers.Fire();
-        }
-    });
-
-    var keyState = {};
-    window.addEventListener('keydown', function(e) {
-        keyState[e.keyCode || e.which] = true;
-    }, true);
-    window.addEventListener('keyup', function(e) {
-        keyState[e.keyCode || e.which] = false;
-    }, true);
-
-    // Active key Events
-    function CheckGameIO() {
-        // (Left Arrow)
-        if (keyState[37] || keyState[65]) {
-            ship.moveLeft();
-        }
-
-        // (Right Arrow)
-        if (keyState[39] || keyState[68]) {
-            ship.moveRight();
-        }
-
-        // (Up Arrow)
-        if (keyState[38] || keyState[87]) {
-            ship.moveUp();
-        }
-
-        // (Down Arrow)
-        if (keyState[40] || keyState[83]) {
-            ship.moveDown();
-        }
     }
     //#endregion
 

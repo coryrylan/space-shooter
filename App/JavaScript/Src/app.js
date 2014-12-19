@@ -58,7 +58,9 @@
             },
 
             update: function() {
-                CheckGameIO();
+                //CheckGameIO();
+
+                ENGINE.update();
 
                 // Game Start
                 if (GAME_STATE === GAME_STATE_ENUM[0]) {
@@ -84,6 +86,36 @@
             }
         };
     }());
+
+    ENGINE.controls.on('left', function() {
+        ship.moveLeft();
+    });
+
+    ENGINE.controls.on('right', function() {
+        ship.moveRight();
+    });
+
+    ENGINE.controls.on('up', function() {
+        ship.moveUp();
+    });
+
+    ENGINE.controls.on('down', function() {
+        ship.moveDown();
+    });
+
+    ENGINE.controls.onkey('space', function() {
+        lasers.Fire();
+    });
+
+    ENGINE.controls.onkey('pause', function() {
+        pauseGame();
+    });
+
+    ENGINE.controls.onkey('enter', function() {
+        if (GAME_STATE === GAME_STATE_ENUM[0] || GAME_STATE === GAME_STATE_ENUM[3]) {
+            startNewGame();
+        }
+    });
 
     //#region Game Objects
     function Laser(orginFireX, orginFireY) {
@@ -367,61 +399,6 @@
 
     function getRandNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    //#endregion
-
-    //#region Key Events
-    // Inactive Key Events
-    $(document).keydown(function(e) {
-        //Enter key
-        if (e.keyCode === 13) {
-            // If game start or game over allow new game
-            if (GAME_STATE === GAME_STATE_ENUM[0] || GAME_STATE === GAME_STATE_ENUM[3]) {
-                startNewGame();
-            }
-            return false;
-        }
-
-        // (p) Pause
-        if (e.keyCode === 80) {
-            pauseGame();
-        }
-
-        // Space bar
-        if (e.keyCode === 32) {
-            lasers.Fire();
-        }
-    });
-
-    var keyState = {};
-    window.addEventListener('keydown', function(e) {
-        keyState[e.keyCode || e.which] = true;
-    }, true);
-    window.addEventListener('keyup', function(e) {
-        keyState[e.keyCode || e.which] = false;
-    }, true);
-
-    // Active key Events
-    function CheckGameIO() {
-        // (Left Arrow)
-        if (keyState[37] || keyState[65]) {
-            ship.moveLeft();
-        }
-
-        // (Right Arrow)
-        if (keyState[39] || keyState[68]) {
-            ship.moveRight();
-        }
-
-        // (Up Arrow)
-        if (keyState[38] || keyState[87]) {
-            ship.moveUp();
-        }
-
-        // (Down Arrow)
-        if (keyState[40] || keyState[83]) {
-            ship.moveDown();
-        }
     }
     //#endregion
 

@@ -81,51 +81,6 @@
                 if (GAME_STATE === GAME_STATE_ENUM[3]) {
                     return;
                 }
-            },
-
-            checkCollision: function(object1, object2) { // ship, asteroid
-                if (checkHorizontalCollision() && checkVerticalPosition()) {
-                    return true;
-                } else {
-                    return false;
-                }
-
-                function checkHorizontalCollision() {
-                    var object1RightSide = object1.settings.posX + object1.settings.width;
-                    var object1LeftSide = object1.settings.posX;
-                    var object2RightSide = object2.settings.posX + object2.settings.width;
-                    var object2LeftSide = object2.settings.posX;
-
-                    if (leftSideCollision() || rightSideCollision()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-
-                    function leftSideCollision() {
-                        if ((object1LeftSide >= object2LeftSide && object1LeftSide <= object2RightSide)) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-
-                    function rightSideCollision() {
-                        if (object1RightSide >= object2LeftSide && object1RightSide <= object2RightSide) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-
-                function checkVerticalPosition() {
-                    if (object1.settings.posY >= object2.settings.posY && object1.settings.posY <= object2.settings.posY + object2.settings.height) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
             }
         };
     }());
@@ -181,7 +136,7 @@
             // For every laser and asteroid
             for (var i = 0; i < lasers.laserArray.length; i++) {
                 for (var j = 0; j < asteroids.asteroidArray.length; j++) {
-                    if (Game.checkCollision(lasers.laserArray[i], asteroids.asteroidArray[j])) {
+                    if (ENGINE.util.checkCollision(lasers.laserArray[i], asteroids.asteroidArray[j])) {
                         asteroids.asteroidArray.splice(j, 1);
                         lasers.laserArray.splice(i, 1);
                         addScore();
@@ -224,7 +179,7 @@
         function checkShipCollision() {
             // For every asteroid
             for (var j = 0; j < asteroids.asteroidArray.length; j++) {
-                if (Game.checkCollision(shipObject, asteroids.asteroidArray[j])) {
+                if (ENGINE.util.checkCollision(shipObject, asteroids.asteroidArray[j])) {
                     asteroids.asteroidArray.splice(j, 1);
                     removeLife();
                     console.log('Ship Hit!');

@@ -1,4 +1,4 @@
-﻿window.engine = (function() {
+﻿window.ENGINE = (function() {
     'use strict';
 
     function draw() {

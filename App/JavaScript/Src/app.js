@@ -9,12 +9,13 @@
     var LIVES = 3;
     var canvas = document.getElementById('GameCanvas');
     var ctx = canvas.getContext('2d');
-    var gameStateEnum = {
+    var gameStateEnum = Object.freeze({
         START: 'START',
         PLAY: 'PLAY',
         PAUSE: 'PAUSE',
         OVER: 'OVER'
-    }
+    });
+
     var gameState = gameStateEnum.START;
 
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);

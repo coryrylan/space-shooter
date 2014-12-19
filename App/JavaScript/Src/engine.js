@@ -123,7 +123,7 @@
             eventActions.down();
         }
     }
-    // #endregion 
+    // #endregion
 
     // #region Util
     var util = {};

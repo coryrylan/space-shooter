@@ -239,10 +239,15 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     var SHIP_SPEED = 4;
     var GAME_SCORE = 0;
     var LIVES = 3;
-    var GAME_STATE_ENUM = ['GAME START', 'PLAY', 'PAUSE', 'GAME OVER'];
-    var GAME_STATE = GAME_STATE_ENUM[0].toString();
     var canvas = document.getElementById('GameCanvas');
     var ctx = canvas.getContext('2d');
+    var gameStateEnum = {
+        START: 'START',
+        PLAY: 'PLAY',
+        PAUSE: 'PAUSE',
+        OVER: 'OVER'
+    }
+    var gameState = gameStateEnum.START;
 
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
@@ -267,24 +272,24 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
                 drawLives();
 
                 // Game Start
-                if (GAME_STATE === GAME_STATE_ENUM[0]) {
+                if (gameState === gameStateEnum.START) {
                     drawStartScreen();
                 }
 
                 // Game Play
-                if (GAME_STATE === GAME_STATE_ENUM[1]) {
+                if (gameState === gameStateEnum.PLAY) {
                     ship.draw();
                     lasers.draw();
                     asteroids.draw();
                 }
 
                 // Game Pause
-                if (GAME_STATE === GAME_STATE_ENUM[2]) {
+                if (gameState === gameStateEnum.PAUSE) {
                     return;
                 }
 
                 // Game Over
-                if (GAME_STATE === GAME_STATE_ENUM[3]) {
+                if (gameState === gameStateEnum.OVER) {
                     endGame();
                 }
             },
@@ -295,24 +300,24 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
                 ENGINE.update();
 
                 // Game Start
-                if (GAME_STATE === GAME_STATE_ENUM[0]) {
+                if (gameState === gameStateEnum.START) {
                     return;
                 }
 
                 // Game Play
-                if (GAME_STATE === GAME_STATE_ENUM[1]) {
+                if (gameState === gameStateEnum.PLAY) {
                     lasers.update();
                     asteroids.update();
                     ship.update();
                 }
 
                 // Game Pause
-                if (GAME_STATE === GAME_STATE_ENUM[2]) {
+                if (gameState === gameStateEnum.PAUSE) {
                     return;
                 }
 
                 // Game Over
-                if (GAME_STATE === GAME_STATE_ENUM[3]) {
+                if (gameState === gameStateEnum.OVER) {
                     return;
                 }
             }
@@ -344,7 +349,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     });
 
     ENGINE.controls.onkey('enter', function() {
-        if (GAME_STATE === GAME_STATE_ENUM[0] || GAME_STATE === GAME_STATE_ENUM[3]) {
+        if (gameState === gameStateEnum.START || gameState === gameStateEnum.OVER) {
             startNewGame();
         }
     });
@@ -447,25 +452,25 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
         };
 
         shipObject.moveLeft = function() {
-            if (ship.settings.posX > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
+            if (ship.settings.posX > 0 && gameState === gameStateEnum.PLAY) {
                 ship.settings.posX = ship.settings.posX - SHIP_SPEED;
             }
         };
 
         shipObject.moveRight = function() {
-            if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && GAME_STATE === GAME_STATE_ENUM[1]) {
+            if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && gameState === gameStateEnum.PLAY) {
                 ship.settings.posX = ship.settings.posX + SHIP_SPEED;
             }
         };
 
         shipObject.moveUp = function() {
-            if (ship.settings.posY > 0 && GAME_STATE === GAME_STATE_ENUM[1]) {
+            if (ship.settings.posY > 0 && gameState === gameStateEnum.PLAY) {
                 ship.settings.posY = ship.settings.posY - SHIP_SPEED;
             }
         };
 
         shipObject.moveDown = function() {
-            if (ship.settings.posY < CANVAS_HEIGHT - 40 && GAME_STATE === GAME_STATE_ENUM[1]) {
+            if (ship.settings.posY < CANVAS_HEIGHT - 40 && gameState === gameStateEnum.PLAY) {
                 ship.settings.posY = ship.settings.posY + SHIP_SPEED;
             }
         };
@@ -535,7 +540,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
         asteroids.asteroidArray = [];
 
         setInterval(function() {
-            if (GAME_STATE === GAME_STATE_ENUM[1]) {
+            if (gameState === gameStateEnum.PLAY) {
                 var asteroid = new Asteroid();
                 asteroids.asteroidArray.push(asteroid);
             }
@@ -577,7 +582,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     function startNewGame() {
         LIVES = 3;
-        GAME_STATE = GAME_STATE_ENUM[1];
+        gameState = gameStateEnum.PLAY;
         GAME_SCORE = 0;
         hideStartScreen();
         $('#GameOver').hide();
@@ -585,10 +590,10 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     function pauseGame() {
         drawPauseScreen();
-        if (GAME_STATE === GAME_STATE_ENUM[1]) {
-            GAME_STATE = GAME_STATE_ENUM[2];
+        if (gameState === gameStateEnum.PLAY) {
+            gameState = gameStateEnum.PAUSE;
         } else {
-            GAME_STATE = GAME_STATE_ENUM[1];
+            gameState = gameStateEnum.PLAY;
         }
     }
 
@@ -612,7 +617,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
         if (LIVES > 0) {
             LIVES -= 1;
         } else {
-            GAME_STATE = GAME_STATE_ENUM[3];
+            gameState = gameStateEnum.OVER;
         }
     }
 

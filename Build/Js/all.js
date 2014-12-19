@@ -46,6 +46,99 @@
             clearTimeout(id);
         };
 }());
+window.ENGINE = (function() {   // Temp until we get a module system in place (RequireJS or aAngularDI)
+    'use strict';
+
+    function draw() {
+
+    }
+
+    function update(instanceUpdate) {
+        gameIO();
+        gameStateUpdate();
+        instanceUpdate();
+    }
+
+    function checkCollision(object1, object2) {
+        if (checkHorizontalCollision() && checkVerticalPosition()) {
+            return true;
+        } else {
+            return false;
+        }
+
+        function checkHorizontalCollision() {
+            var object1RightSide = object1.settings.posX + object1.settings.width;
+            var object1LeftSide = object1.settings.posX;
+            var object2RightSide = object2.settings.posX + object2.settings.width;
+            var object2LeftSide = object2.settings.posX;
+
+            if (leftSideCollision() || rightSideCollision()) {
+                return true;
+            } else {
+                return false;
+            }
+
+            function leftSideCollision() {
+                if ((object1LeftSide >= object2LeftSide && object1LeftSide <= object2RightSide)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function rightSideCollision() {
+                if (object1RightSide >= object2LeftSide && object1RightSide <= object2RightSide) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        function checkVerticalPosition() {
+            if (object1.settings.posY >= object2.settings.posY && object1.settings.posY <= object2.settings.posY + object2.settings.height) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    function gameIO() {
+
+    }
+
+    function gameStateUpdate() {
+
+    }
+
+    // Factory and default objects
+    function createGameObject() {
+        return new GameObject();
+    }
+
+    function GameObject() {
+        this.settings = {
+            color: '#000000',
+            width: 50,
+            height: 50,
+            posX: 0,
+            posY: 0,
+        };
+    }
+
+    return {
+        draw: draw,
+        update: update,
+        util: {
+            checkCollision: checkCollision
+        },
+        factory: {
+            createGameObject: createGameObject
+        }
+    };
+}());
+
 (function() {
     'use strict';
 
@@ -134,18 +227,8 @@
     }());
 
     //#region Game Objects
-    function GameObject() {
-        this.settings = {
-            color: '#000000',
-            width: 50,
-            height: 50,
-            posX: 0,
-            posY: 0,
-        };
-    }
-
     function Laser(orginFireX, orginFireY) {
-        var laserObject = new GameObject();
+        var laserObject = ENGINE.factory.createGameObject();
 
         laserObject.settings.posX = orginFireX + 15;
         laserObject.settings.posY = orginFireY - 5;
@@ -222,7 +305,7 @@
     }
 
     function Ship() {
-        var shipObject = new GameObject();
+        var shipObject = ENGINE.factory.createGameObject();
 
         function checkShipCollision() {
             // For every asteroid
@@ -278,7 +361,7 @@
     }
 
     function Asteroid() {
-        var asteroidObject = new GameObject();
+        var asteroidObject = ENGINE.factory.createGameObject();
         var range = getRandNum(30, 100);
 
         asteroidObject.settings.width = range;
@@ -492,79 +575,4 @@
 
     var lasers = new Lasers();
     var asteroids = new Asteroids();
-}());
-
-window.ENGINE = (function() {
-    'use strict';
-
-    function draw() {
-
-    }
-
-    function update(instanceUpdate) {
-        gameIO();
-        gameStateUpdate();
-        instanceUpdate();
-    }
-
-    function checkCollision(object1, object2) {
-        if (checkHorizontalCollision() && checkVerticalPosition()) {
-            return true;
-        } else {
-            return false;
-        }
-
-        function checkHorizontalCollision() {
-            var object1RightSide = object1.settings.posX + object1.settings.width;
-            var object1LeftSide = object1.settings.posX;
-            var object2RightSide = object2.settings.posX + object2.settings.width;
-            var object2LeftSide = object2.settings.posX;
-
-            if (leftSideCollision() || rightSideCollision()) {
-                return true;
-            } else {
-                return false;
-            }
-
-            function leftSideCollision() {
-                if ((object1LeftSide >= object2LeftSide && object1LeftSide <= object2RightSide)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            function rightSideCollision() {
-                if (object1RightSide >= object2LeftSide && object1RightSide <= object2RightSide) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        function checkVerticalPosition() {
-            if (object1.settings.posY >= object2.settings.posY && object1.settings.posY <= object2.settings.posY + object2.settings.height) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    function gameIO() {
-
-    }
-
-    function gameStateUpdate() {
-
-    }
-
-    return {
-        draw: draw,
-        update: update,
-        util: {
-            checkCollision: checkCollision
-        }
-    };
 }());

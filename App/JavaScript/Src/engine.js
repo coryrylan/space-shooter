@@ -1,4 +1,4 @@
-﻿window.ENGINE = (function() {
+﻿window.ENGINE = (function() {   // Temp until we get a module system in place (RequireJS or aAngularDI)
     'use strict';
 
     function draw() {
@@ -64,11 +64,29 @@
 
     }
 
+    // Factory and default objects
+    function createGameObject() {
+        return new GameObject();
+    }
+
+    function GameObject() {
+        this.settings = {
+            color: '#000000',
+            width: 50,
+            height: 50,
+            posX: 0,
+            posY: 0,
+        };
+    }
+
     return {
         draw: draw,
         update: update,
         util: {
             checkCollision: checkCollision
+        },
+        factory: {
+            createGameObject: createGameObject
         }
     };
 }());

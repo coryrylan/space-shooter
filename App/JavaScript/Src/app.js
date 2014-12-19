@@ -86,18 +86,8 @@
     }());
 
     //#region Game Objects
-    function GameObject() {
-        this.settings = {
-            color: '#000000',
-            width: 50,
-            height: 50,
-            posX: 0,
-            posY: 0,
-        };
-    }
-
     function Laser(orginFireX, orginFireY) {
-        var laserObject = new GameObject();
+        var laserObject = ENGINE.factory.createGameObject();
 
         laserObject.settings.posX = orginFireX + 15;
         laserObject.settings.posY = orginFireY - 5;
@@ -174,7 +164,7 @@
     }
 
     function Ship() {
-        var shipObject = new GameObject();
+        var shipObject = ENGINE.factory.createGameObject();
 
         function checkShipCollision() {
             // For every asteroid
@@ -230,7 +220,7 @@
     }
 
     function Asteroid() {
-        var asteroidObject = new GameObject();
+        var asteroidObject = ENGINE.factory.createGameObject();
         var range = getRandNum(30, 100);
 
         asteroidObject.settings.width = range;

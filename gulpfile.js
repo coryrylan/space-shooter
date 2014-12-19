@@ -7,7 +7,9 @@ var jsLibraries = [
 ];
 
 var jsSource = [
-    './App/JavaScript/Src/**/*.js'
+    //'./App/JavaScript/Src/**/*.js'
+    './App/JavaScript/Src/engine.js',
+    './App/JavaScript/Src/app.js'
 ];
 
 var sassSource = [

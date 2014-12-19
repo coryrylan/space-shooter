@@ -24,14 +24,8 @@
     //#endregion
 
     var Game = (function() {
-        var s; // bind alias to public settings
         return {
-            settings: {
-                numPlayers: 1,
-            },
-
             init: function() {
-                s = this.settings;
                 this.bindUIActions();
             },
 

@@ -357,14 +357,14 @@
 
         function GetRandomAsteroidColor() {
             var color = '';
-            switch (getRandNum(0, 3)) {
+            switch (getRandNum(0, 2)) {
                 case 1:
                     color = '#755D41';
                     break;
                 case 2:
                     color = '#735B40';
                     break;
-                case 3:
+                default:
                     color = '#967754';
                     break;
             }

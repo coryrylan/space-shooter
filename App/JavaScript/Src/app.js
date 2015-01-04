@@ -213,58 +213,57 @@
 
     //#region LaserCollection
     function LaserCollection() {
-        var lasers = {};
-        var maxLasers = 10;
-        var laserList = [];
+        this.maxLasers = 10;
+        this.laserList = [];
+    }
 
-        function checkLaserBounds() {
-            for (var i = 0; i < laserList.length; i++) {
-                if (laserList[i].settings.posY < -5) {
-                    laserList.shift(); // If laser outside of top bounds remove from array
+    LaserCollection.prototype.update = function() {
+
+        var checkLaserBounds = function() {
+            for (var i = 0; i < this.laserList.length; i++) {
+                if (this.laserList[i].settings.posY < -5) {
+                    this.laserList.shift(); // If laser outside of top bounds remove from array
                 }
             }
-        }
+        }.bind(this);
 
-        function checkLaserCollision() {
+        var checkLaserCollision = function() {
             // For every laser and asteroid
-            for (var i = 0; i < laserList.length; i++) {
+            for (var i = 0; i < this.laserList.length; i++) {
                 for (var j = 0; j < asteroids.asteroidArray.length; j++) {
-                    if (ENGINE.util.checkCollision(laserList[i], asteroids.asteroidArray[j])) {
+                    if (ENGINE.util.checkCollision(this.laserList[i], asteroids.asteroidArray[j])) {
                         asteroids.asteroidArray.splice(j, 1);
-                        laserList.splice(i, 1);
+                        this.laserList.splice(i, 1);
                         addScore();
                         console.log('Asteroid Hit!');
                         return 0;
                     }
                 }
             }
+        }.bind(this);
+
+        checkLaserBounds();
+        checkLaserCollision();
+
+        for (var i = 0; i < this.laserList.length; i++) {
+            this.laserList[i].update();
         }
+    };
 
-        lasers.update = function() {
-            checkLaserBounds();
-            checkLaserCollision();
-            for (var i = 0; i < laserList.length; i++) {
-                laserList[i].update();
-            }
-        };
+    LaserCollection.prototype.draw = function() {
+        for (var i = 0; i < this.laserList.length; i++) {
+            this.laserList[i].draw();
+        }
+    };
 
-        lasers.draw = function() {
-            for (var i = 0; i < laserList.length; i++) {
-                laserList[i].draw();
-            }
-        };
-
-        lasers.fire = function() {
-            if (laserList.length < maxLasers) {
-                var orginFireX = ship.settings.posX;
-                var orginFireY = ship.settings.posY;
-                var laser = new Laser(orginFireX, orginFireY);
-                laserList.push(laser);
-            }
-        };
-
-        return lasers;
-    }
+    LaserCollection.prototype.fire = function() {
+        if (this.laserList.length < this.maxLasers) {
+            var orginFireX = ship.settings.posX;
+            var orginFireY = ship.settings.posY;
+            var laser = new Laser(orginFireX, orginFireY);
+            this.laserList.push(laser);
+        }
+    };
     //#endregion
 
     function Ship() {

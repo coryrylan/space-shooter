@@ -93,6 +93,16 @@
         };
     }());
 
+    // Game Object Creation
+    var ship = new Ship();
+    ship.settings.color = 'rgba(0, 0, 0, 1)';
+    ship.settings.posY = 350;
+    ship.settings.height = 25;
+    ship.settings.width = 25;
+
+    var lasers = new LaserCollection();
+    var asteroids = new Asteroids();
+
     ENGINE.controls.on('left', function() {
         ship.moveLeft();
     });
@@ -110,7 +120,7 @@
     });
 
     ENGINE.controls.onkey('space', function() {
-        lasers.Fire();
+        lasers.fire();
     });
 
     ENGINE.controls.onkey('pause', function() {
@@ -124,7 +134,6 @@
     });
 
     //#region Game Objects
-
     //#region Laser
     function Laser(orginFireX, orginFireY) {
         this.settings = {
@@ -151,26 +160,78 @@
     };
     //#endregion
 
-    function Lasers() {
+    //#region Asteroid
+    function Asteroid() {
+        var range = getRandNum(30, 100);
+
+        this.settings = {
+            width: range,
+            height: range,
+            posX: getRandNum(0 - this.settings.height, CANVAS_WIDTH),
+            posY: (this.settings.height * -2),
+            speed: getRandNum(2, 6),
+            color: GetRandomAsteroidColor()
+        }
+
+        function GetRandomAsteroidColor() {
+            var color = '';
+            switch (getRandNum(0, 2)) {
+                case 1:
+                    color = '#755D41';
+                    break;
+                case 2:
+                    color = '#735B40';
+                    break;
+                default:
+                    color = '#967754';
+                    break;
+            }
+
+            return color;
+        }
+    }
+
+    Asteroid.prototype = ENGINE.factory.createGameObject();
+    Asteroid.prototype.constructor = ENGINE.factory.createGameObject();
+
+    Asteroid.prototype.draw = function() {
+        ctx.beginPath();
+        ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+        //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+        ctx.fillStyle = this.settings.color;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#3d3d3d';
+        ctx.stroke();
+        ctx.closePath();
+    };
+
+    Asteroid.prototype.update = function() {
+        this.settings.posY += this.settings.speed;
+    };
+    //#endregion
+
+    //#region LaserCollection
+    function LaserCollection() {
         var lasers = {};
         var maxLasers = 10;
-        lasers.laserArray = [];
+        var laserList = [];
 
         function checkLaserBounds() {
-            for (var i = 0; i < lasers.laserArray.length; i++) {
-                if (lasers.laserArray[i].settings.posY < -5) {
-                    lasers.laserArray.shift(); // If laser outside of top bounds remove from array
+            for (var i = 0; i < laserList.length; i++) {
+                if (laserList[i].settings.posY < -5) {
+                    laserList.shift(); // If laser outside of top bounds remove from array
                 }
             }
         }
 
         function checkLaserCollision() {
             // For every laser and asteroid
-            for (var i = 0; i < lasers.laserArray.length; i++) {
+            for (var i = 0; i < laserList.length; i++) {
                 for (var j = 0; j < asteroids.asteroidArray.length; j++) {
-                    if (ENGINE.util.checkCollision(lasers.laserArray[i], asteroids.asteroidArray[j])) {
+                    if (ENGINE.util.checkCollision(laserList[i], asteroids.asteroidArray[j])) {
                         asteroids.asteroidArray.splice(j, 1);
-                        lasers.laserArray.splice(i, 1);
+                        laserList.splice(i, 1);
                         addScore();
                         console.log('Asteroid Hit!');
                         return 0;
@@ -182,28 +243,29 @@
         lasers.update = function() {
             checkLaserBounds();
             checkLaserCollision();
-            for (var i = 0; i < lasers.laserArray.length; i++) {
-                lasers.laserArray[i].update();
+            for (var i = 0; i < laserList.length; i++) {
+                laserList[i].update();
             }
         };
 
         lasers.draw = function() {
-            for (var i = 0; i < lasers.laserArray.length; i++) {
-                lasers.laserArray[i].draw();
+            for (var i = 0; i < laserList.length; i++) {
+                laserList[i].draw();
             }
         };
 
-        lasers.Fire = function() {
-            if (lasers.laserArray.length < maxLasers) {
+        lasers.fire = function() {
+            if (laserList.length < maxLasers) {
                 var orginFireX = ship.settings.posX;
                 var orginFireY = ship.settings.posY;
                 var laser = new Laser(orginFireX, orginFireY);
-                lasers.laserArray.push(laser);
+                laserList.push(laser);
             }
         };
 
         return lasers;
     }
+    //#endregion
 
     function Ship() {
         var shipObject = ENGINE.factory.createGameObject();
@@ -259,53 +321,6 @@
         };
 
         return shipObject;
-    }
-
-    function Asteroid() {
-        var asteroidObject = ENGINE.factory.createGameObject();
-        var range = getRandNum(30, 100);
-
-        asteroidObject.settings.width = range;
-        asteroidObject.settings.height = range;
-        asteroidObject.settings.posX = getRandNum(0 - asteroidObject.settings.height, CANVAS_WIDTH);
-        asteroidObject.settings.posY = -asteroidObject.settings.height;
-        asteroidObject.settings.speed = getRandNum(2, 6);
-        asteroidObject.settings.color = GetRandomAsteroidColor();
-
-        asteroidObject.draw = function() {
-            ctx.beginPath();
-            ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-            //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-            ctx.fillStyle = asteroidObject.settings.color;
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#3d3d3d';
-            ctx.stroke();
-            ctx.closePath();
-        };
-
-        asteroidObject.update = function() {
-            asteroidObject.settings.posY += asteroidObject.settings.speed;
-        };
-
-        function GetRandomAsteroidColor() {
-            var color = '';
-            switch (getRandNum(0, 2)) {
-                case 1:
-                    color = '#755D41';
-                    break;
-                case 2:
-                    color = '#735B40';
-                    break;
-                default:
-                    color = '#967754';
-                    break;
-            }
-
-            return color;
-        }
-
-        return asteroidObject;
     }
 
     function Asteroids() {
@@ -411,14 +426,4 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     //#endregion
-
-    // Game Object Creation
-    var ship = new Ship();
-    ship.settings.color = 'rgba(0, 0, 0, 1)';
-    ship.settings.posY = 350;
-    ship.settings.height = 25;
-    ship.settings.width = 25;
-
-    var lasers = new Lasers();
-    var asteroids = new Asteroids();
 }());

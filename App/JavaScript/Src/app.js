@@ -124,28 +124,32 @@
     });
 
     //#region Game Objects
+
+    //#region Laser
     function Laser(orginFireX, orginFireY) {
-        var laserObject = ENGINE.factory.createGameObject();
-
-        laserObject.settings.posX = orginFireX + 15;
-        laserObject.settings.posY = orginFireY - 5;
-        laserObject.settings.width = 4.5;
-        laserObject.settings.height = 25;
-
-        laserObject.draw = function() {
-            ctx.beginPath();
-            ctx.fillStyle = getRandColor();
-            ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-            ctx.fill();
-            ctx.closePath();
-        };
-
-        laserObject.update = function() {
-            laserObject.settings.posY -= 5.05;
-        };
-
-        return laserObject;
+        this.settings = {
+            posX: orginFireX + 15,
+            posY: orginFireY - 5,
+            width: 4.5,
+            height: 25
+        }
     }
+
+    Laser.prototype = ENGINE.factory.createGameObject();
+    Laser.prototype.constructor = ENGINE.factory.createGameObject();
+
+    Laser.prototype.draw = function() {
+        ctx.beginPath();
+        ctx.fillStyle = getRandColor();
+        ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+        ctx.fill();
+        ctx.closePath();
+    };
+
+    Laser.prototype.update = function() {
+        this.settings.posY -= 5.05;
+    };
+    //#endregion
 
     function Lasers() {
         var lasers = {};

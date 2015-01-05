@@ -241,6 +241,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     var LIVES = 3;
     var canvas = document.getElementById('GameCanvas');
     var ctx = canvas.getContext('2d');
+
     var gameStateEnum = Object.freeze({
         START: 'START',
         PLAY: 'PLAY',
@@ -331,23 +332,33 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     }());
 
     ENGINE.controls.on('left', function() {
-        playerShip.moveLeft();
+        if (gameState === gameStateEnum.PLAY) {
+            playerShip.moveLeft();
+        }
     });
 
     ENGINE.controls.on('right', function() {
-        playerShip.moveRight();
+        if (gameState === gameStateEnum.PLAY) {
+            playerShip.moveRight();
+        }
     });
 
     ENGINE.controls.on('up', function() {
-        playerShip.moveUp();
+        if (gameState === gameStateEnum.PLAY) {
+            playerShip.moveUp();
+        }
     });
 
     ENGINE.controls.on('down', function() {
-        playerShip.moveDown();
+        if (gameState === gameStateEnum.PLAY) {
+            playerShip.moveDown();
+        }
     });
 
     ENGINE.controls.onkey('space', function() {
-        lasers.fire();
+        if (gameState === gameStateEnum.PLAY) {
+            lasers.fire();
+        }
     });
 
     ENGINE.controls.onkey('pause', function() {
@@ -404,25 +415,25 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     };
 
     Ship.prototype.moveLeft = function() {
-        if (this.settings.posX > 0 && gameState === gameStateEnum.PLAY) {
+        if (this.settings.posX > 0) {
             this.settings.posX = this.settings.posX - SHIP_SPEED;
         }
     };
 
     Ship.prototype.moveRight = function() {
-        if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70 && gameState === gameStateEnum.PLAY) {
+        if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70) {
             this.settings.posX = this.settings.posX + SHIP_SPEED;
         }
     };
 
     Ship.prototype.moveUp = function() {
-        if (this.settings.posY > 0 && gameState === gameStateEnum.PLAY) {
+        if (this.settings.posY > 0) {
             this.settings.posY = this.settings.posY - SHIP_SPEED;
         }
     };
 
     Ship.prototype.moveDown = function() {
-        if (this.settings.posY < CANVAS_HEIGHT - 40 && gameState === gameStateEnum.PLAY) {
+        if (this.settings.posY < CANVAS_HEIGHT - 40) {
             this.settings.posY = this.settings.posY + SHIP_SPEED;
         }
     };

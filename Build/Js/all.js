@@ -261,6 +261,11 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     requestAnimationFrame(gameLoop);
     //#endregion
 
+    // Game Object Creation
+    var playerShip = new Ship();
+    var lasers = new LaserCollection();
+    var asteroids = new AsteroidCollection();
+
     var Game = (function() {
         return {
             init: function() {
@@ -279,7 +284,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
                 // Game Play
                 if (gameState === gameStateEnum.PLAY) {
-                    ship.draw();
+                    playerShip.draw();
                     lasers.draw();
                     asteroids.draw();
                 }
@@ -309,7 +314,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
                 if (gameState === gameStateEnum.PLAY) {
                     lasers.update();
                     asteroids.update();
-                    ship.update();
+                    playerShip.update();
                 }
 
                 // Game Pause
@@ -325,30 +330,20 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
         };
     }());
 
-    // Game Object Creation
-    var ship = new Ship();
-    ship.settings.color = 'rgba(0, 0, 0, 1)';
-    ship.settings.posY = 350;
-    ship.settings.height = 25;
-    ship.settings.width = 25;
-
-    var lasers = new LaserCollection();
-    var asteroids = new AsteroidCollection();
-
     ENGINE.controls.on('left', function() {
-        ship.moveLeft();
+        playerShip.moveLeft();
     });
 
     ENGINE.controls.on('right', function() {
-        ship.moveRight();
+        playerShip.moveRight();
     });
 
     ENGINE.controls.on('up', function() {
-        ship.moveUp();
+        playerShip.moveUp();
     });
 
     ENGINE.controls.on('down', function() {
-        ship.moveDown();
+        playerShip.moveDown();
     });
 
     ENGINE.controls.onkey('space', function() {
@@ -366,6 +361,73 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     });
 
     //#region Game Objects
+    //#region Ship
+    function Ship() {
+        this.settings = {
+            color: 'rgba(0, 0, 0, 1)',
+            posX: 25,
+            posY: 350,
+            height: 25,
+            width: 25,
+        };
+
+        this.img = new Image();
+        this.img.src = 'App/Content/Images/spaceship.png';
+        this.img.onload = function() {
+            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+        }.bind(this);
+    }
+
+    // Causes undefined on proto?
+    //Ship.prototype = ENGINE.factory.createGameObject();
+
+    //Ship.prototype.constructor = ENGINE.factory.createGameObject();
+
+    Ship.prototype.draw = function() {
+        ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+    };
+
+    Ship.prototype.update = function() {
+        var checkShipCollision = function() {
+            // For every asteroid
+            for (var j = 0; j < asteroids.asteroidList.length; j++) {
+                if (ENGINE.util.checkCollision(this, asteroids.asteroidList[j])) {
+                    asteroids.asteroidList.splice(j, 1);
+                    removeLife();
+                    console.log('Ship Hit!');
+                    return 0;
+                }
+            }
+        }.bind(this);
+
+        checkShipCollision();
+    };
+
+    Ship.prototype.moveLeft = function() {
+        if (this.settings.posX > 0 && gameState === gameStateEnum.PLAY) {
+            this.settings.posX = this.settings.posX - SHIP_SPEED;
+        }
+    };
+
+    Ship.prototype.moveRight = function() {
+        if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70 && gameState === gameStateEnum.PLAY) {
+            this.settings.posX = this.settings.posX + SHIP_SPEED;
+        }
+    };
+
+    Ship.prototype.moveUp = function() {
+        if (this.settings.posY > 0 && gameState === gameStateEnum.PLAY) {
+            this.settings.posY = this.settings.posY - SHIP_SPEED;
+        }
+    };
+
+    Ship.prototype.moveDown = function() {
+        if (this.settings.posY < CANVAS_HEIGHT - 40 && gameState === gameStateEnum.PLAY) {
+            this.settings.posY = this.settings.posY + SHIP_SPEED;
+        }
+    };
+    // #endregion
+
     //#region Laser
     function Laser(orginFireX, orginFireY) {
         this.settings = {
@@ -492,8 +554,8 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     LaserCollection.prototype.fire = function() {
         if (this.laserList.length < this.maxLasers) {
-            var orginFireX = ship.settings.posX;
-            var orginFireY = ship.settings.posY;
+            var orginFireX = playerShip.settings.posX;
+            var orginFireY = playerShip.settings.posY;
             var laser = new Laser(orginFireX, orginFireY);
             this.laserList.push(laser);
         }
@@ -536,62 +598,6 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
         }
     };
     // #endregion
-
-    function Ship() {
-        var shipObject = ENGINE.factory.createGameObject();
-
-        function checkShipCollision() {
-            // For every asteroid
-            for (var j = 0; j < asteroids.asteroidList.length; j++) {
-                if (ENGINE.util.checkCollision(shipObject, asteroids.asteroidList[j])) {
-                    asteroids.asteroidList.splice(j, 1);
-                    removeLife();
-                    console.log('Ship Hit!');
-                    return 0;
-                }
-            }
-        }
-
-        shipObject.update = function() {
-            checkShipCollision();
-        };
-
-        shipObject.moveLeft = function() {
-            if (ship.settings.posX > 0 && gameState === gameStateEnum.PLAY) {
-                ship.settings.posX = ship.settings.posX - SHIP_SPEED;
-            }
-        };
-
-        shipObject.moveRight = function() {
-            if (ship.settings.posX + ship.settings.width < CANVAS_WIDTH + 70 && gameState === gameStateEnum.PLAY) {
-                ship.settings.posX = ship.settings.posX + SHIP_SPEED;
-            }
-        };
-
-        shipObject.moveUp = function() {
-            if (ship.settings.posY > 0 && gameState === gameStateEnum.PLAY) {
-                ship.settings.posY = ship.settings.posY - SHIP_SPEED;
-            }
-        };
-
-        shipObject.moveDown = function() {
-            if (ship.settings.posY < CANVAS_HEIGHT - 40 && gameState === gameStateEnum.PLAY) {
-                ship.settings.posY = ship.settings.posY + SHIP_SPEED;
-            }
-        };
-
-        var img = new Image();
-        img.src = 'App/Content/Images/spaceship.png';
-        img.onload = function() {
-            ctx.drawImage(img, shipObject.settings.posX, shipObject.settings.posY);
-        };
-
-        shipObject.draw = function() {
-            ctx.drawImage(img, shipObject.settings.posX, shipObject.settings.posY);
-        };
-
-        return shipObject;
-    }
     // #endregion
 
     //#region Helper Functions

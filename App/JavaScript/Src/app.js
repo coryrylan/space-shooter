@@ -371,11 +371,11 @@
 
     //#region Helper Functions
     function drawStartScreen() {
-        $('#StartScreen').show();
+        $('.js-start-screen').show();
     }
 
     function hideStartScreen() {
-        $('#StartScreen').hide();
+        $('.js-start-screen').hide();
     }
 
     function startNewGame() {
@@ -383,7 +383,7 @@
         gameState = gameStateEnum.PLAY;
         GAME_SCORE = 0;
         hideStartScreen();
-        $('#GameOver').hide();
+        $('.js-game-over-screen').hide();
     }
 
     function pauseGame() {
@@ -396,11 +396,11 @@
     }
 
     function drawPauseScreen() {
-        $('#Paused').toggle();
+        $('.js-pause-screen').toggle();
     }
 
     function endGame() {
-        $('#GameOver').show();
+        $('.js-game-over-screen').show();
     }
 
     function addScore() {
@@ -408,7 +408,7 @@
     }
 
     function drawScore() {
-        $('#Score').html('Score:' + GAME_SCORE);
+        $('.js-score').html('Score:' + GAME_SCORE);
     }
 
     function removeLife() {
@@ -420,7 +420,7 @@
     }
 
     function drawLives() {
-        $('#Lives').html('Lives:' + LIVES);
+        $('.js-lives').html('Lives:' + LIVES);
     }
     //#endregion
 }());

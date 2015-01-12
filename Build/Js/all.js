@@ -618,11 +618,11 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
 
     //#region Helper Functions
     function drawStartScreen() {
-        $('#StartScreen').show();
+        $('.js-start-screen').show();
     }
 
     function hideStartScreen() {
-        $('#StartScreen').hide();
+        $('.js-start-screen').hide();
     }
 
     function startNewGame() {
@@ -630,7 +630,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
         gameState = gameStateEnum.PLAY;
         GAME_SCORE = 0;
         hideStartScreen();
-        $('#GameOver').hide();
+        $('.js-game-over-screen').hide();
     }
 
     function pauseGame() {
@@ -643,11 +643,11 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
     }
 
     function drawPauseScreen() {
-        $('#Paused').toggle();
+        $('.js-pause-screen').toggle();
     }
 
     function endGame() {
-        $('#GameOver').show();
+        $('.js-game-over-screen').show();
     }
 
     function addScore() {
@@ -655,7 +655,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
     }
 
     function drawScore() {
-        $('#Score').html('Score:' + GAME_SCORE);
+        $('.js-score').html('Score:' + GAME_SCORE);
     }
 
     function removeLife() {
@@ -667,7 +667,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
     }
 
     function drawLives() {
-        $('#Lives').html('Lives:' + LIVES);
+        $('.js-lives').html('Lives:' + LIVES);
     }
     //#endregion
 }());

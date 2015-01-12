@@ -1,10 +1,11 @@
-﻿window.ENGINE = (function() {   // Temp until we get a module system in place (RequireJS or aAngularDI)
+﻿window.ENGINE = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';
 
     var keyState = {};
     window.addEventListener('keydown', function(e) {
         keyState[e.keyCode || e.which] = true;
     }, true);
+
     window.addEventListener('keyup', function(e) {
         keyState[e.keyCode || e.which] = false;
     }, true);
@@ -170,6 +171,20 @@
                 return false;
             }
         }
+    };
+
+    util.getRandomNumber = function getRandNum(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    util.getRandomColor = function() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.round(Math.random() * 15)];
+        }
+
+        return color;
     };
     // #endregion
 

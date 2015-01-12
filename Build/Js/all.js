@@ -46,13 +46,14 @@
             clearTimeout(id);
         };
 }());
-window.ENGINE = (function() {   // Temp until we get a module system in place (RequireJS or aAngularDI)
+window.ENGINE = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';
 
     var keyState = {};
     window.addEventListener('keydown', function(e) {
         keyState[e.keyCode || e.which] = true;
     }, true);
+
     window.addEventListener('keyup', function(e) {
         keyState[e.keyCode || e.which] = false;
     }, true);
@@ -219,6 +220,20 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
             }
         }
     };
+
+    util.getRandomNumber = function getRandNum(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    util.getRandomColor = function() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.round(Math.random() * 15)];
+        }
+
+        return color;
+    };
     // #endregion
 
     return {
@@ -255,8 +270,8 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     //#region Main (Game loop)
     function gameLoop() {
-        Game.draw();
-        Game.update();
+        game.draw();
+        game.update();
         requestAnimationFrame(gameLoop);
     }
     requestAnimationFrame(gameLoop);
@@ -267,7 +282,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
     var lasers = new LaserCollection();
     var asteroids = new AsteroidCollection();
 
-    var Game = (function() {
+    var game = (function() {
         return {
             init: function() {
                 this.bindUIActions();
@@ -278,52 +293,42 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
                 drawScore();
                 drawLives();
 
-                // Game Start
                 if (gameState === gameStateEnum.START) {
                     drawStartScreen();
                 }
 
-                // Game Play
                 if (gameState === gameStateEnum.PLAY) {
                     playerShip.draw();
                     lasers.draw();
                     asteroids.draw();
                 }
 
-                // Game Pause
                 if (gameState === gameStateEnum.PAUSE) {
                     return;
                 }
 
-                // Game Over
                 if (gameState === gameStateEnum.OVER) {
                     endGame();
                 }
             },
 
             update: function() {
-                //CheckGameIO();
-
                 ENGINE.update();
 
-                // Game Start
                 if (gameState === gameStateEnum.START) {
                     return;
                 }
 
-                // Game Play
                 if (gameState === gameStateEnum.PLAY) {
                     lasers.update();
                     asteroids.update();
                     playerShip.update();
                 }
 
-                // Game Pause
                 if (gameState === gameStateEnum.PAUSE) {
                     return;
                 }
 
-                // Game Over
                 if (gameState === gameStateEnum.OVER) {
                     return;
                 }
@@ -455,7 +460,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     Laser.prototype.draw = function() {
         ctx.beginPath();
-        ctx.fillStyle = getRandColor();
+        ctx.fillStyle = ENGINE.util.getRandomColor();
         ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
         ctx.fill();
         ctx.closePath();
@@ -468,20 +473,20 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     //#region Asteroid
     function Asteroid() {
-        var range = getRandNum(30, 100);
+        var range = ENGINE.util.getRandomNumber(30, 100);
 
         this.settings = {
             width: range,
             height: range,
-            posX: getRandNum(0 - this.settings.height, CANVAS_WIDTH),
+            posX: ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH),
             posY: (this.settings.height * -2),
-            speed: getRandNum(2, 6),
+            speed: ENGINE.util.getRandomNumber(2, 6),
             color: GetRandomAsteroidColor()
         };
 
         function GetRandomAsteroidColor() {
             var color = '';
-            switch (getRandNum(0, 2)) {
+            switch (ENGINE.util.getRandomNumber(0, 2)) {
                 case 1:
                     color = '#755D41';
                     break;
@@ -663,19 +668,6 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (R
 
     function drawLives() {
         $('#Lives').html('Lives:' + LIVES);
-    }
-
-    function getRandColor() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.round(Math.random() * 15)];
-        }
-        return color;
-    }
-
-    function getRandNum(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     //#endregion
 }());

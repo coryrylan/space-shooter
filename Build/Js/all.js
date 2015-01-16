@@ -176,18 +176,18 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
 
     // #region Util
     var util = {};
-    util.checkCollision = function(object1, object2) {
-        if (checkHorizontalCollision() && checkVerticalPosition()) {
+    util.checkCollision = function(obj1, obj2) {
+        if (horizontalCollision() && verticalPosition()) {
             return true;
         } else {
             return false;
         }
 
-        function checkHorizontalCollision() {
-            var object1RightSide = object1.settings.posX + object1.settings.width;
-            var object1LeftSide = object1.settings.posX;
-            var object2RightSide = object2.settings.posX + object2.settings.width;
-            var object2LeftSide = object2.settings.posX;
+        function horizontalCollision() {
+            var obj1RightSide = obj1.settings.posX + obj1.settings.width;
+            var obj1LeftSide = obj1.settings.posX;
+            var obj2RightSide = obj2.settings.posX + obj2.settings.width;
+            var obj2LeftSide = obj2.settings.posX;
 
             if (leftSideCollision() || rightSideCollision()) {
                 return true;
@@ -196,7 +196,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
             }
 
             function leftSideCollision() {
-                if ((object1LeftSide >= object2LeftSide && object1LeftSide <= object2RightSide)) {
+                if ((obj1LeftSide >= obj2LeftSide && obj1LeftSide <= obj2RightSide)) {
                     return true;
                 } else {
                     return false;
@@ -204,7 +204,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
             }
 
             function rightSideCollision() {
-                if (object1RightSide >= object2LeftSide && object1RightSide <= object2RightSide) {
+                if (obj1RightSide >= obj2LeftSide && obj1RightSide <= obj2RightSide) {
                     return true;
                 } else {
                     return false;
@@ -212,8 +212,8 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
             }
         }
 
-        function checkVerticalPosition() {
-            if (object1.settings.posY >= object2.settings.posY && object1.settings.posY <= object2.settings.posY + object2.settings.height) {
+        function verticalPosition() {
+            if (obj1.settings.posY >= obj2.settings.posY && obj1.settings.posY <= obj2.settings.posY + obj2.settings.height) {
                 return true;
             } else {
                 return false;
@@ -336,6 +336,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
         };
     }());
 
+    //#region game controls
     ENGINE.controls.on('left', function() {
         if (gameState === gameStateEnum.PLAY) {
             playerShip.moveLeft();
@@ -375,6 +376,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
             startNewGame();
         }
     });
+    //#endregion
 
     //#region Game Objects
     //#region Ship

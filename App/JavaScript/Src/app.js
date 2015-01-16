@@ -89,6 +89,7 @@
         };
     }());
 
+    //#region game controls
     ENGINE.controls.on('left', function() {
         if (gameState === gameStateEnum.PLAY) {
             playerShip.moveLeft();
@@ -128,6 +129,7 @@
             startNewGame();
         }
     });
+    //#endregion
 
     //#region Game Objects
     //#region Ship

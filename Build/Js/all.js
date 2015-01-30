@@ -223,7 +223,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
 
     util.getRandomNumber = function getRandNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    };
 
     util.getRandomColor = function() {
         var letters = '0123456789ABCDEF'.split('');
@@ -399,7 +399,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
     // Causes undefined on proto?
     //Ship.prototype = ENGINE.factory.createGameObject();
 
-    //Ship.prototype.constructor = ENGINE.factory.createGameObject();
+    Ship.prototype.constructor = Ship;
 
     Ship.prototype.draw = function() {
         ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
@@ -407,15 +407,15 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
 
     Ship.prototype.update = function() {
         var checkShipCollision = function() {
-            // For every asteroid
-            for (var j = 0; j < asteroids.asteroidList.length; j++) {
-                if (ENGINE.util.checkCollision(this, asteroids.asteroidList[j])) {
-                    asteroids.asteroidList.splice(j, 1);
+            var ship = this;
+            asteroids.asteroidList.forEach(_checkShipCollision);
+
+            function _checkShipCollision(asteroid, index) {
+                if (ENGINE.util.checkCollision(ship, asteroid)) {
+                    asteroids.asteroidList.splice(index, 1);
                     removeLife();
-                    console.log('Ship Hit!');
-                    return 0;
                 }
-            }
+            };
         }.bind(this);
 
         checkShipCollision();
@@ -458,7 +458,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
 
     Laser.prototype = ENGINE.factory.createGameObject();
 
-    Laser.prototype.constructor = ENGINE.factory.createGameObject();
+    Laser.prototype.constructor = Laser;
 
     Laser.prototype.draw = function() {
         ctx.beginPath();
@@ -506,7 +506,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
 
     Asteroid.prototype = ENGINE.factory.createGameObject();
 
-    Asteroid.prototype.constructor = ENGINE.factory.createGameObject();
+    Asteroid.prototype.constructor = Asteroid;
 
     Asteroid.prototype.draw = function() {
         ctx.beginPath();
@@ -533,48 +533,44 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
 
     LaserCollection.prototype.update = function() {
 
-        var checkLaserBounds = function() {
-            for (var i = 0; i < this.laserList.length; i++) {
-                if (this.laserList[i].settings.posY < -5) {
-                    this.laserList.shift(); // If laser outside of top bounds remove from array
+        var checkLaserCollision = function(laser, laserIndex) {
+            // For every asteroid
+            for (var j = 0; j < asteroids.asteroidList.length; j++) {
+                if (ENGINE.util.checkCollision(laser, asteroids.asteroidList[j])) {
+                    this.laserList.splice(laserIndex, 1);
+                    asteroids.asteroidList.splice(j, 1);
+                    addScore();
+                    return 0;
                 }
             }
         }.bind(this);
 
-        var checkLaserCollision = function() {
-            // For every laser and asteroid
-            for (var i = 0; i < this.laserList.length; i++) {
-                for (var j = 0; j < asteroids.asteroidList.length; j++) {
-                    if (ENGINE.util.checkCollision(this.laserList[i], asteroids.asteroidList[j])) {
-                        asteroids.asteroidList.splice(j, 1);
-                        this.laserList.splice(i, 1);
-                        addScore();
-                        console.log('Asteroid Hit!');
-                        return 0;
-                    }
-                }
+        var updateLaser = function(laser, index) {
+            this.laserList[index].update();
+        }.bind(this);
+
+        var checkLaserBounds = function(laser, index) {
+            if (this.laserList[index].settings.posY < -5) {
+                this.laserList.shift(); // If laser outside of top bounds remove from array
             }
         }.bind(this);
 
-        checkLaserBounds();
-        checkLaserCollision();
-
-        for (var i = 0; i < this.laserList.length; i++) {
-            this.laserList[i].update();
-        }
+        this.laserList.forEach(checkLaserCollision);
+        this.laserList.forEach(checkLaserBounds);
+        this.laserList.forEach(updateLaser);
     };
 
     LaserCollection.prototype.draw = function() {
-        for (var i = 0; i < this.laserList.length; i++) {
-            this.laserList[i].draw();
-        }
+        var draw = function(laser) {
+            laser.draw();
+        };
+
+        this.laserList.forEach(draw);
     };
 
     LaserCollection.prototype.fire = function() {
         if (this.laserList.length < this.maxLasers) {
-            var orginFireX = playerShip.settings.posX;
-            var orginFireY = playerShip.settings.posY;
-            var laser = new Laser(orginFireX, orginFireY);
+            var laser = new Laser(playerShip.settings.posX, playerShip.settings.posY);
             this.laserList.push(laser);
         }
     };
@@ -595,25 +591,26 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
     AsteroidCollection.prototype.constructor = AsteroidCollection;
 
     AsteroidCollection.prototype.update = function() {
-        var checkAsteroidBounds = function() {
-            for (var i = 0; i < this.asteroidList.length; i++) {
-                if (this.asteroidList[i].settings.posY > CANVAS_HEIGHT + 30) {
-                    this.asteroidList.splice(i, 1);
-                }
+        var checkAsteroidBounds = function(asteroid, index) {
+            if (asteroid.settings.posY > CANVAS_HEIGHT + 30) {
+                this.asteroidList.splice(index, 1);
             }
         }.bind(this);
 
-        checkAsteroidBounds();
+        var update = function(asteroid) {
+            asteroid.update();
+        };
 
-        for (var i = 0; i < this.asteroidList.length; i++) {
-            this.asteroidList[i].update();
-        }
+        this.asteroidList.forEach(checkAsteroidBounds);
+        this.asteroidList.forEach(update);
     };
 
     AsteroidCollection.prototype.draw = function() {
-        for (var i = 0; i < this.asteroidList.length; i++) {
-            this.asteroidList[i].draw();
-        }
+        var draw = function(asteroid) {
+            asteroid.draw();
+        };
+
+        this.asteroidList.forEach(draw);
     };
     // #endregion
     // #endregion

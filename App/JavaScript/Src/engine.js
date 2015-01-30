@@ -175,7 +175,7 @@
 
     util.getRandomNumber = function getRandNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    };
 
     util.getRandomColor = function() {
         var letters = '0123456789ABCDEF'.split('');

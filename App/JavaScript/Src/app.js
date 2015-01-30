@@ -89,7 +89,7 @@
         };
     }());
 
-    //#region game controls
+    //#region Game Controls
     ENGINE.controls.on('left', function() {
         if (gameState === gameStateEnum.PLAY) {
             playerShip.moveLeft();
@@ -239,6 +239,12 @@
             color: GetRandomAsteroidColor()
         };
 
+        this.img = new Image();
+        this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
+        this.img.onload = function() {
+            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+        }.bind(this);
+
         function GetRandomAsteroidColor() {
             var color = '';
             switch (ENGINE.util.getRandomNumber(0, 2)) {
@@ -262,15 +268,7 @@
     Asteroid.prototype.constructor = Asteroid;
 
     Asteroid.prototype.draw = function() {
-        ctx.beginPath();
-        ctx.rect(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-        //ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-        ctx.fillStyle = this.settings.color;
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#3d3d3d';
-        ctx.stroke();
-        ctx.closePath();
+        ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
     };
 
     Asteroid.prototype.update = function() {

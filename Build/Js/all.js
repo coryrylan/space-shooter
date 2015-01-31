@@ -3704,7 +3704,7 @@ window.ENGINE = (function() {
   var CANVAS_WIDTH = 720;
   var CANVAS_HEIGHT = 480;
   var SHIP_SPEED = 4;
-  var gameStateEnum = {
+  var GAME_STATE = {
     START: 'START',
     PLAY: 'PLAY',
     PAUSE: 'PAUSE',
@@ -3714,7 +3714,7 @@ window.ENGINE = (function() {
   var gameLives = 3;
   var canvas = document.getElementById('GameCanvas');
   var ctx = canvas.getContext('2d');
-  var gameState = gameStateEnum.START;
+  var gameState = GAME_STATE.START;
   $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
   var playerShip = new Ship();
   var lasers = new LaserCollection();
@@ -3728,35 +3728,35 @@ window.ENGINE = (function() {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawScore();
         drawLives();
-        if (gameState === gameStateEnum.START) {
+        if (gameState === GAME_STATE.START) {
           drawStartScreen();
         }
-        if (gameState === gameStateEnum.PLAY) {
+        if (gameState === GAME_STATE.PLAY) {
           playerShip.draw();
           lasers.draw();
           asteroids.draw();
         }
-        if (gameState === gameStateEnum.PAUSE) {
+        if (gameState === GAME_STATE.PAUSE) {
           return ;
         }
-        if (gameState === gameStateEnum.OVER) {
+        if (gameState === GAME_STATE.OVER) {
           endGame();
         }
       },
       update: function() {
         ENGINE.update();
-        if (gameState === gameStateEnum.START) {
+        if (gameState === GAME_STATE.START) {
           return ;
         }
-        if (gameState === gameStateEnum.PLAY) {
+        if (gameState === GAME_STATE.PLAY) {
           lasers.update();
           asteroids.update();
           playerShip.update();
         }
-        if (gameState === gameStateEnum.PAUSE) {
+        if (gameState === GAME_STATE.PAUSE) {
           return ;
         }
-        if (gameState === gameStateEnum.OVER) {
+        if (gameState === GAME_STATE.OVER) {
           return ;
         }
       }
@@ -3769,27 +3769,27 @@ window.ENGINE = (function() {
   }
   requestAnimationFrame(gameLoop);
   ENGINE.controls.on('left', function() {
-    if (gameState === gameStateEnum.PLAY) {
+    if (gameState === GAME_STATE.PLAY) {
       playerShip.moveLeft();
     }
   });
   ENGINE.controls.on('right', function() {
-    if (gameState === gameStateEnum.PLAY) {
+    if (gameState === GAME_STATE.PLAY) {
       playerShip.moveRight();
     }
   });
   ENGINE.controls.on('up', function() {
-    if (gameState === gameStateEnum.PLAY) {
+    if (gameState === GAME_STATE.PLAY) {
       playerShip.moveUp();
     }
   });
   ENGINE.controls.on('down', function() {
-    if (gameState === gameStateEnum.PLAY) {
+    if (gameState === GAME_STATE.PLAY) {
       playerShip.moveDown();
     }
   });
   ENGINE.controls.onkey('space', function() {
-    if (gameState === gameStateEnum.PLAY) {
+    if (gameState === GAME_STATE.PLAY) {
       lasers.fire();
     }
   });
@@ -3797,7 +3797,7 @@ window.ENGINE = (function() {
     pauseGame();
   });
   ENGINE.controls.onkey('enter', function() {
-    if (gameState === gameStateEnum.START || gameState === gameStateEnum.OVER) {
+    if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
       startNewGame();
     }
   });
@@ -3937,7 +3937,7 @@ window.ENGINE = (function() {
   function AsteroidCollection() {
     this.asteroidList = [];
     setInterval(function() {
-      if (gameState === gameStateEnum.PLAY) {
+      if (gameState === GAME_STATE.PLAY) {
         var asteroid = new Asteroid();
         this.asteroidList.push(asteroid);
       }
@@ -3970,17 +3970,17 @@ window.ENGINE = (function() {
   }
   function startNewGame() {
     gameLives = 3;
-    gameState = gameStateEnum.PLAY;
+    gameState = GAME_STATE.PLAY;
     gameScore = 0;
     hideStartScreen();
     $('.js-game-over-screen').hide();
   }
   function pauseGame() {
     drawPauseScreen();
-    if (gameState === gameStateEnum.PLAY) {
-      gameState = gameStateEnum.PAUSE;
+    if (gameState === GAME_STATE.PLAY) {
+      gameState = GAME_STATE.PAUSE;
     } else {
-      gameState = gameStateEnum.PLAY;
+      gameState = GAME_STATE.PLAY;
     }
   }
   function drawPauseScreen() {
@@ -3999,7 +3999,7 @@ window.ENGINE = (function() {
     if (gameLives > 0) {
       gameLives -= 1;
     } else {
-      gameState = gameStateEnum.OVER;
+      gameState = GAME_STATE.OVER;
     }
   }
   function drawLives() {

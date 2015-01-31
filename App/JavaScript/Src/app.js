@@ -4,7 +4,7 @@
     const CANVAS_WIDTH = 720;
     const CANVAS_HEIGHT = 480;
     const SHIP_SPEED = 4;
-    const gameStateEnum = {
+    const GAME_STATE = {
         START: 'START',
         PLAY: 'PLAY',
         PAUSE: 'PAUSE',
@@ -15,7 +15,7 @@
     let gameLives = 3;
     let canvas = document.getElementById('GameCanvas');
     let ctx = canvas.getContext('2d');
-    let gameState = gameStateEnum.START;
+    let gameState = GAME_STATE.START;
 
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
@@ -35,21 +35,21 @@
                 drawScore();
                 drawLives();
 
-                if (gameState === gameStateEnum.START) {
+                if (gameState === GAME_STATE.START) {
                     drawStartScreen();
                 }
 
-                if (gameState === gameStateEnum.PLAY) {
+                if (gameState === GAME_STATE.PLAY) {
                     playerShip.draw();
                     lasers.draw();
                     asteroids.draw();
                 }
 
-                if (gameState === gameStateEnum.PAUSE) {
+                if (gameState === GAME_STATE.PAUSE) {
                     return;
                 }
 
-                if (gameState === gameStateEnum.OVER) {
+                if (gameState === GAME_STATE.OVER) {
                     endGame();
                 }
             },
@@ -57,21 +57,21 @@
             update: function() {
                 ENGINE.update();
 
-                if (gameState === gameStateEnum.START) {
+                if (gameState === GAME_STATE.START) {
                     return;
                 }
 
-                if (gameState === gameStateEnum.PLAY) {
+                if (gameState === GAME_STATE.PLAY) {
                     lasers.update();
                     asteroids.update();
                     playerShip.update();
                 }
 
-                if (gameState === gameStateEnum.PAUSE) {
+                if (gameState === GAME_STATE.PAUSE) {
                     return;
                 }
 
-                if (gameState === gameStateEnum.OVER) {
+                if (gameState === GAME_STATE.OVER) {
                     return;
                 }
             }
@@ -89,31 +89,31 @@
 
     //#region Game Controls
     ENGINE.controls.on('left', function() {
-        if (gameState === gameStateEnum.PLAY) {
+        if (gameState === GAME_STATE.PLAY) {
             playerShip.moveLeft();
         }
     });
 
     ENGINE.controls.on('right', function() {
-        if (gameState === gameStateEnum.PLAY) {
+        if (gameState === GAME_STATE.PLAY) {
             playerShip.moveRight();
         }
     });
 
     ENGINE.controls.on('up', function() {
-        if (gameState === gameStateEnum.PLAY) {
+        if (gameState === GAME_STATE.PLAY) {
             playerShip.moveUp();
         }
     });
 
     ENGINE.controls.on('down', function() {
-        if (gameState === gameStateEnum.PLAY) {
+        if (gameState === GAME_STATE.PLAY) {
             playerShip.moveDown();
         }
     });
 
     ENGINE.controls.onkey('space', function() {
-        if (gameState === gameStateEnum.PLAY) {
+        if (gameState === GAME_STATE.PLAY) {
             lasers.fire();
         }
     });
@@ -123,7 +123,7 @@
     });
 
     ENGINE.controls.onkey('enter', function() {
-        if (gameState === gameStateEnum.START || gameState === gameStateEnum.OVER) {
+        if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         }
     });
@@ -311,7 +311,7 @@
         this.asteroidList = [];
 
         setInterval(function() {
-            if (gameState === gameStateEnum.PLAY) {
+            if (gameState === GAME_STATE.PLAY) {
                 let asteroid = new Asteroid();
                 this.asteroidList.push(asteroid);
             }
@@ -356,7 +356,7 @@
 
     function startNewGame() {
         gameLives = 3;
-        gameState = gameStateEnum.PLAY;
+        gameState = GAME_STATE.PLAY;
         gameScore = 0;
         hideStartScreen();
         $('.js-game-over-screen').hide();
@@ -364,10 +364,10 @@
 
     function pauseGame() {
         drawPauseScreen();
-        if (gameState === gameStateEnum.PLAY) {
-            gameState = gameStateEnum.PAUSE;
+        if (gameState === GAME_STATE.PLAY) {
+            gameState = GAME_STATE.PAUSE;
         } else {
-            gameState = gameStateEnum.PLAY;
+            gameState = GAME_STATE.PLAY;
         }
     }
 
@@ -391,7 +391,7 @@
         if (gameLives > 0) {
             gameLives -= 1;
         } else {
-            gameState = gameStateEnum.OVER;
+            gameState = GAME_STATE.OVER;
         }
     }
 

@@ -1,41 +1,30 @@
 ﻿(function() {
     'use strict';
 
-    // Game CONSTS
-    var CANVAS_WIDTH = 720;
-    var CANVAS_HEIGHT = 480;
-    var SHIP_SPEED = 4;
-    var GAME_SCORE = 0;
-    var LIVES = 3;
-    var canvas = document.getElementById('GameCanvas');
-    var ctx = canvas.getContext('2d');
-
-    var gameStateEnum = Object.freeze({
+    const CANVAS_WIDTH = 720;
+    const CANVAS_HEIGHT = 480;
+    const SHIP_SPEED = 4;
+    const gameStateEnum = {
         START: 'START',
         PLAY: 'PLAY',
         PAUSE: 'PAUSE',
         OVER: 'OVER'
-    });
+    };
 
-    var gameState = gameStateEnum.START;
+    let gameScore = 0;
+    let gameLives = 3;
+    let canvas = document.getElementById('GameCanvas');
+    let ctx = canvas.getContext('2d');
+    let gameState = gameStateEnum.START;
 
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
-    //#region Main (Game loop)
-    function gameLoop() {
-        game.draw();
-        game.update();
-        requestAnimationFrame(gameLoop);
-    }
-    requestAnimationFrame(gameLoop);
-    //#endregion
-
     // Game Object Creation
-    var playerShip = new Ship();
-    var lasers = new LaserCollection();
-    var asteroids = new AsteroidCollection();
+    let playerShip = new Ship();
+    let lasers = new LaserCollection();
+    let asteroids = new AsteroidCollection();
 
-    var game = (function() {
+    let game = (function() {
         return {
             init: function() {
                 this.bindUIActions();
@@ -88,6 +77,15 @@
             }
         };
     }());
+
+    //#region Main (Game loop)
+    function gameLoop() {
+        game.draw();
+        game.update();
+        requestAnimationFrame(gameLoop);
+    }
+    requestAnimationFrame(gameLoop);
+    //#endregion
 
     //#region Game Controls
     ENGINE.controls.on('left', function() {
@@ -159,8 +157,8 @@
     };
 
     Ship.prototype.update = function() {
-        var checkShipCollision = function() {
-            var ship = this;
+        let checkShipCollision = function() {
+            let ship = this;
             asteroids.asteroidList.forEach(_checkShipCollision);
 
             function _checkShipCollision(asteroid, index) {
@@ -228,15 +226,14 @@
 
     //#region Asteroid
     function Asteroid() {
-        var range = ENGINE.util.getRandomNumber(30, 100);
+        let range = ENGINE.util.getRandomNumber(30, 100);
 
         this.settings = {
             width: range,
             height: range,
             posX: ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH),
             posY: (this.settings.height * -2),
-            speed: ENGINE.util.getRandomNumber(2, 6),
-            color: GetRandomAsteroidColor()
+            speed: ENGINE.util.getRandomNumber(2, 6)
         };
 
         this.img = new Image();
@@ -244,23 +241,6 @@
         this.img.onload = function() {
             ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
         }.bind(this);
-
-        function GetRandomAsteroidColor() {
-            var color = '';
-            switch (ENGINE.util.getRandomNumber(0, 2)) {
-                case 1:
-                    color = '#755D41';
-                    break;
-                case 2:
-                    color = '#735B40';
-                    break;
-                default:
-                    color = '#967754';
-                    break;
-            }
-
-            return color;
-        }
     }
 
     Asteroid.prototype = ENGINE.factory.createGameObject();
@@ -283,24 +263,23 @@
     }
 
     LaserCollection.prototype.update = function() {
-
-        var checkLaserCollision = function(laser, laserIndex) {
+        let checkLaserCollision = function(laser, laserIndex) {
             // For every asteroid
-            for (var j = 0; j < asteroids.asteroidList.length; j++) {
-                if (ENGINE.util.checkCollision(laser, asteroids.asteroidList[j])) {
+            for (let i = 0; i < asteroids.asteroidList.length; i++) {
+                if (ENGINE.util.checkCollision(laser, asteroids.asteroidList[i])) {
                     this.laserList.splice(laserIndex, 1);
-                    asteroids.asteroidList.splice(j, 1);
+                    asteroids.asteroidList.splice(i, 1);
                     addScore();
                     return 0;
                 }
             }
         }.bind(this);
 
-        var updateLaser = function(laser, index) {
+        let updateLaser = function(laser, index) {
             this.laserList[index].update();
         }.bind(this);
 
-        var checkLaserBounds = function(laser, index) {
+        let checkLaserBounds = function(laser, index) {
             if (this.laserList[index].settings.posY < -5) {
                 this.laserList.shift(); // If laser outside of top bounds remove from array
             }
@@ -312,7 +291,7 @@
     };
 
     LaserCollection.prototype.draw = function() {
-        var draw = function(laser) {
+        let draw = function(laser) {
             laser.draw();
         };
 
@@ -321,7 +300,7 @@
 
     LaserCollection.prototype.fire = function() {
         if (this.laserList.length < this.maxLasers) {
-            var laser = new Laser(playerShip.settings.posX, playerShip.settings.posY);
+            let laser = new Laser(playerShip.settings.posX, playerShip.settings.posY);
             this.laserList.push(laser);
         }
     };
@@ -333,7 +312,7 @@
 
         setInterval(function() {
             if (gameState === gameStateEnum.PLAY) {
-                var asteroid = new Asteroid();
+                let asteroid = new Asteroid();
                 this.asteroidList.push(asteroid);
             }
         }.bind(this), 140 - (CANVAS_WIDTH / 100));
@@ -342,13 +321,13 @@
     AsteroidCollection.prototype.constructor = AsteroidCollection;
 
     AsteroidCollection.prototype.update = function() {
-        var checkAsteroidBounds = function(asteroid, index) {
+        let checkAsteroidBounds = function(asteroid, index) {
             if (asteroid.settings.posY > CANVAS_HEIGHT + 30) {
                 this.asteroidList.splice(index, 1);
             }
         }.bind(this);
 
-        var update = function(asteroid) {
+        let update = function(asteroid) {
             asteroid.update();
         };
 
@@ -357,7 +336,7 @@
     };
 
     AsteroidCollection.prototype.draw = function() {
-        var draw = function(asteroid) {
+        let draw = function(asteroid) {
             asteroid.draw();
         };
 
@@ -376,9 +355,9 @@
     }
 
     function startNewGame() {
-        LIVES = 3;
+        gameLives = 3;
         gameState = gameStateEnum.PLAY;
-        GAME_SCORE = 0;
+        gameScore = 0;
         hideStartScreen();
         $('.js-game-over-screen').hide();
     }
@@ -401,23 +380,23 @@
     }
 
     function addScore() {
-        GAME_SCORE += 1;
+        gameScore += 1;
     }
 
     function drawScore() {
-        $('.js-score').html('Score:' + GAME_SCORE);
+        $('.js-score').html('Score:' + gameScore);
     }
 
     function removeLife() {
-        if (LIVES > 0) {
-            LIVES -= 1;
+        if (gameLives > 0) {
+            gameLives -= 1;
         } else {
             gameState = gameStateEnum.OVER;
         }
     }
 
     function drawLives() {
-        $('.js-lives').html('Lives:' + LIVES);
+        $('.js-lives').html('Lives:' + gameLives);
     }
     //#endregion
 }());

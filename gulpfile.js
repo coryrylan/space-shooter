@@ -36,6 +36,7 @@ gulp.task('styles', function() {
 gulp.task('js', function() {
     return gulp
         .src(jsLibraries.concat(jsSource))
+        .pipe(plug.traceur())
         .pipe(plug.concat('all.js'))
         .pipe(gulp.dest('./Build/Js'))
         .pipe(plug.rename({ suffix: '.min' }))

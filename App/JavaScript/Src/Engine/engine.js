@@ -1,7 +1,7 @@
 ﻿window.ENGINE = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';
 
-    var keyState = {};
+    let keyState = {};
     window.addEventListener('keydown', function(e) {
         keyState[e.keyCode || e.which] = true;
     }, true);
@@ -19,7 +19,7 @@
     }
 
     // #region Object Factory
-    var factory = {};
+    let factory = {};
     factory.createGameObject = function() {
         return new GameObject();
     };
@@ -36,9 +36,9 @@
     // #endregion
 
     // #region Controls
-    var controls = {};
-    var eventActions = {};
-    var keyAction = {
+    let controls = {};
+    let eventActions = {};
+    let keyAction = {
         space: function() { console.log('Key action space not defined'); },
         pause: function() { console.log('Key action pause not defined'); },
         enter: function() { console.log('Key action enter not defined'); }
@@ -127,7 +127,7 @@
     // #endregion
 
     // #region Util
-    var util = {};
+    let util = {};
     util.checkCollision = function(obj1, obj2) {
         if (horizontalCollision() && verticalPosition()) {
             return true;
@@ -136,10 +136,10 @@
         }
 
         function horizontalCollision() {
-            var obj1RightSide = obj1.settings.posX + obj1.settings.width;
-            var obj1LeftSide = obj1.settings.posX;
-            var obj2RightSide = obj2.settings.posX + obj2.settings.width;
-            var obj2LeftSide = obj2.settings.posX;
+            let obj1RightSide = obj1.settings.posX + obj1.settings.width;
+            let obj1LeftSide = obj1.settings.posX;
+            let obj2RightSide = obj2.settings.posX + obj2.settings.width;
+            let obj2LeftSide = obj2.settings.posX;
 
             if (leftSideCollision() || rightSideCollision()) {
                 return true;
@@ -178,9 +178,10 @@
     };
 
     util.getRandomColor = function() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
+        let letters = '0123456789ABCDEF'.split('');
+        let color = '#';
+
+        for (let i = 0; i < 6; i++) {
             color += letters[Math.round(Math.random() * 15)];
         }
 

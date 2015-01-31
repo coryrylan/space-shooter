@@ -12,11 +12,11 @@
     "requireOperatorBeforeLineBreak": true,
     "requireCamelCaseOrUpperCaseIdentifiers": true,
     "maximumLineLength": {
-        "value": 150,               // Mod
+        "value": 150, // Mod
         "allowComments": true,
         "allowRegex": true
     },
-    "validateIndentation": 4,       // Mod
+    "validateIndentation": 4, // Mod
     "validateQuoteMarks": "'",
 
     "disallowMultipleLineStrings": true,
@@ -81,9 +81,9 @@
         "beforeOpeningCurlyBrace": true
     },
     "requireSpacesInsideObjectBrackets": "all", // Mod
-    "requireParenthesesAroundIIFE": true,       // Mod
-    "disallowKeywords": [ "with" ],             // Mod
-    "disallowKeywordsOnNewLine": [ "else" ],    // Mod
+    "requireParenthesesAroundIIFE": true, // Mod
+    "disallowKeywords": [ "with" ], // Mod
+    "disallowKeywordsOnNewLine": [ "else" ], // Mod
     "disallowSpacesInAnonymousFunctionExpression": {
         "beforeOpeningRoundBrace": true
     },

@@ -8,7 +8,7 @@ body {
 
 canvas {
   background: #000;
-  background-image: url("App/Content/Images/stars.jpg");
+  background-image: url("../../App/Content/Images/stars.jpg");
   background-repeat: repeat;
   cursor: none;
 }

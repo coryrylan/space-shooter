@@ -9,7 +9,6 @@ var jsLibraries = [
 var jsSource = [
     //'./App/JavaScript/Src/**/*.js'
     './App/JavaScript/Src/Engine/engine.js',
-    './App/JavaScript/Src/Engine/engine-controls.js',
     './App/JavaScript/Src/app.js'
 ];
 

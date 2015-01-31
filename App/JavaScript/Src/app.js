@@ -168,7 +168,7 @@
                     asteroids.asteroidList.splice(index, 1);
                     removeLife();
                 }
-            };
+            }
         }.bind(this);
 
         checkShipCollision();

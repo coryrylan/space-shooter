@@ -415,7 +415,7 @@ window.ENGINE = (function() {   // Temp until we get a module system in place (C
                     asteroids.asteroidList.splice(index, 1);
                     removeLife();
                 }
-            };
+            }
         }.bind(this);
 
         checkShipCollision();

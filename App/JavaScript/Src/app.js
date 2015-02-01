@@ -198,10 +198,10 @@
     // #endregion
 
     //#region Laser
-    function Laser(orginFireX, orginFireY) {
+    function Laser(orginX, orginY) {
         this.settings = {
-            posX: orginFireX + 15,
-            posY: orginFireY - 5,
+            posX: orginX + 15,
+            posY: orginY - 5,
             width: 4.5,
             height: 25
         };
@@ -221,6 +221,12 @@
 
     Laser.prototype.update = function() {
         this.settings.posY -= 5.05;
+    };
+
+    Laser.prototype.playSound = function() {
+        let sound = new Howl({
+            urls: ['App/Content/Audio/laser.mp3']
+        }).play();
     };
     //#endregion
 
@@ -301,6 +307,7 @@
     LaserCollection.prototype.fire = function() {
         if (this.laserList.length < this.maxLasers) {
             let laser = new Laser(playerShip.settings.posX, playerShip.settings.posY);
+            laser.playSound();
             this.laserList.push(laser);
         }
     };

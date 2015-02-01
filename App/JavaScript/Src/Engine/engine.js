@@ -128,6 +128,7 @@
 
     // #region Util
     let util = {};
+
     util.checkCollision = function(obj1, obj2) {
         if (horizontalCollision() && verticalPosition()) {
             return true;

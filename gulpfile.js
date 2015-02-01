@@ -2,8 +2,9 @@
 var plug = require('gulp-load-plugins')();
 
 var jsLibraries = [
-    './App/JavaScript/Libraries/jquery.js',
     './App/JavaScript/Libraries/requestAnimationFramePolly.js',
+    './App/JavaScript/Libraries/jquery.js',
+    './App/JavaScript/Libraries/howler.js',
 ];
 
 var jsSource = [

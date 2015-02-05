@@ -4551,7 +4551,6 @@ window.ENGINE = (function() {
   var gameState = GAME_STATE.START;
   $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
   var playerShip = new Ship();
-  var lasers = new LaserCollection();
   var asteroids = new AsteroidCollection();
   var game = (function() {
     return {
@@ -4567,7 +4566,6 @@ window.ENGINE = (function() {
         }
         if (gameState === GAME_STATE.PLAY) {
           playerShip.draw();
-          lasers.draw();
           asteroids.draw();
         }
         if (gameState === GAME_STATE.PAUSE) {
@@ -4583,7 +4581,6 @@ window.ENGINE = (function() {
           return ;
         }
         if (gameState === GAME_STATE.PLAY) {
-          lasers.update();
           asteroids.update();
           playerShip.update();
         }
@@ -4624,7 +4621,7 @@ window.ENGINE = (function() {
   });
   ENGINE.controls.onkey('space', function() {
     if (gameState === GAME_STATE.PLAY) {
-      lasers.fire();
+      playerShip.fire();
     }
   });
   ENGINE.controls.onkey('pause', function() {
@@ -4643,6 +4640,7 @@ window.ENGINE = (function() {
       height: 25,
       width: 25
     };
+    this.shipLasers = new LaserCollection();
     this.img = new Image();
     this.img.src = 'App/Content/Images/spaceship.png';
     this.img.onload = function() {
@@ -4652,8 +4650,10 @@ window.ENGINE = (function() {
   Ship.prototype.constructor = Ship;
   Ship.prototype.draw = function() {
     ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+    this.shipLasers.draw();
   };
   Ship.prototype.update = function() {
+    this.shipLasers.update();
     var checkShipCollision = function() {
       var ship = this;
       asteroids.asteroidList.forEach(_checkShipCollision);
@@ -4665,6 +4665,9 @@ window.ENGINE = (function() {
       }
     }.bind(this);
     checkShipCollision();
+  };
+  Ship.prototype.fire = function() {
+    this.shipLasers.fire();
   };
   Ship.prototype.moveLeft = function() {
     if (this.settings.posX > 0) {
@@ -4709,29 +4712,6 @@ window.ENGINE = (function() {
   Laser.prototype.playSound = function() {
     var sound = new Howl({urls: ['App/Content/Audio/laser.mp3']}).play();
   };
-  function Asteroid() {
-    var range = ENGINE.util.getRandomNumber(30, 100);
-    this.settings = {
-      width: range,
-      height: range,
-      posX: ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH),
-      posY: (this.settings.height * -2),
-      speed: ENGINE.util.getRandomNumber(2, 6)
-    };
-    this.img = new Image();
-    this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
-    this.img.onload = function() {
-      ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-    }.bind(this);
-  }
-  Asteroid.prototype = ENGINE.factory.createGameObject();
-  Asteroid.prototype.constructor = Asteroid;
-  Asteroid.prototype.draw = function() {
-    ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-  };
-  Asteroid.prototype.update = function() {
-    this.settings.posY += this.settings.speed;
-  };
   function LaserCollection() {
     this.maxLasers = 10;
     this.laserList = [];
@@ -4771,6 +4751,29 @@ window.ENGINE = (function() {
       laser.playSound();
       this.laserList.push(laser);
     }
+  };
+  function Asteroid() {
+    var range = ENGINE.util.getRandomNumber(30, 100);
+    this.settings = {
+      width: range,
+      height: range,
+      posX: ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH),
+      posY: (this.settings.height * -2),
+      speed: ENGINE.util.getRandomNumber(2, 6)
+    };
+    this.img = new Image();
+    this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
+    this.img.onload = function() {
+      ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+    }.bind(this);
+  }
+  Asteroid.prototype = ENGINE.factory.createGameObject();
+  Asteroid.prototype.constructor = Asteroid;
+  Asteroid.prototype.draw = function() {
+    ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+  };
+  Asteroid.prototype.update = function() {
+    this.settings.posY += this.settings.speed;
   };
   function AsteroidCollection() {
     this.asteroidList = [];

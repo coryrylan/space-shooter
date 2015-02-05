@@ -21,7 +21,6 @@
 
     // Game Object Creation
     let playerShip = new Ship();
-    let lasers = new LaserCollection();
     let asteroids = new AsteroidCollection();
 
     let game = (function() {
@@ -41,7 +40,6 @@
 
                 if (gameState === GAME_STATE.PLAY) {
                     playerShip.draw();
-                    lasers.draw();
                     asteroids.draw();
                 }
 
@@ -62,7 +60,6 @@
                 }
 
                 if (gameState === GAME_STATE.PLAY) {
-                    lasers.update();
                     asteroids.update();
                     playerShip.update();
                 }
@@ -114,7 +111,7 @@
 
     ENGINE.controls.onkey('space', function() {
         if (gameState === GAME_STATE.PLAY) {
-            lasers.fire();
+            playerShip.fire();
         }
     });
 
@@ -140,6 +137,8 @@
             width: 25,
         };
 
+        this.shipLasers = new LaserCollection();
+
         this.img = new Image();
         this.img.src = 'App/Content/Images/spaceship.png';
         this.img.onload = function() {
@@ -154,9 +153,13 @@
 
     Ship.prototype.draw = function() {
         ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+
+        this.shipLasers.draw();
     };
 
     Ship.prototype.update = function() {
+        this.shipLasers.update();
+
         let checkShipCollision = function() {
             let ship = this;
             asteroids.asteroidList.forEach(_checkShipCollision);
@@ -170,6 +173,10 @@
         }.bind(this);
 
         checkShipCollision();
+    };
+
+    Ship.prototype.fire = function() {
+        this.shipLasers.fire();
     };
 
     Ship.prototype.moveLeft = function() {
@@ -230,38 +237,6 @@
     };
     //#endregion
 
-    //#region Asteroid
-    function Asteroid() {
-        let range = ENGINE.util.getRandomNumber(30, 100);
-
-        this.settings = {
-            width: range,
-            height: range,
-            posX: ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH),
-            posY: (this.settings.height * -2),
-            speed: ENGINE.util.getRandomNumber(2, 6)
-        };
-
-        this.img = new Image();
-        this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
-        this.img.onload = function() {
-            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-        }.bind(this);
-    }
-
-    Asteroid.prototype = ENGINE.factory.createGameObject();
-
-    Asteroid.prototype.constructor = Asteroid;
-
-    Asteroid.prototype.draw = function() {
-        ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-    };
-
-    Asteroid.prototype.update = function() {
-        this.settings.posY += this.settings.speed;
-    };
-    //#endregion
-
     //#region LaserCollection
     function LaserCollection() {
         this.maxLasers = 10;
@@ -310,6 +285,38 @@
             laser.playSound();
             this.laserList.push(laser);
         }
+    };
+    //#endregion
+
+    //#region Asteroid
+    function Asteroid() {
+        let range = ENGINE.util.getRandomNumber(30, 100);
+
+        this.settings = {
+            width: range,
+            height: range,
+            posX: ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH),
+            posY: (this.settings.height * -2),
+            speed: ENGINE.util.getRandomNumber(2, 6)
+        };
+
+        this.img = new Image();
+        this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
+        this.img.onload = function() {
+            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+        }.bind(this);
+    }
+
+    Asteroid.prototype = ENGINE.factory.createGameObject();
+
+    Asteroid.prototype.constructor = Asteroid;
+
+    Asteroid.prototype.draw = function() {
+        ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+    };
+
+    Asteroid.prototype.update = function() {
+        this.settings.posY += this.settings.speed;
     };
     //#endregion
 

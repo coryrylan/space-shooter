@@ -166,10 +166,14 @@
         }
 
         function verticalPosition() {
-            if (obj1.settings.posY >= obj2.settings.posY && obj1.settings.posY <= obj2.settings.posY + obj2.settings.height) {
+            if (checkTopSideCollision()) {
                 return true;
             } else {
                 return false;
+            }
+
+            function checkTopSideCollision() {
+                return (obj1.settings.posY >= obj2.settings.posY && obj1.settings.posY <= obj2.settings.posY + obj2.settings.height);
             }
         }
     };

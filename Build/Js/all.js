@@ -4505,10 +4505,13 @@ window.ENGINE = (function() {
       }
     }
     function verticalPosition() {
-      if (obj1.settings.posY >= obj2.settings.posY && obj1.settings.posY <= obj2.settings.posY + obj2.settings.height) {
+      if (checkTopSideCollision()) {
         return true;
       } else {
         return false;
+      }
+      function checkTopSideCollision() {
+        return (obj1.settings.posY >= obj2.settings.posY && obj1.settings.posY <= obj2.settings.posY + obj2.settings.height);
       }
     }
   };
@@ -4710,7 +4713,8 @@ window.ENGINE = (function() {
     this.settings.posY -= 5.05;
   };
   Laser.prototype.playSound = function() {
-    var sound = new Howl({urls: ['App/Content/Audio/laser.mp3']}).play();
+    var sound = new Howl({urls: ['App/Content/Audio/laser.mp3']});
+    sound.play();
   };
   function LaserCollection() {
     this.maxLasers = 10;

@@ -233,7 +233,9 @@
     Laser.prototype.playSound = function() {
         let sound = new Howl({
             urls: ['App/Content/Audio/laser.mp3']
-        }).play();
+        });
+
+        sound.play();
     };
     //#endregion
 

@@ -20,15 +20,14 @@
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
     // Game Object Creation
-    let playerShip = new Ship();
+    let playerShip = new Ship({
+        lasers: new LaserCollection()
+    });
+
     let asteroids = new AsteroidCollection();
 
     let game = (function() {
         return {
-            init: function() {
-                this.bindUIActions();
-            },
-
             draw: function() {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 drawScore();
@@ -128,7 +127,7 @@
 
     //#region Game Objects
     //#region Ship
-    function Ship() {
+    function Ship(options) {
         this.settings = {
             color: 'rgba(0, 0, 0, 1)',
             posX: 25,
@@ -137,7 +136,7 @@
             width: 25,
         };
 
-        this.shipLasers = new LaserCollection();
+        this.shipLasers = options.lasers;
 
         this.img = new Image();
         this.img.src = 'App/Content/Images/spaceship.png';
@@ -176,7 +175,7 @@
     };
 
     Ship.prototype.fire = function() {
-        this.shipLasers.fire();
+        this.shipLasers.fire(playerShip.settings.posX + 23, playerShip.settings.posY - 5);
     };
 
     Ship.prototype.moveLeft = function() {
@@ -207,8 +206,8 @@
     //#region Laser
     function Laser(orginX, orginY) {
         this.settings = {
-            posX: orginX + 15,
-            posY: orginY - 5,
+            posX: orginX,
+            posY: orginY,
             width: 4.5,
             height: 25
         };
@@ -281,9 +280,9 @@
         this.laserList.forEach(draw);
     };
 
-    LaserCollection.prototype.fire = function() {
+    LaserCollection.prototype.fire = function(posX, posY) {
         if (this.laserList.length < this.maxLasers) {
-            let laser = new Laser(playerShip.settings.posX, playerShip.settings.posY);
+            let laser = new Laser(posX, posY);
             laser.playSound();
             this.laserList.push(laser);
         }
@@ -380,6 +379,7 @@
 
     function pauseGame() {
         drawPauseScreen();
+
         if (gameState === GAME_STATE.PLAY) {
             gameState = GAME_STATE.PAUSE;
         } else {

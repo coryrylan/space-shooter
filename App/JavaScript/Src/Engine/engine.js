@@ -20,6 +20,7 @@
 
     // #region Object Factory
     let factory = {};
+
     factory.createGameObject = function() {
         return new GameObject();
     };

@@ -19,6 +19,80 @@
 
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
+    //#region Class Ship
+    class Ship {
+        constructor(properties) {
+            this._lasers = properties.lasers;
+
+            this.settings = {
+                color: 'rgba(0, 0, 0, 1)',
+                posX: 25,
+                posY: 350,
+                height: 25,
+                width: 25,
+            };
+
+            this.img = new Image();
+            this.img.src = 'App/Content/Images/spaceship.png';
+            this.img.onload = function() {
+                ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+            }.bind(this);
+        }
+
+        draw() {
+            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+
+            this._lasers.draw();
+        }
+
+        update() {
+            this._lasers.update();
+
+            let checkShipCollision = function() {
+                let ship = this;
+                asteroids.asteroidList.forEach(_checkShipCollision);
+
+                function _checkShipCollision(asteroid, index) {
+                    if (ENGINE.util.checkCollision(ship, asteroid)) {
+                        asteroids.asteroidList.splice(index, 1);
+                        removeLife();
+                    }
+                }
+            }.bind(this);
+
+            checkShipCollision();
+        }
+
+        fire() {
+            this._lasers.fire(this.settings.posX + 23, this.settings.posY - 5);
+        }
+
+        moveLeft() {
+            if (this.settings.posX > 0) {
+                this.settings.posX = this.settings.posX - SHIP_SPEED;
+            }
+        }
+
+        moveRight() {
+            if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70) {
+                this.settings.posX = this.settings.posX + SHIP_SPEED;
+            }
+        }
+
+        moveUp() {
+            if (this.settings.posY > 0) {
+                this.settings.posY = this.settings.posY - SHIP_SPEED;
+            }
+        }
+
+        moveDown() {
+            if (this.settings.posY < CANVAS_HEIGHT - 40) {
+                this.settings.posY = this.settings.posY + SHIP_SPEED;
+            }
+        }
+    }
+    //#endregion
+
     // Game Object Creation
     let playerShip = new Ship({
         lasers: new LaserCollection()
@@ -126,83 +200,6 @@
     //#endregion
 
     //#region Game Objects
-    //#region Ship
-    function Ship(options) {
-        this.settings = {
-            color: 'rgba(0, 0, 0, 1)',
-            posX: 25,
-            posY: 350,
-            height: 25,
-            width: 25,
-        };
-
-        this.shipLasers = options.lasers;
-
-        this.img = new Image();
-        this.img.src = 'App/Content/Images/spaceship.png';
-        this.img.onload = function() {
-            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-        }.bind(this);
-    }
-
-    // Causes undefined on proto?
-    //Ship.prototype = ENGINE.factory.createGameObject();
-
-    Ship.prototype.constructor = Ship;
-
-    Ship.prototype.draw = function() {
-        ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-
-        this.shipLasers.draw();
-    };
-
-    Ship.prototype.update = function() {
-        this.shipLasers.update();
-
-        let checkShipCollision = function() {
-            let ship = this;
-            asteroids.asteroidList.forEach(_checkShipCollision);
-
-            function _checkShipCollision(asteroid, index) {
-                if (ENGINE.util.checkCollision(ship, asteroid)) {
-                    asteroids.asteroidList.splice(index, 1);
-                    removeLife();
-                }
-            }
-        }.bind(this);
-
-        checkShipCollision();
-    };
-
-    Ship.prototype.fire = function() {
-        this.shipLasers.fire(playerShip.settings.posX + 23, playerShip.settings.posY - 5);
-    };
-
-    Ship.prototype.moveLeft = function() {
-        if (this.settings.posX > 0) {
-            this.settings.posX = this.settings.posX - SHIP_SPEED;
-        }
-    };
-
-    Ship.prototype.moveRight = function() {
-        if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70) {
-            this.settings.posX = this.settings.posX + SHIP_SPEED;
-        }
-    };
-
-    Ship.prototype.moveUp = function() {
-        if (this.settings.posY > 0) {
-            this.settings.posY = this.settings.posY - SHIP_SPEED;
-        }
-    };
-
-    Ship.prototype.moveDown = function() {
-        if (this.settings.posY < CANVAS_HEIGHT - 40) {
-            this.settings.posY = this.settings.posY + SHIP_SPEED;
-        }
-    };
-    // #endregion
-
     //#region Laser
     function Laser(orginX, orginY) {
         this.settings = {
@@ -416,53 +413,3 @@
     }
     //#endregion
 }());
-
-//#region ES6 Class test
-(function() {
-    'use strict';
-
-class Person {
-    constructor(name) {
-        this._name = name;
-    }
-  
-    get name() {
-        return this._name;
-    }
-  
-    set name(newName) {
-        this._name = newName;
-    }
-  
-    walk() {
-        console.log(this._name + ' is walking.');
-    }
-}
-
-class Programmer extends Person { 
-    constructor(name, programmingLanguage) {
-      super(name);
-        this._programmingLanguage = programmingLanguage;
-    }
-  
-    get programmingLanguage() {
-        return this._programmingLanguage;
-    }
-  
-    set programmingLanguage(newprogrammingLanguage) {
-        this._programmingLanguage = newprogrammingLanguage;
-    }
-  
-    writeCode() {
-        console.log(this._name + ' is coding in ' + this._programmingLanguage + '.');
-    }
-}
-
-    let bob = new Person('Bob');
-    bob.walk();
-
-    let cory = new Programmer('Cory', 'JavaScript');
-    cory.walk();
-    cory.writeCode();    
-}());
-//#endregion

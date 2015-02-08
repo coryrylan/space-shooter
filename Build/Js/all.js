@@ -3564,10 +3564,6 @@ window.ENGINE = (function () {
 })();
 "use strict";
 
-var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
@@ -3592,6 +3588,108 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     var gameState = GAME_STATE.START;
 
     $("#GameCanvas").attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
+
+    //#region Class Ship
+    var Ship = (function () {
+        function Ship(properties) {
+            _classCallCheck(this, Ship);
+
+            this._lasers = properties.lasers;
+
+            this.settings = {
+                color: "rgba(0, 0, 0, 1)",
+                posX: 25,
+                posY: 350,
+                height: 25,
+                width: 25 };
+
+            this.img = new Image();
+            this.img.src = "App/Content/Images/spaceship.png";
+            this.img.onload = (function () {
+                ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+            }).bind(this);
+        }
+
+        _prototypeProperties(Ship, null, {
+            draw: {
+                value: function draw() {
+                    ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+
+                    this._lasers.draw();
+                },
+                writable: true,
+                configurable: true
+            },
+            update: {
+                value: function update() {
+                    this._lasers.update();
+
+                    var checkShipCollision = (function () {
+                        var ship = this;
+                        asteroids.asteroidList.forEach(_checkShipCollision);
+
+                        function _checkShipCollision(asteroid, index) {
+                            if (ENGINE.util.checkCollision(ship, asteroid)) {
+                                asteroids.asteroidList.splice(index, 1);
+                                removeLife();
+                            }
+                        }
+                    }).bind(this);
+
+                    checkShipCollision();
+                },
+                writable: true,
+                configurable: true
+            },
+            fire: {
+                value: function fire() {
+                    this._lasers.fire(this.settings.posX + 23, this.settings.posY - 5);
+                },
+                writable: true,
+                configurable: true
+            },
+            moveLeft: {
+                value: function moveLeft() {
+                    if (this.settings.posX > 0) {
+                        this.settings.posX = this.settings.posX - SHIP_SPEED;
+                    }
+                },
+                writable: true,
+                configurable: true
+            },
+            moveRight: {
+                value: function moveRight() {
+                    if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70) {
+                        this.settings.posX = this.settings.posX + SHIP_SPEED;
+                    }
+                },
+                writable: true,
+                configurable: true
+            },
+            moveUp: {
+                value: function moveUp() {
+                    if (this.settings.posY > 0) {
+                        this.settings.posY = this.settings.posY - SHIP_SPEED;
+                    }
+                },
+                writable: true,
+                configurable: true
+            },
+            moveDown: {
+                value: function moveDown() {
+                    if (this.settings.posY < CANVAS_HEIGHT - 40) {
+                        this.settings.posY = this.settings.posY + SHIP_SPEED;
+                    }
+                },
+                writable: true,
+                configurable: true
+            }
+        });
+
+        return Ship;
+    })();
+
+    //#endregion
 
     // Game Object Creation
     var playerShip = new Ship({
@@ -3700,82 +3798,6 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     //#endregion
 
     //#region Game Objects
-    //#region Ship
-    function Ship(options) {
-        this.settings = {
-            color: "rgba(0, 0, 0, 1)",
-            posX: 25,
-            posY: 350,
-            height: 25,
-            width: 25 };
-
-        this.shipLasers = options.lasers;
-
-        this.img = new Image();
-        this.img.src = "App/Content/Images/spaceship.png";
-        this.img.onload = (function () {
-            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-        }).bind(this);
-    }
-
-    // Causes undefined on proto?
-    //Ship.prototype = ENGINE.factory.createGameObject();
-
-    Ship.prototype.constructor = Ship;
-
-    Ship.prototype.draw = function () {
-        ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-
-        this.shipLasers.draw();
-    };
-
-    Ship.prototype.update = function () {
-        this.shipLasers.update();
-
-        var checkShipCollision = (function () {
-            var ship = this;
-            asteroids.asteroidList.forEach(_checkShipCollision);
-
-            function _checkShipCollision(asteroid, index) {
-                if (ENGINE.util.checkCollision(ship, asteroid)) {
-                    asteroids.asteroidList.splice(index, 1);
-                    removeLife();
-                }
-            }
-        }).bind(this);
-
-        checkShipCollision();
-    };
-
-    Ship.prototype.fire = function () {
-        this.shipLasers.fire(playerShip.settings.posX + 23, playerShip.settings.posY - 5);
-    };
-
-    Ship.prototype.moveLeft = function () {
-        if (this.settings.posX > 0) {
-            this.settings.posX = this.settings.posX - SHIP_SPEED;
-        }
-    };
-
-    Ship.prototype.moveRight = function () {
-        if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70) {
-            this.settings.posX = this.settings.posX + SHIP_SPEED;
-        }
-    };
-
-    Ship.prototype.moveUp = function () {
-        if (this.settings.posY > 0) {
-            this.settings.posY = this.settings.posY - SHIP_SPEED;
-        }
-    };
-
-    Ship.prototype.moveDown = function () {
-        if (this.settings.posY < CANVAS_HEIGHT - 40) {
-            this.settings.posY = this.settings.posY + SHIP_SPEED;
-        }
-    };
-    // #endregion
-
     //#region Laser
     function Laser(orginX, orginY) {
         this.settings = {
@@ -3989,77 +4011,3 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     }
     //#endregion
 })();
-
-//#region ES6 Class test
-(function () {
-    "use strict";
-
-    var Person = (function () {
-        function Person(name) {
-            _classCallCheck(this, Person);
-
-            this._name = name;
-        }
-
-        _prototypeProperties(Person, null, {
-            name: {
-                get: function () {
-                    return this._name;
-                },
-                set: function (newName) {
-                    this._name = newName;
-                },
-                configurable: true
-            },
-            walk: {
-                value: function walk() {
-                    console.log(this._name + " is walking.");
-                },
-                writable: true,
-                configurable: true
-            }
-        });
-
-        return Person;
-    })();
-
-    var Programmer = (function (Person) {
-        function Programmer(name, programmingLanguage) {
-            _classCallCheck(this, Programmer);
-
-            _get(Object.getPrototypeOf(Programmer.prototype), "constructor", this).call(this, name);
-            this._programmingLanguage = programmingLanguage;
-        }
-
-        _inherits(Programmer, Person);
-
-        _prototypeProperties(Programmer, null, {
-            programmingLanguage: {
-                get: function () {
-                    return this._programmingLanguage;
-                },
-                set: function (newprogrammingLanguage) {
-                    this._programmingLanguage = newprogrammingLanguage;
-                },
-                configurable: true
-            },
-            writeCode: {
-                value: function writeCode() {
-                    console.log(this._name + " is coding in " + this._programmingLanguage + ".");
-                },
-                writable: true,
-                configurable: true
-            }
-        });
-
-        return Programmer;
-    })(Person);
-
-    var bob = new Person("Bob");
-    bob.walk();
-
-    var cory = new Programmer("Cory", "JavaScript");
-    cory.walk();
-    cory.writeCode();
-})();
-//#endregion

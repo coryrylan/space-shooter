@@ -1,5 +1,6 @@
 // Google Preset w/ mods
 {
+    "esnext":  true,
     "requireCurlyBraces": [
         "if",
         "else",
@@ -76,7 +77,6 @@
     "requireSpaceAfterBinaryOperators": true,
     "requireSpacesInConditionalExpression": true,
     "requireSpaceBeforeBlockStatements": true,
-    "requireLineFeedAtFileEnd": false,
     "requireSpacesInFunctionExpression": {
         "beforeOpeningCurlyBrace": true
     },

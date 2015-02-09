@@ -19,6 +19,7 @@
 
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
+    //#region Game Objects
     //#region Class Ship
     class Ship {
         constructor(properties) {
@@ -29,7 +30,7 @@
                 posX: 25,
                 posY: 350,
                 height: 25,
-                width: 25,
+                width: 25
             };
 
             this.img = new Image();
@@ -93,114 +94,13 @@
     }
     //#endregion
 
-    // Game Object Creation
-    let playerShip = new Ship({
-        lasers: new LaserCollection()
-    });
+    //#region Class Laser
+    //class Laser {
+    //    constructor(properties) {
+    //
+    //    }
+    //}
 
-    let asteroids = new AsteroidCollection();
-
-    let game = (function() {
-        return {
-            draw: function() {
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                drawScore();
-                drawLives();
-
-                if (gameState === GAME_STATE.START) {
-                    drawStartScreen();
-                }
-
-                if (gameState === GAME_STATE.PLAY) {
-                    playerShip.draw();
-                    asteroids.draw();
-                }
-
-                if (gameState === GAME_STATE.PAUSE) {
-                    return;
-                }
-
-                if (gameState === GAME_STATE.OVER) {
-                    endGame();
-                }
-            },
-
-            update: function() {
-                ENGINE.update();
-
-                if (gameState === GAME_STATE.START) {
-                    return;
-                }
-
-                if (gameState === GAME_STATE.PLAY) {
-                    asteroids.update();
-                    playerShip.update();
-                }
-
-                if (gameState === GAME_STATE.PAUSE) {
-                    return;
-                }
-
-                if (gameState === GAME_STATE.OVER) {
-                    return;
-                }
-            }
-        };
-    }());
-
-    //#region Main (Game loop)
-    function gameLoop() {
-        game.draw();
-        game.update();
-        requestAnimationFrame(gameLoop);
-    }
-    requestAnimationFrame(gameLoop);
-    //#endregion
-
-    //#region Game Controls
-    ENGINE.controls.on('left', function() {
-        if (gameState === GAME_STATE.PLAY) {
-            playerShip.moveLeft();
-        }
-    });
-
-    ENGINE.controls.on('right', function() {
-        if (gameState === GAME_STATE.PLAY) {
-            playerShip.moveRight();
-        }
-    });
-
-    ENGINE.controls.on('up', function() {
-        if (gameState === GAME_STATE.PLAY) {
-            playerShip.moveUp();
-        }
-    });
-
-    ENGINE.controls.on('down', function() {
-        if (gameState === GAME_STATE.PLAY) {
-            playerShip.moveDown();
-        }
-    });
-
-    ENGINE.controls.onkey('space', function() {
-        if (gameState === GAME_STATE.PLAY) {
-            playerShip.fire();
-        }
-    });
-
-    ENGINE.controls.onkey('pause', function() {
-        pauseGame();
-    });
-
-    ENGINE.controls.onkey('enter', function() {
-        if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
-            startNewGame();
-        }
-    });
-    //#endregion
-
-    //#region Game Objects
-    //#region Laser
     function Laser(orginX, orginY) {
         this.settings = {
             posX: orginX,
@@ -356,6 +256,112 @@
     };
     // #endregion
     // #endregion
+
+    // Game Object Creation
+    let playerShip = new Ship({
+        lasers: new LaserCollection()
+    });
+
+    let asteroids = new AsteroidCollection();
+
+    let game = (function() {
+        return {
+            draw: function() {
+                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                drawScore();
+                drawLives();
+
+                if (gameState === GAME_STATE.START) {
+                    drawStartScreen();
+                }
+
+                if (gameState === GAME_STATE.PLAY) {
+                    playerShip.draw();
+                    asteroids.draw();
+                }
+
+                if (gameState === GAME_STATE.PAUSE) {
+                    return;
+                }
+
+                if (gameState === GAME_STATE.OVER) {
+                    endGame();
+                }
+            },
+
+            update: function() {
+                ENGINE.update();
+
+                if (gameState === GAME_STATE.START) {
+                    return;
+                }
+
+                if (gameState === GAME_STATE.PLAY) {
+                    asteroids.update();
+                    playerShip.update();
+                }
+
+                if (gameState === GAME_STATE.PAUSE) {
+                    return;
+                }
+
+                if (gameState === GAME_STATE.OVER) {
+                    return;
+                }
+            }
+        };
+    }());
+
+    //#region Main (Game loop)
+    function gameLoop() {
+        game.draw();
+        game.update();
+        requestAnimationFrame(gameLoop);
+    }
+    requestAnimationFrame(gameLoop);
+    //#endregion
+
+    //#region Game Controls
+    ENGINE.controls.on('left', function() {
+        if (gameState === GAME_STATE.PLAY) {
+            playerShip.moveLeft();
+        }
+    });
+
+    ENGINE.controls.on('right', function() {
+        if (gameState === GAME_STATE.PLAY) {
+            playerShip.moveRight();
+        }
+    });
+
+    ENGINE.controls.on('up', function() {
+        if (gameState === GAME_STATE.PLAY) {
+            playerShip.moveUp();
+        }
+    });
+
+    ENGINE.controls.on('down', function() {
+        if (gameState === GAME_STATE.PLAY) {
+            playerShip.moveDown();
+        }
+    });
+
+    ENGINE.controls.onkey('space', function() {
+        if (gameState === GAME_STATE.PLAY) {
+            playerShip.fire();
+        }
+    });
+
+    ENGINE.controls.onkey('pause', function() {
+        pauseGame();
+    });
+
+    ENGINE.controls.onkey('enter', function() {
+        if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
+            startNewGame();
+        }
+    });
+    //#endregion
 
     //#region Helper Functions
     function drawStartScreen() {

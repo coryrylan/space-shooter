@@ -3597,7 +3597,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         function Ship(properties) {
             _classCallCheck(this, Ship);
 
-            this._lasers = properties.lasers;
+            this.lasers = properties.lasers;
 
             this.settings = {
                 color: "rgba(0, 0, 0, 1)",
@@ -3619,14 +3619,14 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
                 value: function draw() {
                     ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
 
-                    this._lasers.draw();
+                    this.lasers.draw();
                 },
                 writable: true,
                 configurable: true
             },
             update: {
                 value: function update() {
-                    this._lasers.update();
+                    this.lasers.update();
 
                     var checkShipCollision = (function () {
                         var ship = this;
@@ -3647,7 +3647,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             },
             fire: {
                 value: function fire() {
-                    this._lasers.fire(this.settings.posX + 23, this.settings.posY - 5);
+                    this.lasers.fire(this.settings.posX + 23, this.settings.posY - 5);
                 },
                 writable: true,
                 configurable: true
@@ -3740,6 +3740,48 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         return Laser;
     })();
 
+    var Asteroid = (function () {
+        function Asteroid() {
+            _classCallCheck(this, Asteroid);
+
+            var range = ENGINE.util.getRandomNumber(30, 100);
+
+            this.settings = {
+                width: range,
+                height: range,
+                speed: ENGINE.util.getRandomNumber(2, 6)
+            };
+
+            this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH);
+            this.settings.posY = this.settings.height * -2;
+
+            this.img = new Image();
+            this.img.src = "App/Content/Images/asteroid-" + ENGINE.util.getRandomNumber(1, 4) + ".png";
+            this.img.onload = (function () {
+                ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+            }).bind(this);
+        }
+
+        _prototypeProperties(Asteroid, null, {
+            draw: {
+                value: function draw() {
+                    ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+                },
+                writable: true,
+                configurable: true
+            },
+            update: {
+                value: function update() {
+                    this.settings.posY += this.settings.speed;
+                },
+                writable: true,
+                configurable: true
+            }
+        });
+
+        return Asteroid;
+    })();
+
     //region LaserCollection
     function LaserCollection() {
         this.maxLasers = 10;
@@ -3788,38 +3830,6 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             laser.playSound();
             this.laserList.push(laser);
         }
-    };
-    //endregion
-
-    //region Asteroid
-    function Asteroid() {
-        var range = ENGINE.util.getRandomNumber(30, 100);
-
-        this.settings = {
-            width: range,
-            height: range,
-            posX: ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH),
-            posY: this.settings.height * -2,
-            speed: ENGINE.util.getRandomNumber(2, 6)
-        };
-
-        this.img = new Image();
-        this.img.src = "App/Content/Images/asteroid-" + ENGINE.util.getRandomNumber(1, 4) + ".png";
-        this.img.onload = (function () {
-            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-        }).bind(this);
-    }
-
-    Asteroid.prototype = ENGINE.factory.createGameObject();
-
-    Asteroid.prototype.constructor = Asteroid;
-
-    Asteroid.prototype.draw = function () {
-        ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-    };
-
-    Asteroid.prototype.update = function () {
-        this.settings.posY += this.settings.speed;
     };
     //endregion
 

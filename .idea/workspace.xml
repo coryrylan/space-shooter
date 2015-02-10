@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d929a1d-d905-4100-8e9c-245087016585" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Build/Js/all.js" afterPath="$PROJECT_DIR$/Build/Js/all.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Build/Js/all.min.js" afterPath="$PROJECT_DIR$/Build/Js/all.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/app.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="space-shooter.iws" />
     <ignored path=".idea/workspace.xml" />

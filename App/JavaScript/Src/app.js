@@ -96,10 +96,10 @@
     }
 
     class Laser {
-        constructor (orginX, orginY) {
+        constructor (originX, originY) {
             this.settings = {
-                posX: orginX,
-                posY: orginY,
+                posX: originX,
+                posY: originY,
                 width: 4.5,
                 height: 25
             };

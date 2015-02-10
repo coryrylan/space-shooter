@@ -3694,12 +3694,12 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     })();
 
     var Laser = (function () {
-        function Laser(orginX, orginY) {
+        function Laser(originX, originY) {
             _classCallCheck(this, Laser);
 
             this.settings = {
-                posX: orginX,
-                posY: orginY,
+                posX: originX,
+                posY: originY,
                 width: 4.5,
                 height: 25
             };

@@ -11,6 +11,10 @@
         OVER: 'OVER'
     };
 
+    // Global Dependencies
+    let Howl = window.Howl;
+    let ENGINE = window.ENGINE;
+
     let gameScore = 0;
     let gameLives = 3;
     let canvas = document.getElementById('GameCanvas');
@@ -19,8 +23,6 @@
 
     $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
 
-    //#region Game Objects
-    //#region Class Ship
     class Ship {
         constructor(properties) {
             this._lasers = properties.lasers;
@@ -92,50 +94,38 @@
             }
         }
     }
-    //#endregion
 
-    //#region Class Laser
-    //class Laser {
-    //    constructor(properties) {
-    //
-    //    }
-    //}
+    class Laser {
+        constructor (orginX, orginY) {
+            this.settings = {
+                posX: orginX,
+                posY: orginY,
+                width: 4.5,
+                height: 25
+            };
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.fillStyle = ENGINE.util.getRandomColor();
+            ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+            ctx.fill();
+            ctx.closePath();
+        }
 
-    function Laser(orginX, orginY) {
-        this.settings = {
-            posX: orginX,
-            posY: orginY,
-            width: 4.5,
-            height: 25
-        };
+        update() {
+            this.settings.posY -= 5.05;
+        }
+
+        playSound() {
+            let sound = new Howl({
+                urls: ['App/Content/Audio/laser.mp3']
+            });
+
+            sound.play();
+        }
     }
 
-    Laser.prototype = ENGINE.factory.createGameObject();
-
-    Laser.prototype.constructor = Laser;
-
-    Laser.prototype.draw = function() {
-        ctx.beginPath();
-        ctx.fillStyle = ENGINE.util.getRandomColor();
-        ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-        ctx.fill();
-        ctx.closePath();
-    };
-
-    Laser.prototype.update = function() {
-        this.settings.posY -= 5.05;
-    };
-
-    Laser.prototype.playSound = function() {
-        let sound = new Howl({
-            urls: ['App/Content/Audio/laser.mp3']
-        });
-
-        sound.play();
-    };
-    //#endregion
-
-    //#region LaserCollection
+    //region LaserCollection
     function LaserCollection() {
         this.maxLasers = 10;
         this.laserList = [];
@@ -184,9 +174,9 @@
             this.laserList.push(laser);
         }
     };
-    //#endregion
+    //endregion
 
-    //#region Asteroid
+    //region Asteroid
     function Asteroid() {
         let range = ENGINE.util.getRandomNumber(30, 100);
 
@@ -216,9 +206,9 @@
     Asteroid.prototype.update = function() {
         this.settings.posY += this.settings.speed;
     };
-    //#endregion
+    //endregion
 
-    //#region AsteroidCollection
+    //region AsteroidCollection
     function AsteroidCollection() {
         this.asteroidList = [];
 
@@ -254,8 +244,7 @@
 
         this.asteroidList.forEach(draw);
     };
-    // #endregion
-    // #endregion
+    // endregion
 
     // Game Object Creation
     let playerShip = new Ship({
@@ -312,16 +301,16 @@
         };
     }());
 
-    //#region Main (Game loop)
+    //region Main (Game loop)
     function gameLoop() {
         game.draw();
         game.update();
         requestAnimationFrame(gameLoop);
     }
     requestAnimationFrame(gameLoop);
-    //#endregion
+    //endregion
 
-    //#region Game Controls
+    //region Game Controls
     ENGINE.controls.on('left', function() {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveLeft();
@@ -361,9 +350,9 @@
             startNewGame();
         }
     });
-    //#endregion
+    //endregion
 
-    //#region Helper Functions
+    //region Helper Functions
     function drawStartScreen() {
         $('.js-start-screen').show();
     }
@@ -417,5 +406,5 @@
     function drawLives() {
         $('.js-lives').html('Lives:' + gameLives);
     }
-    //#endregion
+    //endregion
 }());

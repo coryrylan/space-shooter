@@ -3627,20 +3627,6 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             update: {
                 value: function update() {
                     this.lasers.update();
-
-                    var checkShipCollision = (function () {
-                        var ship = this;
-                        asteroids.asteroidList.forEach(_checkShipCollision);
-
-                        function _checkShipCollision(asteroid, index) {
-                            if (ENGINE.util.checkCollision(ship, asteroid)) {
-                                asteroids.asteroidList.splice(index, 1);
-                                removeLife();
-                            }
-                        }
-                    }).bind(this);
-
-                    checkShipCollision();
                 },
                 writable: true,
                 configurable: true
@@ -3785,35 +3771,22 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     //region LaserCollection
     function LaserCollection() {
         this.maxLasers = 10;
-        this.laserList = [];
+        this.list = [];
     }
 
     LaserCollection.prototype.update = function () {
-        var checkLaserCollision = (function (laser, laserIndex) {
-            // For every asteroid
-            for (var i = 0; i < asteroids.asteroidList.length; i++) {
-                if (ENGINE.util.checkCollision(laser, asteroids.asteroidList[i])) {
-                    this.laserList.splice(laserIndex, 1);
-                    asteroids.asteroidList.splice(i, 1);
-                    addScore();
-                    return 0;
-                }
-            }
-        }).bind(this);
-
         var updateLaser = (function (laser, index) {
-            this.laserList[index].update();
+            this.list[index].update();
         }).bind(this);
 
         var checkLaserBounds = (function (laser, index) {
-            if (this.laserList[index].settings.posY < -5) {
-                this.laserList.shift(); // If laser outside of top bounds remove from array
+            if (this.list[index].settings.posY < -5) {
+                this.list.shift(); // If laser outside of top bounds remove from array
             }
         }).bind(this);
 
-        this.laserList.forEach(checkLaserCollision);
-        this.laserList.forEach(checkLaserBounds);
-        this.laserList.forEach(updateLaser);
+        this.list.forEach(checkLaserBounds);
+        this.list.forEach(updateLaser);
     };
 
     LaserCollection.prototype.draw = function () {
@@ -3821,14 +3794,14 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             laser.draw();
         };
 
-        this.laserList.forEach(draw);
+        this.list.forEach(draw);
     };
 
     LaserCollection.prototype.fire = function (posX, posY) {
-        if (this.laserList.length < this.maxLasers) {
+        if (this.list.length < this.maxLasers) {
             var laser = new Laser(posX, posY);
             laser.playSound();
-            this.laserList.push(laser);
+            this.list.push(laser);
         }
     };
     //endregion
@@ -3879,6 +3852,33 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     var asteroids = new AsteroidCollection();
 
     var game = (function () {
+        var checkShipAndAsteroidCollision = function () {
+            asteroids.asteroidList.forEach(_checkShipCollision);
+
+            function _checkShipCollision(asteroid, index) {
+                if (ENGINE.util.checkCollision(playerShip, asteroid)) {
+                    asteroids.asteroidList.splice(index, 1);
+                    removeLife();
+                }
+            }
+        };
+
+        var checkShipLaserAndAsteroidCollision = function () {
+            var checkLaserCollision = function (laser, laserIndex) {
+                // For every asteroid
+                for (var i = 0; i < asteroids.asteroidList.length; i++) {
+                    if (ENGINE.util.checkCollision(laser, asteroids.asteroidList[i])) {
+                        playerShip.lasers.list.splice(laserIndex, 1);
+                        asteroids.asteroidList.splice(i, 1);
+                        addScore();
+                        return 0;
+                    }
+                }
+            };
+
+            playerShip.lasers.list.forEach(checkLaserCollision);
+        };
+
         return {
             draw: function () {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -3913,6 +3913,8 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
                 if (gameState === GAME_STATE.PLAY) {
                     asteroids.update();
                     playerShip.update();
+                    checkShipAndAsteroidCollision();
+                    checkShipLaserAndAsteroidCollision();
                 }
 
                 if (gameState === GAME_STATE.PAUSE) {

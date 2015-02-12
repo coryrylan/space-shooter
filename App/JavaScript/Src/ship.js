@@ -1,0 +1,3 @@
+window.ship = (function() {
+
+}());

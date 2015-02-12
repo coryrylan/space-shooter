@@ -6,11 +6,13 @@ var jsLibraries = [
     './App/JavaScript/Libraries/requestAnimationFramePolly.js',
     './App/JavaScript/Libraries/jquery.js',
     './App/JavaScript/Libraries/howler.js',
+    //'./App/JavaScript/PollyfillsAndShims/es6-module-loader.js'
 ];
 
 var jsSource = [
     //'./App/JavaScript/Src/**/*.js'
-    './App/JavaScript/Src/Engine/engine.js',
+    './App/JavaScript/Src/engine.js',
+    './App/JavaScript/Src/ship.js',
     './App/JavaScript/Src/app.js'
 ];
 

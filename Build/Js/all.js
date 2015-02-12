@@ -3564,6 +3564,9 @@ window.ENGINE = (function () {
 })();
 "use strict";
 
+window.ship = (function () {})();
+"use strict";
+
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
@@ -3571,9 +3574,12 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 (function () {
     "use strict";
 
+    // Global Dependencies
+    var Howl = window.Howl;
+    var ENGINE = window.ENGINE;
+
     var CANVAS_WIDTH = 720;
     var CANVAS_HEIGHT = 480;
-    var SHIP_SPEED = 4;
     var GAME_STATE = {
         START: "START",
         PLAY: "PLAY",
@@ -3581,10 +3587,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         OVER: "OVER"
     };
 
-    // Global Dependencies
-    var Howl = window.Howl;
-    var ENGINE = window.ENGINE;
-
+    // Game Globals
     var gameScore = 0;
     var gameLives = 3;
     var canvas = document.getElementById("GameCanvas");
@@ -3593,6 +3596,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
     $("#GameCanvas").attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
 
+    //region game objects
     var Ship = (function () {
         function Ship(properties) {
             _classCallCheck(this, Ship);
@@ -3604,7 +3608,8 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
                 posX: 25,
                 posY: 350,
                 height: 25,
-                width: 25
+                width: 25,
+                speed: 4
             };
 
             this.img = new Image();
@@ -3641,7 +3646,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             moveLeft: {
                 value: function moveLeft() {
                     if (this.settings.posX > 0) {
-                        this.settings.posX = this.settings.posX - SHIP_SPEED;
+                        this.settings.posX = this.settings.posX - this.settings.speed;
                     }
                 },
                 writable: true,
@@ -3650,7 +3655,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             moveRight: {
                 value: function moveRight() {
                     if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70) {
-                        this.settings.posX = this.settings.posX + SHIP_SPEED;
+                        this.settings.posX = this.settings.posX + this.settings.speed;
                     }
                 },
                 writable: true,
@@ -3659,7 +3664,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             moveUp: {
                 value: function moveUp() {
                     if (this.settings.posY > 0) {
-                        this.settings.posY = this.settings.posY - SHIP_SPEED;
+                        this.settings.posY = this.settings.posY - this.settings.speed;
                     }
                 },
                 writable: true,
@@ -3668,7 +3673,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             moveDown: {
                 value: function moveDown() {
                     if (this.settings.posY < CANVAS_HEIGHT - 40) {
-                        this.settings.posY = this.settings.posY + SHIP_SPEED;
+                        this.settings.posY = this.settings.posY + this.settings.speed;
                     }
                 },
                 writable: true,
@@ -3768,83 +3773,112 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         return Asteroid;
     })();
 
-    //region LaserCollection
-    function LaserCollection() {
-        this.maxLasers = 10;
-        this.list = [];
-    }
+    var LaserCollection = (function () {
+        function LaserCollection() {
+            _classCallCheck(this, LaserCollection);
 
-    LaserCollection.prototype.update = function () {
-        var updateLaser = (function (laser, index) {
-            this.list[index].update();
-        }).bind(this);
-
-        var checkLaserBounds = (function (laser, index) {
-            if (this.list[index].settings.posY < -5) {
-                this.list.shift(); // If laser outside of top bounds remove from array
-            }
-        }).bind(this);
-
-        this.list.forEach(checkLaserBounds);
-        this.list.forEach(updateLaser);
-    };
-
-    LaserCollection.prototype.draw = function () {
-        var draw = function (laser) {
-            laser.draw();
-        };
-
-        this.list.forEach(draw);
-    };
-
-    LaserCollection.prototype.fire = function (posX, posY) {
-        if (this.list.length < this.maxLasers) {
-            var laser = new Laser(posX, posY);
-            laser.playSound();
-            this.list.push(laser);
+            this.maxLasers = 10;
+            this.list = [];
         }
-    };
+
+        _prototypeProperties(LaserCollection, null, {
+            update: {
+                value: function update() {
+                    var updateLaser = (function (laser, index) {
+                        this.list[index].update();
+                    }).bind(this);
+
+                    var checkLaserBounds = (function (laser, index) {
+                        if (this.list[index].settings.posY < -5) {
+                            this.list.shift(); // If laser outside of top bounds remove from array
+                        }
+                    }).bind(this);
+
+                    this.list.forEach(checkLaserBounds);
+                    this.list.forEach(updateLaser);
+                },
+                writable: true,
+                configurable: true
+            },
+            draw: {
+                value: function draw() {
+                    var draw = function (laser) {
+                        laser.draw();
+                    };
+
+                    this.list.forEach(draw);
+                },
+                writable: true,
+                configurable: true
+            },
+            fire: {
+                value: function fire(posX, posY) {
+                    if (this.list.length < this.maxLasers) {
+                        var laser = new Laser(posX, posY);
+                        laser.playSound();
+                        this.list.push(laser);
+                    }
+                },
+                writable: true,
+                configurable: true
+            }
+        });
+
+        return LaserCollection;
+    })();
+
+    var AsteroidCollection = (function () {
+        function AsteroidCollection() {
+            _classCallCheck(this, AsteroidCollection);
+
+            this.list = [];
+
+            setInterval((function () {
+                if (gameState === GAME_STATE.PLAY) {
+                    var asteroid = new Asteroid();
+                    this.list.push(asteroid);
+                }
+            }).bind(this), 140 - CANVAS_WIDTH / 100);
+        }
+
+        _prototypeProperties(AsteroidCollection, null, {
+            update: {
+                value: function update() {
+                    var checkAsteroidBounds = (function (asteroid, index) {
+                        if (asteroid.settings.posY > CANVAS_HEIGHT + 30) {
+                            this.list.splice(index, 1);
+                        }
+                    }).bind(this);
+
+                    var update = function (asteroid) {
+                        asteroid.update();
+                    };
+
+                    this.list.forEach(checkAsteroidBounds);
+                    this.list.forEach(update);
+                },
+                writable: true,
+                configurable: true
+            },
+            draw: {
+                value: function draw() {
+                    var draw = function (asteroid) {
+                        asteroid.draw();
+                    };
+
+                    this.list.forEach(draw);
+                },
+                writable: true,
+                configurable: true
+            }
+        });
+
+        return AsteroidCollection;
+    })();
+
     //endregion
 
-    //region AsteroidCollection
-    function AsteroidCollection() {
-        this.asteroidList = [];
-
-        setInterval((function () {
-            if (gameState === GAME_STATE.PLAY) {
-                var asteroid = new Asteroid();
-                this.asteroidList.push(asteroid);
-            }
-        }).bind(this), 140 - CANVAS_WIDTH / 100);
-    }
-
-    AsteroidCollection.prototype.constructor = AsteroidCollection;
-
-    AsteroidCollection.prototype.update = function () {
-        var checkAsteroidBounds = (function (asteroid, index) {
-            if (asteroid.settings.posY > CANVAS_HEIGHT + 30) {
-                this.asteroidList.splice(index, 1);
-            }
-        }).bind(this);
-
-        var update = function (asteroid) {
-            asteroid.update();
-        };
-
-        this.asteroidList.forEach(checkAsteroidBounds);
-        this.asteroidList.forEach(update);
-    };
-
-    AsteroidCollection.prototype.draw = function () {
-        var draw = function (asteroid) {
-            asteroid.draw();
-        };
-
-        this.asteroidList.forEach(draw);
-    };
-    // endregion
-
-    // Game Object Creation
+    //region game instantiation
     var playerShip = new Ship({
         lasers: new LaserCollection()
     });
@@ -3853,11 +3887,11 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
     var game = (function () {
         var checkShipAndAsteroidCollision = function () {
-            asteroids.asteroidList.forEach(_checkShipCollision);
+            asteroids.list.forEach(_checkShipCollision);
 
             function _checkShipCollision(asteroid, index) {
                 if (ENGINE.util.checkCollision(playerShip, asteroid)) {
-                    asteroids.asteroidList.splice(index, 1);
+                    asteroids.list.splice(index, 1);
                     removeLife();
                 }
             }
@@ -3866,10 +3900,10 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         var checkShipLaserAndAsteroidCollision = function () {
             var checkLaserCollision = function (laser, laserIndex) {
                 // For every asteroid
-                for (var i = 0; i < asteroids.asteroidList.length; i++) {
-                    if (ENGINE.util.checkCollision(laser, asteroids.asteroidList[i])) {
+                for (var i = 0; i < asteroids.list.length; i++) {
+                    if (ENGINE.util.checkCollision(laser, asteroids.list[i])) {
                         playerShip.lasers.list.splice(laserIndex, 1);
-                        asteroids.asteroidList.splice(i, 1);
+                        asteroids.list.splice(i, 1);
                         addScore();
                         return 0;
                     }
@@ -3927,11 +3961,12 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
             }
         };
     })();
+    //endregion
 
     //region Main (Game loop)
     function gameLoop() {
-        game.draw();
         game.update();
+        game.draw();
         requestAnimationFrame(gameLoop);
     }
     requestAnimationFrame(gameLoop);

@@ -22,8 +22,7 @@ var sassSource = [
 
 gulp.task('watch', function() {
     gulp.watch(sassSource, ['styles']).on('error', catchError);
-    gulp.watch(jsSource, ['js']);
-    gulp.watch(jsSource, ['hint']);
+    gulp.watch(jsSource, ['hint', 'js']);
 });
 
 gulp.task('styles', function() {
@@ -51,7 +50,7 @@ gulp.task('js', function() {
 gulp.task('hint', function() {
     return gulp
         .src(jsSource)
-        .pipe(plug.jscs()).on('error', catchError)
+        .pipe(plug.jscs({ esnext: true })).on('error', catchError)
         .pipe(plug.jshint())
         .pipe(plug.jshint.reporter('jshint-stylish'));
 });

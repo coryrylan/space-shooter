@@ -3372,7 +3372,7 @@ window.ENGINE = (function () {
         gameIOUpdate();
     }
 
-    // #region Object Factory
+    //region Object Factory
     var factory = {};
 
     factory.createGameObject = function () {
@@ -3387,9 +3387,9 @@ window.ENGINE = (function () {
             posX: 0,
             posY: 0 };
     }
-    // #endregion
+    //endregion
 
-    // #region Controls
+    //region Controls
     var controls = {};
     var eventActions = {};
     var keyAction = {
@@ -3484,9 +3484,9 @@ window.ENGINE = (function () {
             eventActions.down();
         }
     }
-    // #endregion
+    //endregion
 
-    // #region Util
+    //region Util
     var util = {};
 
     util.checkCollision = function (obj1, obj2) {
@@ -3552,7 +3552,7 @@ window.ENGINE = (function () {
 
         return color;
     };
-    // #endregion
+    //endregion
 
     return {
         draw: draw,
@@ -3563,8 +3563,6 @@ window.ENGINE = (function () {
     };
 })();
 "use strict";
-
-window.ship = (function () {})();
 "use strict";
 
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
@@ -3596,7 +3594,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
     $("#GameCanvas").attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
 
-    //region game objects
+    //region Game Objects
     var Ship = (function () {
         function Ship(properties) {
             _classCallCheck(this, Ship);

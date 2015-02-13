@@ -18,7 +18,7 @@
         gameIOUpdate();
     }
 
-    // #region Object Factory
+    //region Object Factory
     let factory = {};
 
     factory.createGameObject = function() {
@@ -34,9 +34,9 @@
             posY: 0,
         };
     }
-    // #endregion
+    //endregion
 
-    // #region Controls
+    //region Controls
     let controls = {};
     let eventActions = {};
     let keyAction = {
@@ -125,9 +125,9 @@
             eventActions.down();
         }
     }
-    // #endregion
+    //endregion
 
-    // #region Util
+    //region Util
     let util = {};
 
     util.checkCollision = function(obj1, obj2) {
@@ -193,7 +193,7 @@
 
         return color;
     };
-    // #endregion
+    //endregion
 
     return {
         draw: draw,

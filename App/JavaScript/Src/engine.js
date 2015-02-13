@@ -104,7 +104,24 @@
         }
     });
 
+
+    var upBtn = new Hammer($('.direction-pad__up')[0], { time: 1 });
+    var pressingUp = false;
+
+    upBtn.on('press', function() {
+        pressingUp = true;
+    });
+
+    upBtn.on('pressup', function() {
+        pressingUp = false;
+    });
+
     function gameIOUpdate() {
+        // (Up Arrow)
+        if (keyState[38] || keyState[87] || pressingUp) {
+            eventActions.up();
+        }
+
         // (Left Arrow)
         if (keyState[37] || keyState[65]) {
             eventActions.left();
@@ -113,11 +130,6 @@
         // (Right Arrow)
         if (keyState[39] || keyState[68]) {
             eventActions.right();
-        }
-
-        // (Up Arrow)
-        if (keyState[38] || keyState[87]) {
-            eventActions.up();
         }
 
         // (Down Arrow)

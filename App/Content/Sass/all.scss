@@ -13,37 +13,30 @@ canvas {
     cursor: none;
 }
 
+.notifications {
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+}
+
 .label {
     font-size: 1.2em;
     color: #FFF;
 }
 
-.controls {
-    position: relative;
-    display: block;
-    margin: 30px auto 0 auto;
-    width: 720px;
-    height: 480px;
-}
-
-.controls .label {
-    float: left;
-    margin: 10px;
-    position: absolute;
-}
-
 .lives, .score {
     position: absolute;
     margin: 10px;
-    left: 0;
 }
 
 .score {
     top: 0;
+    left: 0;
 }
 
 .lives {
-    bottom: 0;
+    top: 0;
+    right: 0;
 }
 
 .start-screen, .game-over-screen, .pause-screen {
@@ -59,4 +52,49 @@ canvas {
 
 .start-screen {
     display: block;
+}
+
+.direction-pad {
+  position: absolute;
+  bottom: 110px;
+  left: 20px;
+  z-index: 99;
+  width: 90px;
+  height: 90px;
+  position: relative;
+
+  button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+  }
+
+  &__up {
+    top: 0;
+    left: 30px;
+  }
+
+  &__right {
+    top: 30px;
+    left: 60px;
+  }
+
+  &__down {
+    top: 60px;
+    left: 30px;
+  }
+
+  &__left {
+    top: 30px;
+    left: 0;
+  }
+}
+
+.fire-btn {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 121px;
+  right: 40px;
+  border-radius: 50%;
 }

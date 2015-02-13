@@ -25,8 +25,10 @@
 
     //region Game Objects
     class Ship {
-        constructor(properties) {
+        constructor(properties, stage) {
             this.lasers = properties.lasers;
+
+            this.stage = stage;
 
             this.settings = {
                 color: 'rgba(0, 0, 0, 1)',
@@ -110,7 +112,7 @@
                 urls: ['App/Content/Audio/laser.mp3']
             });
 
-            sound.play();
+            //sound.play();
         }
     }
 

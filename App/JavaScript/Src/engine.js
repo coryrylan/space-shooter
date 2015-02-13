@@ -104,6 +104,11 @@
         }
     });
 
+    //region testing
+    var start = new Hammer($('.start-screen')[0]);
+    start.on('tap', function() {
+        keyAction.enter();
+    });
 
     var upBtn = new Hammer($('.direction-pad__up')[0], { time: 1 });
     var pressingUp = false;
@@ -115,6 +120,7 @@
     upBtn.on('pressup', function() {
         pressingUp = false;
     });
+    //endregion
 
     function gameIOUpdate() {
         // (Up Arrow)

@@ -28,22 +28,21 @@
 
         if (viewportWidth < CANVAS_WIDTH) {
             $('#GameCanvas').attr('width', viewportWidth).attr('height', viewportHight);
+            $('.notifications').css('width', viewportWidth);
+
             CANVAS_WIDTH = viewportWidth;
             CANVAS_HEIGHT = viewportHight;
         } else {
             $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
+            $('.notifications').css('width', CANVAS_WIDTH);
         }
     }
-
     setStage();
-
 
     //region Game Objects
     class Ship {
-        constructor(properties, stage) {
+        constructor(properties) {
             this.lasers = properties.lasers;
-
-            this.stage = stage;
 
             this.settings = {
                 color: 'rgba(0, 0, 0, 1)',
@@ -366,6 +365,12 @@
     });
 
     ENGINE.controls.onkey('enter', function() {
+        if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
+            startNewGame();
+        }
+    });
+
+    $('body').on('click', function() {
         if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         }

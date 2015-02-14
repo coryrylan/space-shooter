@@ -37,15 +37,15 @@
 
             this.img = new Image();
             this.img.src = 'App/Content/Images/spaceship.png';
-            this.img.onload = function() {
-                ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-            }.bind(this);
         }
 
-        draw() {
-            ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+        draw(context) {
+            context.drawImage(this.img, this.settings.posX, this.settings.posY);
+            this.lasers.draw(context);
 
-            this.lasers.draw();
+            //this.img.onload = function() {
+            //    context.drawImage(this.img, this.settings.posX, this.settings.posY);
+            //}.bind(this);
         }
 
         update() {
@@ -91,12 +91,12 @@
             };
         }
 
-        draw() {
-            ctx.beginPath();
-            ctx.fillStyle = ENGINE.util.getRandomColor();
-            ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-            ctx.fill();
-            ctx.closePath();
+        draw(context) {
+            context.beginPath();
+            context.fillStyle = ENGINE.util.getRandomColor();
+            context.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+            context.fill();
+            context.closePath();
         }
 
         update() {
@@ -108,7 +108,7 @@
                 urls: ['App/Content/Audio/laser.mp3']
             });
 
-            sound.play();
+            //sound.play();
         }
     }
 
@@ -127,13 +127,14 @@
 
             this.img = new Image();
             this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
-            this.img.onload = function() {
-                ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-            }.bind(this);
         }
 
-        draw() {
-            ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+        draw(context) {
+            context.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+
+            //this.img.onload = function() {
+            //    ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+            //}.bind(this);
         }
 
         update() {
@@ -162,9 +163,9 @@
             this.list.forEach(updateLaser);
         }
 
-        draw() {
+        draw(context) {
             let draw = function(laser) {
-                laser.draw();
+                laser.draw(context);
             };
 
             this.list.forEach(draw);
@@ -206,109 +207,126 @@
             this.list.forEach(update);
         }
 
-        draw() {
+        draw(context) {
             let draw = function(asteroid) {
-                asteroid.draw();
+                asteroid.draw(context);
             };
 
             this.list.forEach(draw);
         }
     }
+
+    class Game {
+        constructor(properties) {
+            this._update = properties.update;
+            this._draw = properties.draw;
+        }
+
+        update() {
+            this._update();
+        }
+
+        draw() {
+            this._draw();
+        }
+
+        start() {
+            var gameLoop = function() {
+                this._update();
+                this._draw();
+                requestAnimationFrame(gameLoop);
+            }.bind(this);
+
+            requestAnimationFrame(gameLoop);
+        }
+    }
     //endregion
 
-    //region game instantiation
+    //region Game
     let playerShip = new Ship({
         lasers: new LaserCollection()
     });
 
     let asteroids = new AsteroidCollection();
 
-    let game = (function() {
-        let checkShipAndAsteroidCollision = function() {
-            asteroids.list.forEach(_checkShipCollision);
+    let checkShipAndAsteroidCollision = function() {
+        asteroids.list.forEach(_checkShipCollision);
 
-            function _checkShipCollision(asteroid, index) {
-                if (ENGINE.util.checkCollision(playerShip, asteroid)) {
-                    asteroids.list.splice(index, 1);
-                    removeLife();
+        function _checkShipCollision(asteroid, index) {
+            if (ENGINE.util.checkCollision(playerShip, asteroid)) {
+                asteroids.list.splice(index, 1);
+                removeLife();
+            }
+        }
+    };
+
+    let checkShipLaserAndAsteroidCollision = function() {
+
+        let checkLaserCollision = function(laser, laserIndex) {
+            // For every asteroid
+            for (let i = 0; i < asteroids.list.length; i++) {
+                if (ENGINE.util.checkCollision(laser, asteroids.list[i])) {
+                    playerShip.lasers.list.splice(laserIndex, 1);
+                    asteroids.list.splice(i, 1);
+                    addScore();
+                    return 0;
                 }
             }
         };
 
-        let checkShipLaserAndAsteroidCollision = function() {
+        playerShip.lasers.list.forEach(checkLaserCollision);
+    };
 
-            let checkLaserCollision = function(laser, laserIndex) {
-                // For every asteroid
-                for (let i = 0; i < asteroids.list.length; i++) {
-                    if (ENGINE.util.checkCollision(laser, asteroids.list[i])) {
-                        playerShip.lasers.list.splice(laserIndex, 1);
-                        asteroids.list.splice(i, 1);
-                        addScore();
-                        return 0;
-                    }
-                }
-            };
+    let update = function() {
+        if (gameState === GAME_STATE.START) {
+            return;
+        }
 
-            playerShip.lasers.list.forEach(checkLaserCollision);
-        };
+        if (gameState === GAME_STATE.PLAY) {
+            asteroids.update();
+            playerShip.update();
+            checkShipAndAsteroidCollision();
+            checkShipLaserAndAsteroidCollision();
+        }
 
-        return {
-            draw: function() {
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                drawScore();
-                drawLives();
+        if (gameState === GAME_STATE.PAUSE) {
+            return;
+        }
 
-                if (gameState === GAME_STATE.START) {
-                    drawStartScreen();
-                }
+        if (gameState === GAME_STATE.OVER) {
+            return;
+        }
+    };
 
-                if (gameState === GAME_STATE.PLAY) {
-                    playerShip.draw();
-                    asteroids.draw();
-                }
+    let draw = function() {
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        drawScore();
+        drawLives();
 
-                if (gameState === GAME_STATE.PAUSE) {
-                    return;
-                }
+        if (gameState === GAME_STATE.START) {
+            drawStartScreen();
+        }
 
-                if (gameState === GAME_STATE.OVER) {
-                    endGame();
-                }
-            },
+        if (gameState === GAME_STATE.PLAY) {
+            playerShip.draw(ctx);
+            asteroids.draw(ctx);
+        }
 
-            update: function() {
-                ENGINE.update();
+        if (gameState === GAME_STATE.PAUSE) {
+            return;
+        }
 
-                if (gameState === GAME_STATE.START) {
-                    return;
-                }
+        if (gameState === GAME_STATE.OVER) {
+            endGame();
+        }
+    };
 
-                if (gameState === GAME_STATE.PLAY) {
-                    asteroids.update();
-                    playerShip.update();
-                    checkShipAndAsteroidCollision();
-                    checkShipLaserAndAsteroidCollision();
-                }
+    let game = new Game({
+        update: update,
+        draw: draw
+    });
 
-                if (gameState === GAME_STATE.PAUSE) {
-                    return;
-                }
-
-                if (gameState === GAME_STATE.OVER) {
-                    return;
-                }
-            }
-        };
-    }());
-    //endregion
-
-    //region Main (Game loop)
-    function gameLoop() {
-        game.update();
-        game.draw();
-        requestAnimationFrame(gameLoop);
-    }
-    requestAnimationFrame(gameLoop);
+    game.start();
     //endregion
 
     //region Game Controls

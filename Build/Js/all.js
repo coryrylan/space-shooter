@@ -3665,146 +3665,141 @@ window.ENGINE = (function () {
     // Temp until we get a module system in place (Convert to a ES6 module)
     "use strict";
 
-    var keyState = {};
-    window.addEventListener("keydown", function (e) {
-        keyState[e.keyCode || e.which] = true;
-    }, true);
-
-    window.addEventListener("keyup", function (e) {
-        keyState[e.keyCode || e.which] = false;
-    }, true);
-
-    function draw() {}
-
-    function update() {
-        gameIOUpdate();
-    }
-
-    //region Object Factory
-    var factory = {};
-
-    factory.createGameObject = function () {
-        return new GameObject();
-    };
-
-    function GameObject() {
-        this.settings = {
-            color: "#000000",
-            width: 50,
-            height: 50,
-            posX: 0,
-            posY: 0 };
-    }
-    //endregion
-
-    //region Controls
-    var controls = {};
-    var eventActions = {};
-    var keyAction = {
-        space: function () {
-            console.log("Key action space not defined");
-        },
-        pause: function () {
-            console.log("Key action pause not defined");
-        },
-        enter: function () {
-            console.log("Key action enter not defined");
-        }
-    };
-
-    controls.on = function (event, func) {
-        switch (event) {
-            case "left":
-                eventActions.left = func;
-                break;
-            case "right":
-                eventActions.right = func;
-                break;
-            case "up":
-                eventActions.up = func;
-                break;
-            case "down":
-                eventActions.down = func;
-                break;
-            case "space":
-                eventActions.down = func;
-                break;
-            case "pause":
-                eventActions.down = func;
-                break;
-            default:
-                console.log("unknown control event fired");
-        }
-    };
-
-    controls.onkey = function (event, func) {
-        switch (event) {
-            case "space":
-                keyAction.space = func;
-                break;
-            case "pause":
-                keyAction.pause = func;
-                break;
-            case "enter":
-                keyAction.enter = func;
-                break;
-            default:
-                console.log("unknown control event fired");
-        }
-    };
-
-    // Inactive controls
-    $(document).keydown(function (e) {
-        // Enter key
-        if (e.keyCode === 13) {
-            keyAction.enter();
+    var factory = (function () {
+        function GameObject() {
+            this.settings = {
+                color: "#000000",
+                width: 50,
+                height: 50,
+                posX: 0,
+                posY: 0
+            };
         }
 
-        // (p) Pause
-        if (e.keyCode === 80) {
-            keyAction.pause();
+        function createGameObject() {
+            return new GameObject();
         }
 
-        // Space bar
-        if (e.keyCode === 32) {
-            keyAction.space();
-        }
-    });
+        return {
+            createGameObject: createGameObject
+        };
+    })();
 
-    function gameIOUpdate() {
-        // (Up Arrow)
-        if (keyState[38] || keyState[87]) {
-            eventActions.up();
-        }
+    var controls = (function () {
+        var eventActions = {};
+        var keyState = {};
+        var keyAction = {
+            space: function () {
+                console.log("Key action space not defined");
+            },
+            pause: function () {
+                console.log("Key action pause not defined");
+            },
+            enter: function () {
+                console.log("Key action enter not defined");
+            }
+        };
 
-        // (Left Arrow)
-        if (keyState[37] || keyState[65]) {
-            eventActions.left();
-        }
+        var on = function (event, func) {
+            switch (event) {
+                case "left":
+                    eventActions.left = func;
+                    break;
+                case "right":
+                    eventActions.right = func;
+                    break;
+                case "up":
+                    eventActions.up = func;
+                    break;
+                case "down":
+                    eventActions.down = func;
+                    break;
+                case "space":
+                    eventActions.down = func;
+                    break;
+                case "pause":
+                    eventActions.down = func;
+                    break;
+                default:
+                    console.log("unknown control event fired");
+            }
+        };
 
-        // (Right Arrow)
-        if (keyState[39] || keyState[68]) {
-            eventActions.right();
-        }
+        var onkey = function (event, func) {
+            switch (event) {
+                case "space":
+                    keyAction.space = func;
+                    break;
+                case "pause":
+                    keyAction.pause = func;
+                    break;
+                case "enter":
+                    keyAction.enter = func;
+                    break;
+                default:
+                    console.log("unknown control event fired");
+            }
+        };
 
-        // (Down Arrow)
-        if (keyState[40] || keyState[83]) {
-            eventActions.down();
-        }
-    }
-    //endregion
+        var controlsLoop = function () {
+            // (Up Arrow)
+            if (keyState[38] || keyState[87]) {
+                eventActions.up();
+            }
 
-    //region Util
-    var util = {};
+            // (Left Arrow)
+            if (keyState[37] || keyState[65]) {
+                eventActions.left();
+            }
 
-    util.checkCollision = function (obj1, obj2) {
-        if (horizontalCollision() && verticalPosition()) {
-            return true;
-        } else {
-            return false;
-        }
+            // (Right Arrow)
+            if (keyState[39] || keyState[68]) {
+                eventActions.right();
+            }
 
-        function horizontalCollision() {
+            // (Down Arrow)
+            if (keyState[40] || keyState[83]) {
+                eventActions.down();
+            }
+
+            requestAnimationFrame(controlsLoop);
+        };
+
+        requestAnimationFrame(controlsLoop);
+
+        window.addEventListener("keydown", function (e) {
+            keyState[e.keyCode || e.which] = true;
+        }, true);
+
+        window.addEventListener("keyup", function (e) {
+            keyState[e.keyCode || e.which] = false;
+        }, true);
+
+        $(document).keydown(function (e) {
+            // Enter key
+            if (e.keyCode === 13) {
+                keyAction.enter();
+            }
+
+            // (p) Pause
+            if (e.keyCode === 80) {
+                keyAction.pause();
+            }
+
+            // Space bar
+            if (e.keyCode === 32) {
+                keyAction.space();
+            }
+        });
+
+        return {
+            on: on,
+            onkey: onkey
+        };
+    })();
+
+    var util = (function () {
+        function _horizontalCollision(obj1, obj2) {
             var obj1RightSide = obj1.settings.posX + obj1.settings.width;
             var obj1LeftSide = obj1.settings.posX;
             var obj2RightSide = obj2.settings.posX + obj2.settings.width;
@@ -3833,7 +3828,7 @@ window.ENGINE = (function () {
             }
         }
 
-        function verticalPosition() {
+        function _verticalPosition(obj1, obj2) {
             if (checkTopSideCollision()) {
                 return true;
             } else {
@@ -3844,27 +3839,38 @@ window.ENGINE = (function () {
                 return obj1.settings.posY >= obj2.settings.posY && obj1.settings.posY <= obj2.settings.posY + obj2.settings.height;
             }
         }
-    };
 
-    util.getRandomNumber = function getRandNum(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    util.getRandomColor = function () {
-        var letters = "0123456789ABCDEF".split("");
-        var color = "#";
-
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.round(Math.random() * 15)];
+        function checkCollision(obj1, obj2) {
+            if (_horizontalCollision(obj1, obj2) && _verticalPosition(obj1, obj2)) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
-        return color;
-    };
-    //endregion
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getRandomColor() {
+            var letters = "0123456789ABCDEF".split("");
+            var color = "#";
+
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.round(Math.random() * 15)];
+            }
+
+            return color;
+        }
+
+        return {
+            checkCollision: checkCollision,
+            getRandomNumber: getRandomNumber,
+            getRandomColor: getRandomColor
+        };
+    })();
 
     return {
-        draw: draw,
-        update: update,
         util: util,
         factory: factory,
         controls: controls
@@ -3918,17 +3924,17 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
             this.img = new Image();
             this.img.src = "App/Content/Images/spaceship.png";
-            this.img.onload = (function () {
-                ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-            }).bind(this);
         }
 
         _prototypeProperties(Ship, null, {
             draw: {
-                value: function draw() {
-                    ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+                value: function draw(context) {
+                    context.drawImage(this.img, this.settings.posX, this.settings.posY);
+                    this.lasers.draw(context);
 
-                    this.lasers.draw();
+                    //this.img.onload = function() {
+                    //    context.drawImage(this.img, this.settings.posX, this.settings.posY);
+                    //}.bind(this);
                 },
                 writable: true,
                 configurable: true
@@ -4002,12 +4008,12 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
         _prototypeProperties(Laser, null, {
             draw: {
-                value: function draw() {
-                    ctx.beginPath();
-                    ctx.fillStyle = ENGINE.util.getRandomColor();
-                    ctx.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-                    ctx.fill();
-                    ctx.closePath();
+                value: function draw(context) {
+                    context.beginPath();
+                    context.fillStyle = ENGINE.util.getRandomColor();
+                    context.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+                    context.fill();
+                    context.closePath();
                 },
                 writable: true,
                 configurable: true
@@ -4025,7 +4031,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
                         urls: ["App/Content/Audio/laser.mp3"]
                     });
 
-                    sound.play();
+                    //sound.play();
                 },
                 writable: true,
                 configurable: true
@@ -4052,15 +4058,16 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
             this.img = new Image();
             this.img.src = "App/Content/Images/asteroid-" + ENGINE.util.getRandomNumber(1, 4) + ".png";
-            this.img.onload = (function () {
-                ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-            }).bind(this);
         }
 
         _prototypeProperties(Asteroid, null, {
             draw: {
-                value: function draw() {
-                    ctx.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+                value: function draw(context) {
+                    context.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+
+                    //this.img.onload = function() {
+                    //    ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+                    //}.bind(this);
                 },
                 writable: true,
                 configurable: true
@@ -4105,9 +4112,9 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
                 configurable: true
             },
             draw: {
-                value: function draw() {
+                value: function draw(context) {
                     var draw = function (laser) {
-                        laser.draw();
+                        laser.draw(context);
                     };
 
                     this.list.forEach(draw);
@@ -4165,9 +4172,9 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
                 configurable: true
             },
             draw: {
-                value: function draw() {
+                value: function draw(context) {
                     var draw = function (asteroid) {
-                        asteroid.draw();
+                        asteroid.draw(context);
                     };
 
                     this.list.forEach(draw);
@@ -4180,100 +4187,133 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         return AsteroidCollection;
     })();
 
+    var Game = (function () {
+        function Game(properties) {
+            _classCallCheck(this, Game);
+
+            this._update = properties.update;
+            this._draw = properties.draw;
+        }
+
+        _prototypeProperties(Game, null, {
+            update: {
+                value: function update() {
+                    this._update();
+                },
+                writable: true,
+                configurable: true
+            },
+            draw: {
+                value: function draw() {
+                    this._draw();
+                },
+                writable: true,
+                configurable: true
+            },
+            start: {
+                value: function start() {
+                    var gameLoop = (function () {
+                        this._update();
+                        this._draw();
+                        requestAnimationFrame(gameLoop);
+                    }).bind(this);
+
+                    requestAnimationFrame(gameLoop);
+                },
+                writable: true,
+                configurable: true
+            }
+        });
+
+        return Game;
+    })();
+
     //endregion
 
-    //region game instantiation
+    //region Game
     var playerShip = new Ship({
         lasers: new LaserCollection()
     });
 
     var asteroids = new AsteroidCollection();
 
-    var game = (function () {
-        var checkShipAndAsteroidCollision = function () {
-            asteroids.list.forEach(_checkShipCollision);
+    var checkShipAndAsteroidCollision = function () {
+        asteroids.list.forEach(_checkShipCollision);
 
-            function _checkShipCollision(asteroid, index) {
-                if (ENGINE.util.checkCollision(playerShip, asteroid)) {
-                    asteroids.list.splice(index, 1);
-                    removeLife();
+        function _checkShipCollision(asteroid, index) {
+            if (ENGINE.util.checkCollision(playerShip, asteroid)) {
+                asteroids.list.splice(index, 1);
+                removeLife();
+            }
+        }
+    };
+
+    var checkShipLaserAndAsteroidCollision = function () {
+        var checkLaserCollision = function (laser, laserIndex) {
+            // For every asteroid
+            for (var i = 0; i < asteroids.list.length; i++) {
+                if (ENGINE.util.checkCollision(laser, asteroids.list[i])) {
+                    playerShip.lasers.list.splice(laserIndex, 1);
+                    asteroids.list.splice(i, 1);
+                    addScore();
+                    return 0;
                 }
             }
         };
 
-        var checkShipLaserAndAsteroidCollision = function () {
-            var checkLaserCollision = function (laser, laserIndex) {
-                // For every asteroid
-                for (var i = 0; i < asteroids.list.length; i++) {
-                    if (ENGINE.util.checkCollision(laser, asteroids.list[i])) {
-                        playerShip.lasers.list.splice(laserIndex, 1);
-                        asteroids.list.splice(i, 1);
-                        addScore();
-                        return 0;
-                    }
-                }
-            };
+        playerShip.lasers.list.forEach(checkLaserCollision);
+    };
 
-            playerShip.lasers.list.forEach(checkLaserCollision);
-        };
+    var update = function () {
+        if (gameState === GAME_STATE.START) {
+            return;
+        }
 
-        return {
-            draw: function () {
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                drawScore();
-                drawLives();
+        if (gameState === GAME_STATE.PLAY) {
+            asteroids.update();
+            playerShip.update();
+            checkShipAndAsteroidCollision();
+            checkShipLaserAndAsteroidCollision();
+        }
 
-                if (gameState === GAME_STATE.START) {
-                    drawStartScreen();
-                }
+        if (gameState === GAME_STATE.PAUSE) {
+            return;
+        }
 
-                if (gameState === GAME_STATE.PLAY) {
-                    playerShip.draw();
-                    asteroids.draw();
-                }
+        if (gameState === GAME_STATE.OVER) {
+            return;
+        }
+    };
 
-                if (gameState === GAME_STATE.PAUSE) {
-                    return;
-                }
+    var draw = function () {
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        drawScore();
+        drawLives();
 
-                if (gameState === GAME_STATE.OVER) {
-                    endGame();
-                }
-            },
+        if (gameState === GAME_STATE.START) {
+            drawStartScreen();
+        }
 
-            update: function () {
-                ENGINE.update();
+        if (gameState === GAME_STATE.PLAY) {
+            playerShip.draw(ctx);
+            asteroids.draw(ctx);
+        }
 
-                if (gameState === GAME_STATE.START) {
-                    return;
-                }
+        if (gameState === GAME_STATE.PAUSE) {
+            return;
+        }
 
-                if (gameState === GAME_STATE.PLAY) {
-                    asteroids.update();
-                    playerShip.update();
-                    checkShipAndAsteroidCollision();
-                    checkShipLaserAndAsteroidCollision();
-                }
+        if (gameState === GAME_STATE.OVER) {
+            endGame();
+        }
+    };
 
-                if (gameState === GAME_STATE.PAUSE) {
-                    return;
-                }
+    var game = new Game({
+        update: update,
+        draw: draw
+    });
 
-                if (gameState === GAME_STATE.OVER) {
-                    return;
-                }
-            }
-        };
-    })();
-    //endregion
-
-    //region Main (Game loop)
-    function gameLoop() {
-        game.update();
-        game.draw();
-        requestAnimationFrame(gameLoop);
-    }
-    requestAnimationFrame(gameLoop);
+    game.start();
     //endregion
 
     //region Game Controls

@@ -4,9 +4,6 @@
     // Global Dependencies
     let Howl = window.Howl;
     let ENGINE = window.ENGINE;
-
-    const CANVAS_WIDTH = 720;
-    const CANVAS_HEIGHT = 480;
     const GAME_STATE = {
         START: 'START',
         PLAY: 'PLAY',
@@ -21,7 +18,25 @@
     let ctx = canvas.getContext('2d');
     let gameState = GAME_STATE.START;
 
-    $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
+    let CANVAS_WIDTH = 720;
+    let CANVAS_HEIGHT = 480;
+
+    // Viewport Setup
+    function setStage() {
+        let viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        let viewportHight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        if (viewportWidth < CANVAS_WIDTH) {
+            $('#GameCanvas').attr('width', viewportWidth).attr('height', viewportHight);
+            CANVAS_WIDTH = viewportWidth;
+            CANVAS_HEIGHT = viewportHight;
+        } else {
+            $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
+        }
+    }
+
+    setStage();
+
 
     //region Game Objects
     class Ship {
@@ -112,7 +127,7 @@
                 urls: ['App/Content/Audio/laser.mp3']
             });
 
-            //sound.play();
+            sound.play();
         }
     }
 

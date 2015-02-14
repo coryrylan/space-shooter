@@ -3873,27 +3873,9 @@ window.ENGINE = (function () {
         }
     });
 
-    //region testing
-    var start = new Hammer($(".start-screen")[0]);
-    start.on("tap", function () {
-        keyAction.enter();
-    });
-
-    var upBtn = new Hammer($(".direction-pad__up")[0], { time: 1 });
-    var pressingUp = false;
-
-    upBtn.on("press", function () {
-        pressingUp = true;
-    });
-
-    upBtn.on("pressup", function () {
-        pressingUp = false;
-    });
-    //endregion
-
     function gameIOUpdate() {
         // (Up Arrow)
-        if (keyState[38] || keyState[87] || pressingUp) {
+        if (keyState[38] || keyState[87]) {
             eventActions.up();
         }
 
@@ -4003,9 +3985,6 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     // Global Dependencies
     var Howl = window.Howl;
     var ENGINE = window.ENGINE;
-
-    var CANVAS_WIDTH = 720;
-    var CANVAS_HEIGHT = 480;
     var GAME_STATE = {
         START: "START",
         PLAY: "PLAY",
@@ -4020,7 +3999,25 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     var ctx = canvas.getContext("2d");
     var gameState = GAME_STATE.START;
 
-    $("#GameCanvas").attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
+    var CANVAS_WIDTH = 720;
+    var CANVAS_HEIGHT = 480;
+
+    // Viewport Setup
+    function setStage() {
+        var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        var viewportHight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        if (viewportWidth < CANVAS_WIDTH) {
+            $("#GameCanvas").attr("width", viewportWidth).attr("height", viewportHight);
+            CANVAS_WIDTH = viewportWidth;
+            CANVAS_HEIGHT = viewportHight;
+        } else {
+            $("#GameCanvas").attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
+        }
+    }
+
+    setStage();
+
 
     //region Game Objects
     var Ship = (function () {
@@ -4149,7 +4146,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
                         urls: ["App/Content/Audio/laser.mp3"]
                     });
 
-                    //sound.play();
+                    sound.play();
                 },
                 writable: true,
                 configurable: true

@@ -104,27 +104,9 @@
         }
     });
 
-    //region testing
-    var start = new Hammer($('.start-screen')[0]);
-    start.on('tap', function() {
-        keyAction.enter();
-    });
-
-    var upBtn = new Hammer($('.direction-pad__up')[0], { time: 1 });
-    var pressingUp = false;
-
-    upBtn.on('press', function() {
-        pressingUp = true;
-    });
-
-    upBtn.on('pressup', function() {
-        pressingUp = false;
-    });
-    //endregion
-
     function gameIOUpdate() {
         // (Up Arrow)
-        if (keyState[38] || keyState[87] || pressingUp) {
+        if (keyState[38] || keyState[87]) {
             eventActions.up();
         }
 

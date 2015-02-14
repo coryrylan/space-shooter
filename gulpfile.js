@@ -5,7 +5,7 @@ var to5 = require('gulp-6to5');
 var jsLibraries = [
     './App/JavaScript/Libraries/requestAnimationFramePolly.js',
     './App/JavaScript/Libraries/jquery.js',
-    './App/JavaScript/Libraries/hammer.js',
+    './App/JavaScript/Libraries/gameController.js',
     './App/JavaScript/Libraries/howler.js',
     //'./App/JavaScript/PollyfillsAndShims/es6-module-loader.js'
 ];

@@ -2003,414 +2003,312 @@
 })(window);
 "use strict";
 
-/*! Hammer.JS - v2.0.4 - 2014-09-28
- * http://hammerjs.github.io/
- *
- * Copyright (c) 2014 Jorik Tangelder;
- * Licensed under the MIT license */
-!(function (a, b, c, d) {
-  "use strict";function e(a, b, c) {
-    return setTimeout(k(a, c), b);
-  }function f(a, b, c) {
-    return Array.isArray(a) ? (g(a, c[b], c), !0) : !1;
-  }function g(a, b, c) {
-    var e;if (a) if (a.forEach) a.forEach(b, c);else if (a.length !== d) for (e = 0; e < a.length;) b.call(c, a[e], e, a), e++;else for (e in a) a.hasOwnProperty(e) && b.call(c, a[e], e, a);
-  }function h(a, b, c) {
-    for (var e = Object.keys(b), f = 0; f < e.length;) (!c || c && a[e[f]] === d) && (a[e[f]] = b[e[f]]), f++;return a;
-  }function i(a, b) {
-    return h(a, b, !0);
-  }function j(a, b, c) {
-    var d,
-        e = b.prototype;d = a.prototype = Object.create(e), d.constructor = a, d._super = e, c && h(d, c);
-  }function k(a, b) {
-    return function () {
-      return a.apply(b, arguments);
+// https://github.com/austinhallock/html5-virtual-game-controller
+(function (e) {
+  function i(e, t) {
+    var n,
+        r,
+        s,
+        o,
+        u,
+        a = 1,
+        f = 2,
+        l = true;if (typeof e === "boolean") {
+      l = e;a = 2;
+    }if (typeof e !== "object" && ! typeof e === "function") {
+      e = {};
+    }if (n = t) {
+      for (r in n) {
+        t = e[r];s = n[r];if (e === s) {
+          continue;
+        }if (l && (typeof s == "object" || (o = Object.prototype.toString.call(s) === "[object Array]"))) {
+          if (o) {
+            o = false;u = t && Object.prototype.toString.call(t) === "[object Array]" ? t : [];
+          } else {
+            u = t && typeof t == "object" ? t : {};
+          }e[r] = i(u, s);
+        } else if (typeof s !== "undefined") {
+          e[r] = s;
+        }
+      }
+    }return e;
+  }var t = [].slice;var n = ({}).hasOwnProperty;var r = function (e, t) {
+    function i() {
+      this.constructor = e;
+    }for (var r in t) {
+      if (n.call(t, r)) e[r] = t[r];
+    }i.prototype = t.prototype;e.prototype = new i();e.__super__ = t.prototype;return e;
+  };e.GameController = { options: { left: { type: "dpad", position: { left: "13%", bottom: "22%" }, dpad: { up: { width: "7%", height: "15%", stroke: 2, touchStart: function () {
+              GameController.simulateKeyEvent("press", 38);GameController.simulateKeyEvent("down", 38);
+            }, touchEnd: function () {
+              GameController.simulateKeyEvent("up", 38);
+            } }, left: { width: "15%", height: "7%", stroke: 2, touchStart: function () {
+              GameController.simulateKeyEvent("press", 37);GameController.simulateKeyEvent("down", 37);
+            }, touchEnd: function () {
+              GameController.simulateKeyEvent("up", 37);
+            } }, down: { width: "7%", height: "15%", stroke: 2, touchStart: function () {
+              GameController.simulateKeyEvent("press", 40);GameController.simulateKeyEvent("down", 40);
+            }, touchEnd: function () {
+              GameController.simulateKeyEvent("up", 40);
+            } }, right: { width: "15%", height: "7%", stroke: 2, touchStart: function () {
+              GameController.simulateKeyEvent("press", 39);GameController.simulateKeyEvent("down", 39);
+            }, touchEnd: function () {
+              GameController.simulateKeyEvent("up", 39);
+            } } }, joystick: { radius: 60, touchMove: function (e) {
+            console.log(e);
+          } } }, right: { type: "buttons", position: { right: "17%", bottom: "28%" }, buttons: [{ offset: { x: "-13%", y: 0 }, label: "X", radius: "7%", stroke: 2, backgroundColor: "blue", fontColor: "#fff", touchStart: function () {
+            GameController.simulateKeyEvent("press", 88);GameController.simulateKeyEvent("down", 88);
+          }, touchEnd: function () {
+            GameController.simulateKeyEvent("up", 88);
+          } }, { offset: { x: 0, y: "-11%" }, label: "Y", radius: "7%", stroke: 2, backgroundColor: "yellow", fontColor: "#fff", touchStart: function () {
+            GameController.simulateKeyEvent("press", 70);GameController.simulateKeyEvent("down", 70);
+          }, touchEnd: function () {
+            GameController.simulateKeyEvent("up", 70);
+          } }, { offset: { x: "13%", y: 0 }, label: "B", radius: "7%", stroke: 2, backgroundColor: "red", fontColor: "#fff", touchStart: function () {
+            GameController.simulateKeyEvent("press", 90);GameController.simulateKeyEvent("down", 90);
+          }, touchEnd: function () {
+            GameController.simulateKeyEvent("up", 90);
+          } }, { offset: { x: 0, y: "11%" }, label: "A", radius: "7%", stroke: 2, backgroundColor: "green", fontColor: "#fff", touchStart: function () {
+            GameController.simulateKeyEvent("press", 67);GameController.simulateKeyEvent("down", 67);
+          }, touchEnd: function () {
+            GameController.simulateKeyEvent("up", 67);
+          } }], dpad: { up: { width: "7%", height: "15%", stroke: 2 }, left: { width: "15%", height: "7%", stroke: 2 }, down: { width: "7%", height: "15%", stroke: 2 }, right: { width: "15%", height: "7%", stroke: 2 } }, joystick: { radius: 60, touchMove: function (e) {
+            console.log(e);
+          } } }, touchRadius: 45 }, touchableAreas: [], touchableAreasCount: 0, touches: [], offsetX: 0, offsetY: 0, bound: { left: false, right: false, top: false, bottom: false }, cachedSprites: {}, paused: false, init: function (e) {
+      if (!"ontouchstart" in document.documentElement) return;e = e || {};i(this.options, e);var t = navigator.userAgent.toLowerCase();this.performanceFriendly = t.indexOf("iphone") !== -1 || t.indexOf("android") !== -1 || this.options.forcePerformanceFriendly;var n;if (!this.options.canvas || !(n = document.getElementById(this.options.canvas))) {
+        this.options.canvas = document.getElementsByTagName("canvas")[0];
+      } else if (n) {
+        this.options.canvas = n;
+      }this.options.ctx = this.options.canvas.getContext("2d");this.createOverlayCanvas();
+    }, boundingSet: function (e) {
+      var t = ["left", "right"];if (e.width) {
+        var n = this.getPixels(e.width);var r = this.getPixels(e.height);var i = this.getPixels(e.x);var s = this.getPixels(e.y);
+      } else {
+        if (this.options.touchRadius) var o = this.getPixels(e.radius) * 2 + this.getPixels(this.options.touchRadius) / 2;else var o = e.radius;var n = r = (o + this.getPixels(e.stroke)) * 2;var i = this.getPixels(e.x) - n / 2;var s = this.getPixels(e.y) - r / 2;
+      }var u = i + n;var a = s + r;if (this.bound.left === false || i < this.bound.left) this.bound.left = i;if (this.bound.right === false || u > this.bound.right) this.bound.right = u;if (this.bound.top === false || s < this.bound.top) this.bound.top = s;if (this.bound.bottom === false || a > this.bound.bottom) this.bound.bottom = a;
+    }, createOverlayCanvas: function () {
+      this.canvas = document.createElement("canvas");this.resize(true);document.getElementsByTagName("body")[0].appendChild(this.canvas);this.ctx = this.canvas.getContext("2d");var e = this;window.addEventListener("resize", function () {
+        setTimeout(function () {
+          GameController.resize.call(e);
+        }, 1);
+      });this.setTouchEvents();this.loadSide("left");this.loadSide("right");this.render();if (!this.touches || this.touches.length == 0) this.paused = true;
+    }, pixelRatio: 1, resize: function (e) {
+      this.canvas.width = this.options.canvas.width;this.canvas.height = this.options.canvas.height;this.offsetX = GameController.options.canvas.offsetLeft + document.body.scrollLeft;this.offsetY = GameController.options.canvas.offsetTop + document.body.scrollTop;if (this.options.canvas.style.width && this.options.canvas.style.height && this.options.canvas.style.height.indexOf("px") !== -1) {
+        this.canvas.style.width = this.options.canvas.style.width;this.canvas.style.height = this.options.canvas.style.height;this.pixelRatio = this.canvas.width / parseInt(this.canvas.style.width);
+      }this.canvas.style.position = "absolute";this.canvas.style.zIndex = "5";this.canvas.style.left = this.options.canvas.offsetLeft + "px";this.canvas.style.top = this.options.canvas.offsetTop + "px";this.canvas.setAttribute("style", this.canvas.getAttribute("style") + " -ms-touch-action: none;");if (!e) {
+        this.touchableAreas = [];this.cachedSprites = [];this.reloadSide("left");this.reloadSide("right");
+      }
+    }, getPixels: function (e, t) {
+      if (typeof e === "undefined") return 0;else if (typeof e === "number") return e;else {
+        if (t == "x") return parseInt(e) / 100 * this.canvas.width;else return parseInt(e) / 100 * this.canvas.height;
+      }
+    }, simulateKeyEvent: function (e, t) {
+      if (typeof window.onkeydown === "undefined") return false;if (typeof jQuery !== "undefined") {
+        var n = jQuery.Event("key" + e);n.ctrlKey = false;n.which = t;n.keyCode = t;$(this.options.canvas).trigger(n);return;
+      }var r = document.createEvent("KeyboardEvent");if (navigator.userAgent.toLowerCase().indexOf("chrome") !== -1) {
+        Object.defineProperty(r, "keyCode", { get: function () {
+            return this.keyCodeVal;
+          } });Object.defineProperty(r, "which", { get: function () {
+            return this.keyCodeVal;
+          } });
+      }if (r.initKeyboardEvent) {
+        r.initKeyboardEvent("key" + e, true, true, document.defaultView, false, false, false, false, t, t);
+      } else {
+        r.initKeyEvent("key" + e, true, true, document.defaultView, false, false, false, false, t, t);
+      }r.keyCodeVal = t;
+    }, setTouchEvents: function () {
+      var e = this;var t = function (t) {
+        if (e.paused) {
+          e.paused = false;
+        }t.preventDefault();if (window.navigator.msPointerEnabled && t.clientX && t.pointerType == t.MSPOINTER_TYPE_TOUCH) {
+          e.touches[t.pointerId] = { clientX: t.clientX, clientY: t.clientY };
+        } else {
+          e.touches = t.touches || [];
+        }
+      };this.canvas.addEventListener("touchstart", t, false);var n = function (t) {
+        t.preventDefault();if (window.navigator.msPointerEnabled && t.pointerType == t.MSPOINTER_TYPE_TOUCH) {
+          delete e.touches[t.pointerId];
+        } else {
+          e.touches = t.touches || [];
+        }if (!t.touches || t.touches.length == 0) {
+          e.render();e.paused = true;
+        }
+      };this.canvas.addEventListener("touchend", n);var r = function (t) {
+        t.preventDefault();if (window.navigator.msPointerEnabled && t.clientX && t.pointerType == t.MSPOINTER_TYPE_TOUCH) {
+          e.touches[t.pointerId] = { clientX: t.clientX, clientY: t.clientY };
+        } else {
+          e.touches = t.touches || [];
+        }
+      };this.canvas.addEventListener("touchmove", r);if (window.navigator.msPointerEnabled) {
+        this.canvas.addEventListener("MSPointerDown", t);this.canvas.addEventListener("MSPointerUp", n);this.canvas.addEventListener("MSPointerMove", r);
+      }
+    }, addTouchableDirection: function (e) {
+      var t = new o(e);t.id = this.touchableAreas.push(t);this.touchableAreasCount++;this.boundingSet(e);
+    }, addJoystick: function (e) {
+      var t = new a(e);t.id = this.touchableAreas.push(t);this.touchableAreasCount++;this.boundingSet(e);
+    }, addButton: function (e) {
+      var t = new u(e);t.id = this.touchableAreas.push(t);this.touchableAreasCount++;this.boundingSet(e);
+    }, addTouchableArea: function (e, t) {}, loadButtons: function (e) {
+      var t = this.options[e].buttons;var n = this;for (var r = 0, i = t.length; r < i; r++) {
+        if (typeof t[r] === "undefined" || typeof t[r].offset === "undefined") continue;var s = this.getPositionX(e);var o = this.getPositionY(e);t[r].x = s + this.getPixels(t[r].offset.x, "y");t[r].y = o + this.getPixels(t[r].offset.y, "y");this.addButton(t[r]);
+      }
+    }, loadDPad: function (e) {
+      var t = this.options[e].dpad || {};var n = this;var r = this.getPositionX(e);var i = this.getPositionY(e);if (t.up && t.left && t.down && t.right) {
+        var s = { x: r, y: i, radius: t.right.height };var o = new f(s);this.touchableAreas.push(o);this.touchableAreasCount++;
+      }if (t.up !== false) {
+        t.up.x = r - this.getPixels(t.up.width, "y") / 2;t.up.y = i - (this.getPixels(t.up.height, "y") + this.getPixels(t.left.height, "y") / 2);t.up.direction = "up";this.addTouchableDirection(t.up);
+      }if (t.left !== false) {
+        t.left.x = r - (this.getPixels(t.left.width, "y") + this.getPixels(t.up.width, "y") / 2);t.left.y = i - this.getPixels(t.left.height, "y") / 2;t.left.direction = "left";this.addTouchableDirection(t.left);
+      }if (t.down !== false) {
+        t.down.x = r - this.getPixels(t.down.width, "y") / 2;t.down.y = i + this.getPixels(t.left.height, "y") / 2;t.down.direction = "down";this.addTouchableDirection(t.down);
+      }if (t.right !== false) {
+        t.right.x = r + this.getPixels(t.up.width, "y") / 2;t.right.y = i - this.getPixels(t.right.height, "y") / 2;t.right.direction = "right";this.addTouchableDirection(t.right);
+      }
+    }, loadJoystick: function (e) {
+      var t = this.options[e].joystick;t.x = this.getPositionX(e);t.y = this.getPositionY(e);this.addJoystick(t);
+    }, reloadSide: function (e) {
+      this.loadSide(e);
+    }, loadSide: function (e) {
+      if (this.options[e].type === "dpad") {
+        this.loadDPad(e);
+      } else if (this.options[e].type === "joystick") {
+        this.loadJoystick(e);
+      } else if (this.options[e].type === "buttons") {
+        this.loadButtons(e);
+      }
+    }, normalizeTouchPositionX: function (e) {
+      return (e - this.offsetX) * this.pixelRatio;
+    }, normalizeTouchPositionY: function (e) {
+      return (e - this.offsetY) * this.pixelRatio;
+    }, getXFromRight: function (e) {
+      return this.canvas.width - e;
+    }, getYFromBottom: function (e) {
+      return this.canvas.height - e;
+    }, getPositionX: function (e) {
+      if (typeof this.options[e].position.left !== "undefined") return this.getPixels(this.options[e].position.left, "x");else return this.getXFromRight(this.getPixels(this.options[e].position.right, "x"));
+    }, getPositionY: function (e) {
+      if (typeof this.options[e].position.top !== "undefined") return this.getPixels(this.options[e].position.top, "y");else return this.getYFromBottom(this.getPixels(this.options[e].position.bottom, "y"));
+    }, renderAreas: function () {
+      for (var e = 0, t = this.touchableAreasCount; e < t; e++) {
+        var n = this.touchableAreas[e];if (typeof n === "undefined") continue;n.draw();var r = false;for (var i = 0, s = this.touches.length; i < s; i++) {
+          var o = this.touches[i];if (typeof o === "undefined") continue;var u = this.normalizeTouchPositionX(o.clientX),
+              a = this.normalizeTouchPositionY(o.clientY);if (n.check(u, a) !== false) {
+            if (!r) r = this.touches[i];
+          }
+        }if (r) {
+          if (!n.active) n.touchStartWrapper(r);n.touchMoveWrapper(r);
+        } else if (n.active) {
+          n.touchEndWrapper(r);
+        }
+      }
+    }, render: function () {
+      if (!this.paused || !this.performanceFriendly) this.ctx.clearRect(this.bound.left, this.bound.top, this.bound.right - this.bound.left, this.bound.bottom - this.bound.top);if (!this.paused && !this.performanceFriendly) {
+        var e = "touch-circle";var t = this.cachedSprites[e];if (!t && this.options.touchRadius) {
+          var n = document.createElement("canvas");var r = n.getContext("2d");n.width = 2 * this.options.touchRadius;n.height = 2 * this.options.touchRadius;var i = this.options.touchRadius;var s = r.createRadialGradient(i, i, 1, i, i, this.options.touchRadius);s.addColorStop(0, "rgba( 200, 200, 200, 1 )");s.addColorStop(1, "rgba( 200, 200, 200, 0 )");r.beginPath();r.fillStyle = s;r.arc(i, i, this.options.touchRadius, 0, 2 * Math.PI, false);r.fill();t = GameController.cachedSprites[e] = n;
+        }for (var o = 0, u = this.touches.length; o < u; o++) {
+          var a = this.touches[o];if (typeof a === "undefined") continue;var f = this.normalizeTouchPositionX(a.clientX),
+              l = this.normalizeTouchPositionY(a.clientY);if (f - this.options.touchRadius > this.bound.left && f + this.options.touchRadius < this.bound.right && l - this.options.touchRadius > this.bound.top && l + this.options.touchRadius < this.bound.bottom) this.ctx.drawImage(t, f - this.options.touchRadius, l - this.options.touchRadius);
+        }
+      }if (!this.paused || !this.performanceFriendly) {
+        this.renderAreas();
+      }window.requestAnimationFrame(this.renderWrapper);
+    }, renderWrapper: function () {
+      GameController.render();
+    } };var s = (function () {
+    function e() {}e.prototype.touchStart = null;e.prototype.touchMove = null;e.prototype.touchEnd = null;e.prototype.type = "area";e.prototype.id = false;e.prototype.active = false;e.prototype.setTouchStart = function (e) {
+      this.touchStart = e;
+    };e.prototype.touchStartWrapper = function (e) {
+      if (this.touchStart) this.touchStart();this.active = true;
+    };e.prototype.setTouchMove = function (e) {
+      this.touchMove = e;
+    };e.prototype.lastPosX = 0;e.prototype.lastPosY = 0;e.prototype.touchMoveWrapper = function (t) {
+      if (this.touchMove && (t.clientX != e.prototype.lastPosX || t.clientY != e.prototype.lastPosY)) {
+        this.touchMove();this.lastPosX = t.clientX;this.lastPosY = t.clientY;
+      }this.active = true;
+    };e.prototype.setTouchEnd = function (e) {
+      this.touchEnd = e;
+    };e.prototype.touchEndWrapper = function (e) {
+      if (this.touchEnd) this.touchEnd();this.active = false;GameController.render();
+    };return e;
+  })();var o = (function (e) {
+    function t(e) {
+      for (var t in e) {
+        if (t == "x") this[t] = GameController.getPixels(e[t], "x");else if (t == "y" || t == "height" || t == "width") this[t] = GameController.getPixels(e[t], "y");else this[t] = e[t];
+      }this.draw();
+    }r(t, e);t.prototype.type = "direction";t.prototype.check = function (e, t) {
+      var n, r;if ((Math.abs(e - this.x) < GameController.options.touchRadius / 2 || e > this.x) && (Math.abs(e - (this.x + this.width)) < GameController.options.touchRadius / 2 || e < this.x + this.width) && (Math.abs(t - this.y) < GameController.options.touchRadius / 2 || t > this.y) && (Math.abs(t - (this.y + this.height)) < GameController.options.touchRadius / 2 || t < this.y + this.height)) return true;return false;
+    };t.prototype.draw = function () {
+      var e = this.type + "" + this.id + "" + this.active;var t = GameController.cachedSprites[e];if (!t) {
+        var n = document.createElement("canvas");var r = n.getContext("2d");n.width = this.width + 2 * this.stroke;n.height = this.height + 2 * this.stroke;var i = this.opacity || 0.9;if (!this.active) i *= 0.5;switch (this.direction) {case "up":
+            var s = r.createLinearGradient(0, 0, 0, this.height);s.addColorStop(0, "rgba( 0, 0, 0, " + i * 0.5 + " )");s.addColorStop(1, "rgba( 0, 0, 0, " + i + " )");break;case "left":
+            var s = r.createLinearGradient(0, 0, this.width, 0);s.addColorStop(0, "rgba( 0, 0, 0, " + i * 0.5 + " )");s.addColorStop(1, "rgba( 0, 0, 0, " + i + " )");break;case "right":
+            var s = r.createLinearGradient(0, 0, this.width, 0);s.addColorStop(0, "rgba( 0, 0, 0, " + i + " )");s.addColorStop(1, "rgba( 0, 0, 0, " + i * 0.5 + " )");break;case "down":
+          default:
+            var s = r.createLinearGradient(0, 0, 0, this.height);s.addColorStop(0, "rgba( 0, 0, 0, " + i + " )");s.addColorStop(1, "rgba( 0, 0, 0, " + i * 0.5 + " )");}r.fillStyle = s;r.fillRect(0, 0, this.width, this.height);r.lineWidth = this.stroke;r.strokeStyle = "rgba( 255, 255, 255, 0.1 )";r.strokeRect(0, 0, this.width, this.height);t = GameController.cachedSprites[e] = n;
+      }GameController.ctx.drawImage(t, this.x, this.y);
+    };return t;
+  })(s);var u = (function (e) {
+    function t(e) {
+      for (var t in e) {
+        if (t == "x") this[t] = GameController.getPixels(e[t], "x");else if (t == "x" || t == "radius") this[t] = GameController.getPixels(e[t], "y");else this[t] = e[t];
+      }this.draw();
+    }r(t, e);t.prototype.type = "button";t.prototype.check = function (e, t) {
+      if (Math.abs(e - this.x) < this.radius + GameController.options.touchRadius / 2 && Math.abs(t - this.y) < this.radius + GameController.options.touchRadius / 2) return true;return false;
+    };t.prototype.draw = function () {
+      var e = this.type + "" + this.id + "" + this.active;var t = GameController.cachedSprites[e];if (!t) {
+        var n = document.createElement("canvas");var r = n.getContext("2d");r.lineWidth = this.stroke;n.width = n.height = 2 * (this.radius + r.lineWidth);var i = r.createRadialGradient(this.radius, this.radius, 1, this.radius, this.radius, this.radius);var s;switch (this.backgroundColor) {case "blue":
+            i.addColorStop(0, "rgba(123, 181, 197, 0.6)");i.addColorStop(1, "#105a78");s = "#0A4861";break;case "green":
+            i.addColorStop(0, "rgba(29, 201, 36, 0.6)");i.addColorStop(1, "#107814");s = "#085C0B";break;case "red":
+            i.addColorStop(0, "rgba(165, 34, 34, 0.6)");i.addColorStop(1, "#520101");s = "#330000";break;case "yellow":
+            i.addColorStop(0, "rgba(219, 217, 59, 0.6)");i.addColorStop(1, "#E8E10E");s = "#BDB600";break;case "white":
+          default:
+            i.addColorStop(0, "rgba( 255,255,255,.3 )");i.addColorStop(1, "#eee");break;}if (this.active) r.fillStyle = s;else r.fillStyle = i;r.strokeStyle = s;r.beginPath();r.arc(n.width / 2, n.width / 2, this.radius, 0, 2 * Math.PI, false);r.fill();r.stroke();if (this.label) {
+          r.fillStyle = s;r.font = "bold " + (this.fontSize || n.height * 0.35) + "px Verdana";r.textAlign = "center";r.textBaseline = "middle";r.fillText(this.label, n.height / 2 + 2, n.height / 2 + 2);r.fillStyle = this.fontColor;r.font = "bold " + (this.fontSize || n.height * 0.35) + "px Verdana";r.textAlign = "center";r.textBaseline = "middle";r.fillText(this.label, n.height / 2, n.height / 2);
+        }t = GameController.cachedSprites[e] = n;
+      }GameController.ctx.drawImage(t, this.x, this.y);
+    };return t;
+  })(s);var a = (function (e) {
+    function t(e) {
+      for (var t in e) this[t] = e[t];this.currentX = this.currentX || this.x;this.currentY = this.currentY || this.y;
+    }r(t, e);t.prototype.type = "joystick";t.prototype.check = function (e, t) {
+      if (Math.abs(e - this.x) < this.radius + GameController.getPixels(GameController.options.touchRadius) / 2 && Math.abs(t - this.y) < this.radius + GameController.getPixels(GameController.options.touchRadius) / 2) return true;return false;
+    };t.prototype.moveDetails = {};t.prototype.touchMoveWrapper = function (e) {
+      this.currentX = GameController.normalizeTouchPositionX(e.clientX);this.currentY = GameController.normalizeTouchPositionY(e.clientY);if (this.touchMove) {
+        if (this.moveDetails.dx != this.currentX - this.x && this.moveDetails.dy != this.y - this.currentY) {
+          this.moveDetails.dx = this.currentX - this.x;this.moveDetails.dy = this.y - this.currentY;this.moveDetails.max = this.radius + GameController.options.touchRadius / 2;this.moveDetails.normalizedX = this.moveDetails.dx / this.moveDetails.max;this.moveDetails.normalizedY = this.moveDetails.dy / this.moveDetails.max;this.touchMove(this.moveDetails);
+        }
+      }this.active = true;
+    };t.prototype.draw = function () {
+      if (!this.id) return false;var e = this.type + "" + this.id + "" + this.active;var t = GameController.cachedSprites[e];if (!t) {
+        var n = document.createElement("canvas");this.stroke = this.stroke || 2;n.width = n.height = 2 * (this.radius + GameController.options.touchRadius + this.stroke);var r = n.getContext("2d");r.lineWidth = this.stroke;if (this.active) {
+          var i = r.createRadialGradient(0, 0, 1, 0, 0, this.radius);i.addColorStop(0, "rgba( 200,200,200,.5 )");i.addColorStop(1, "rgba( 200,200,200,.9 )");r.strokeStyle = "#000";
+        } else {
+          var i = r.createRadialGradient(0, 0, 1, 0, 0, this.radius);i.addColorStop(0, "rgba( 200,200,200,.2 )");i.addColorStop(1, "rgba( 200,200,200,.4 )");r.strokeStyle = "rgba( 0,0,0,.4 )";
+        }r.fillStyle = i;r.beginPath();r.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI, false);r.fill();r.stroke();t = GameController.cachedSprites[e] = n;
+      }GameController.ctx.fillStyle = "#444";GameController.ctx.beginPath();GameController.ctx.arc(this.x, this.y, this.radius * 0.7, 0, 2 * Math.PI, false);GameController.ctx.fill();GameController.ctx.stroke();GameController.ctx.drawImage(t, this.currentX - this.radius, this.currentY - this.radius);
+    };return t;
+  })(s);var f = (function (e) {
+    function t(e) {
+      for (var t in e) {
+        if (t == "x") this[t] = GameController.getPixels(e[t], "x");else if (t == "x" || t == "radius") this[t] = GameController.getPixels(e[t], "y");else this[t] = e[t];
+      }this.draw();
+    }r(t, e);t.prototype.check = function (e, t) {
+      return false;
+    };t.prototype.draw = function () {
+      GameController.ctx.fillStyle = "rgba( 0, 0, 0, 0.5 )";GameController.ctx.beginPath();GameController.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);GameController.ctx.fill();
+    };return t;
+  })(s);(function () {
+    if (typeof module !== "undefined") return;var e = 0;var t = ["ms", "moz", "webkit", "o"];for (var n = 0; n < t.length && !window.requestAnimationFrame; ++n) {
+      window.requestAnimationFrame = window[t[n] + "RequestAnimationFrame"];window.cancelAnimationFrame = window[t[n] + "CancelAnimationFrame"] || window[t[n] + "CancelRequestAnimationFrame"];
+    }if (!window.requestAnimationFrame) window.requestAnimationFrame = function (t, n) {
+      var r = new Date().getTime();var i = Math.max(0, 16 - (r - e));var s = window.setTimeout(function () {
+        t(r + i);
+      }, i);e = r + i;return s;
+    };if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (e) {
+      clearTimeout(e);
     };
-  }function l(a, b) {
-    return typeof a == kb ? a.apply(b ? b[0] || d : d, b) : a;
-  }function m(a, b) {
-    return a === d ? b : a;
-  }function n(a, b, c) {
-    g(r(b), function (b) {
-      a.addEventListener(b, c, !1);
-    });
-  }function o(a, b, c) {
-    g(r(b), function (b) {
-      a.removeEventListener(b, c, !1);
-    });
-  }function p(a, b) {
-    for (; a;) {
-      if (a == b) return !0;a = a.parentNode;
-    }return !1;
-  }function q(a, b) {
-    return a.indexOf(b) > -1;
-  }function r(a) {
-    return a.trim().split(/\s+/g);
-  }function s(a, b, c) {
-    if (a.indexOf && !c) return a.indexOf(b);for (var d = 0; d < a.length;) {
-      if (c && a[d][c] == b || !c && a[d] === b) return d;d++;
-    }return -1;
-  }function t(a) {
-    return Array.prototype.slice.call(a, 0);
-  }function u(a, b, c) {
-    for (var d = [], e = [], f = 0; f < a.length;) {
-      var g = b ? a[f][b] : a[f];s(e, g) < 0 && d.push(a[f]), e[f] = g, f++;
-    }return (c && (d = b ? d.sort(function (a, c) {
-      return a[b] > c[b];
-    }) : d.sort()), d);
-  }function v(a, b) {
-    for (var c, e, f = b[0].toUpperCase() + b.slice(1), g = 0; g < ib.length;) {
-      if ((c = ib[g], e = c ? c + f : b, e in a)) return e;g++;
-    }return d;
-  }function w() {
-    return ob++;
-  }function x(a) {
-    var b = a.ownerDocument;return b.defaultView || b.parentWindow;
-  }function y(a, b) {
-    var c = this;this.manager = a, this.callback = b, this.element = a.element, this.target = a.options.inputTarget, this.domHandler = function (b) {
-      l(a.options.enable, [a]) && c.handler(b);
-    }, this.init();
-  }function z(a) {
-    var b,
-        c = a.options.inputClass;return new (b = c ? c : rb ? N : sb ? Q : qb ? S : M)(a, A);
-  }function A(a, b, c) {
-    var d = c.pointers.length,
-        e = c.changedPointers.length,
-        f = b & yb && d - e === 0,
-        g = b & (Ab | Bb) && d - e === 0;c.isFirst = !!f, c.isFinal = !!g, f && (a.session = {}), c.eventType = b, B(a, c), a.emit("hammer.input", c), a.recognize(c), a.session.prevInput = c;
-  }function B(a, b) {
-    var c = a.session,
-        d = b.pointers,
-        e = d.length;c.firstInput || (c.firstInput = E(b)), e > 1 && !c.firstMultiple ? c.firstMultiple = E(b) : 1 === e && (c.firstMultiple = !1);var f = c.firstInput,
-        g = c.firstMultiple,
-        h = g ? g.center : f.center,
-        i = b.center = F(d);b.timeStamp = nb(), b.deltaTime = b.timeStamp - f.timeStamp, b.angle = J(h, i), b.distance = I(h, i), C(c, b), b.offsetDirection = H(b.deltaX, b.deltaY), b.scale = g ? L(g.pointers, d) : 1, b.rotation = g ? K(g.pointers, d) : 0, D(c, b);var j = a.element;p(b.srcEvent.target, j) && (j = b.srcEvent.target), b.target = j;
-  }function C(a, b) {
-    var c = b.center,
-        d = a.offsetDelta || {},
-        e = a.prevDelta || {},
-        f = a.prevInput || {};(b.eventType === yb || f.eventType === Ab) && (e = a.prevDelta = { x: f.deltaX || 0, y: f.deltaY || 0 }, d = a.offsetDelta = { x: c.x, y: c.y }), b.deltaX = e.x + (c.x - d.x), b.deltaY = e.y + (c.y - d.y);
-  }function D(a, b) {
-    var c,
-        e,
-        f,
-        g,
-        h = a.lastInterval || b,
-        i = b.timeStamp - h.timeStamp;if (b.eventType != Bb && (i > xb || h.velocity === d)) {
-      var j = h.deltaX - b.deltaX,
-          k = h.deltaY - b.deltaY,
-          l = G(i, j, k);e = l.x, f = l.y, c = mb(l.x) > mb(l.y) ? l.x : l.y, g = H(j, k), a.lastInterval = b;
-    } else c = h.velocity, e = h.velocityX, f = h.velocityY, g = h.direction;b.velocity = c, b.velocityX = e, b.velocityY = f, b.direction = g;
-  }function E(a) {
-    for (var b = [], c = 0; c < a.pointers.length;) b[c] = { clientX: lb(a.pointers[c].clientX), clientY: lb(a.pointers[c].clientY) }, c++;return { timeStamp: nb(), pointers: b, center: F(b), deltaX: a.deltaX, deltaY: a.deltaY };
-  }function F(a) {
-    var b = a.length;if (1 === b) return { x: lb(a[0].clientX), y: lb(a[0].clientY) };for (var c = 0, d = 0, e = 0; b > e;) c += a[e].clientX, d += a[e].clientY, e++;return { x: lb(c / b), y: lb(d / b) };
-  }function G(a, b, c) {
-    return { x: b / a || 0, y: c / a || 0 };
-  }function H(a, b) {
-    return a === b ? Cb : mb(a) >= mb(b) ? a > 0 ? Db : Eb : b > 0 ? Fb : Gb;
-  }function I(a, b, c) {
-    c || (c = Kb);var d = b[c[0]] - a[c[0]],
-        e = b[c[1]] - a[c[1]];return Math.sqrt(d * d + e * e);
-  }function J(a, b, c) {
-    c || (c = Kb);var d = b[c[0]] - a[c[0]],
-        e = b[c[1]] - a[c[1]];return 180 * Math.atan2(e, d) / Math.PI;
-  }function K(a, b) {
-    return J(b[1], b[0], Lb) - J(a[1], a[0], Lb);
-  }function L(a, b) {
-    return I(b[0], b[1], Lb) / I(a[0], a[1], Lb);
-  }function M() {
-    this.evEl = Nb, this.evWin = Ob, this.allow = !0, this.pressed = !1, y.apply(this, arguments);
-  }function N() {
-    this.evEl = Rb, this.evWin = Sb, y.apply(this, arguments), this.store = this.manager.session.pointerEvents = [];
-  }function O() {
-    this.evTarget = Ub, this.evWin = Vb, this.started = !1, y.apply(this, arguments);
-  }function P(a, b) {
-    var c = t(a.touches),
-        d = t(a.changedTouches);return (b & (Ab | Bb) && (c = u(c.concat(d), "identifier", !0)), [c, d]);
-  }function Q() {
-    this.evTarget = Xb, this.targetIds = {}, y.apply(this, arguments);
-  }function R(a, b) {
-    var c = t(a.touches),
-        d = this.targetIds;if (b & (yb | zb) && 1 === c.length) return (d[c[0].identifier] = !0, [c, c]);var e,
-        f,
-        g = t(a.changedTouches),
-        h = [],
-        i = this.target;if ((f = c.filter(function (a) {
-      return p(a.target, i);
-    }), b === yb)) for (e = 0; e < f.length;) d[f[e].identifier] = !0, e++;for (e = 0; e < g.length;) d[g[e].identifier] && h.push(g[e]), b & (Ab | Bb) && delete d[g[e].identifier], e++;return h.length ? [u(f.concat(h), "identifier", !0), h] : void 0;
-  }function S() {
-    y.apply(this, arguments);var a = k(this.handler, this);this.touch = new Q(this.manager, a), this.mouse = new M(this.manager, a);
-  }function T(a, b) {
-    this.manager = a, this.set(b);
-  }function U(a) {
-    if (q(a, bc)) return bc;var b = q(a, cc),
-        c = q(a, dc);return b && c ? cc + " " + dc : b || c ? b ? cc : dc : q(a, ac) ? ac : _b;
-  }function V(a) {
-    this.id = w(), this.manager = null, this.options = i(a || {}, this.defaults), this.options.enable = m(this.options.enable, !0), this.state = ec, this.simultaneous = {}, this.requireFail = [];
-  }function W(a) {
-    return a & jc ? "cancel" : a & hc ? "end" : a & gc ? "move" : a & fc ? "start" : "";
-  }function X(a) {
-    return a == Gb ? "down" : a == Fb ? "up" : a == Db ? "left" : a == Eb ? "right" : "";
-  }function Y(a, b) {
-    var c = b.manager;return c ? c.get(a) : a;
-  }function Z() {
-    V.apply(this, arguments);
-  }function $() {
-    Z.apply(this, arguments), this.pX = null, this.pY = null;
-  }function _() {
-    Z.apply(this, arguments);
-  }function ab() {
-    V.apply(this, arguments), this._timer = null, this._input = null;
-  }function bb() {
-    Z.apply(this, arguments);
-  }function cb() {
-    Z.apply(this, arguments);
-  }function db() {
-    V.apply(this, arguments), this.pTime = !1, this.pCenter = !1, this._timer = null, this._input = null, this.count = 0;
-  }function eb(a, b) {
-    return (b = b || {}, b.recognizers = m(b.recognizers, eb.defaults.preset), new fb(a, b));
-  }function fb(a, b) {
-    b = b || {}, this.options = i(b, eb.defaults), this.options.inputTarget = this.options.inputTarget || a, this.handlers = {}, this.session = {}, this.recognizers = [], this.element = a, this.input = z(this), this.touchAction = new T(this, this.options.touchAction), gb(this, !0), g(b.recognizers, function (a) {
-      var b = this.add(new a[0](a[1]));a[2] && b.recognizeWith(a[2]), a[3] && b.requireFailure(a[3]);
-    }, this);
-  }function gb(a, b) {
-    var c = a.element;g(a.options.cssProps, function (a, d) {
-      c.style[v(c.style, d)] = b ? a : "";
-    });
-  }function hb(a, c) {
-    var d = b.createEvent("Event");d.initEvent(a, !0, !0), d.gesture = c, c.target.dispatchEvent(d);
-  }var ib = ["", "webkit", "moz", "MS", "ms", "o"],
-      jb = b.createElement("div"),
-      kb = "function",
-      lb = Math.round,
-      mb = Math.abs,
-      nb = Date.now,
-      ob = 1,
-      pb = /mobile|tablet|ip(ad|hone|od)|android/i,
-      qb = ("ontouchstart" in a),
-      rb = v(a, "PointerEvent") !== d,
-      sb = qb && pb.test(navigator.userAgent),
-      tb = "touch",
-      ub = "pen",
-      vb = "mouse",
-      wb = "kinect",
-      xb = 25,
-      yb = 1,
-      zb = 2,
-      Ab = 4,
-      Bb = 8,
-      Cb = 1,
-      Db = 2,
-      Eb = 4,
-      Fb = 8,
-      Gb = 16,
-      Hb = Db | Eb,
-      Ib = Fb | Gb,
-      Jb = Hb | Ib,
-      Kb = ["x", "y"],
-      Lb = ["clientX", "clientY"];y.prototype = { handler: function () {}, init: function () {
-      this.evEl && n(this.element, this.evEl, this.domHandler), this.evTarget && n(this.target, this.evTarget, this.domHandler), this.evWin && n(x(this.element), this.evWin, this.domHandler);
-    }, destroy: function () {
-      this.evEl && o(this.element, this.evEl, this.domHandler), this.evTarget && o(this.target, this.evTarget, this.domHandler), this.evWin && o(x(this.element), this.evWin, this.domHandler);
-    } };var Mb = { mousedown: yb, mousemove: zb, mouseup: Ab },
-      Nb = "mousedown",
-      Ob = "mousemove mouseup";j(M, y, { handler: function (a) {
-      var b = Mb[a.type];b & yb && 0 === a.button && (this.pressed = !0), b & zb && 1 !== a.which && (b = Ab), this.pressed && this.allow && (b & Ab && (this.pressed = !1), this.callback(this.manager, b, { pointers: [a], changedPointers: [a], pointerType: vb, srcEvent: a }));
-    } });var Pb = { pointerdown: yb, pointermove: zb, pointerup: Ab, pointercancel: Bb, pointerout: Bb },
-      Qb = { 2: tb, 3: ub, 4: vb, 5: wb },
-      Rb = "pointerdown",
-      Sb = "pointermove pointerup pointercancel";a.MSPointerEvent && (Rb = "MSPointerDown", Sb = "MSPointerMove MSPointerUp MSPointerCancel"), j(N, y, { handler: function (a) {
-      var b = this.store,
-          c = !1,
-          d = a.type.toLowerCase().replace("ms", ""),
-          e = Pb[d],
-          f = Qb[a.pointerType] || a.pointerType,
-          g = f == tb,
-          h = s(b, a.pointerId, "pointerId");e & yb && (0 === a.button || g) ? 0 > h && (b.push(a), h = b.length - 1) : e & (Ab | Bb) && (c = !0), 0 > h || (b[h] = a, this.callback(this.manager, e, { pointers: b, changedPointers: [a], pointerType: f, srcEvent: a }), c && b.splice(h, 1));
-    } });var Tb = { touchstart: yb, touchmove: zb, touchend: Ab, touchcancel: Bb },
-      Ub = "touchstart",
-      Vb = "touchstart touchmove touchend touchcancel";j(O, y, { handler: function (a) {
-      var b = Tb[a.type];if ((b === yb && (this.started = !0), this.started)) {
-        var c = P.call(this, a, b);b & (Ab | Bb) && c[0].length - c[1].length === 0 && (this.started = !1), this.callback(this.manager, b, { pointers: c[0], changedPointers: c[1], pointerType: tb, srcEvent: a });
-      }
-    } });var Wb = { touchstart: yb, touchmove: zb, touchend: Ab, touchcancel: Bb },
-      Xb = "touchstart touchmove touchend touchcancel";j(Q, y, { handler: function (a) {
-      var b = Wb[a.type],
-          c = R.call(this, a, b);c && this.callback(this.manager, b, { pointers: c[0], changedPointers: c[1], pointerType: tb, srcEvent: a });
-    } }), j(S, y, { handler: function (a, b, c) {
-      var d = c.pointerType == tb,
-          e = c.pointerType == vb;if (d) this.mouse.allow = !1;else if (e && !this.mouse.allow) return;b & (Ab | Bb) && (this.mouse.allow = !0), this.callback(a, b, c);
-    }, destroy: function () {
-      this.touch.destroy(), this.mouse.destroy();
-    } });var Yb = v(jb.style, "touchAction"),
-      Zb = Yb !== d,
-      $b = "compute",
-      _b = "auto",
-      ac = "manipulation",
-      bc = "none",
-      cc = "pan-x",
-      dc = "pan-y";T.prototype = { set: function (a) {
-      a == $b && (a = this.compute()), Zb && (this.manager.element.style[Yb] = a), this.actions = a.toLowerCase().trim();
-    }, update: function () {
-      this.set(this.manager.options.touchAction);
-    }, compute: function () {
-      var a = [];return (g(this.manager.recognizers, function (b) {
-        l(b.options.enable, [b]) && (a = a.concat(b.getTouchAction()));
-      }), U(a.join(" ")));
-    }, preventDefaults: function (a) {
-      if (!Zb) {
-        var b = a.srcEvent,
-            c = a.offsetDirection;if (this.manager.session.prevented) return void b.preventDefault();var d = this.actions,
-            e = q(d, bc),
-            f = q(d, dc),
-            g = q(d, cc);return e || f && c & Hb || g && c & Ib ? this.preventSrc(b) : void 0;
-      }
-    }, preventSrc: function (a) {
-      this.manager.session.prevented = !0, a.preventDefault();
-    } };var ec = 1,
-      fc = 2,
-      gc = 4,
-      hc = 8,
-      ic = hc,
-      jc = 16,
-      kc = 32;V.prototype = { defaults: {}, set: function (a) {
-      return (h(this.options, a), this.manager && this.manager.touchAction.update(), this);
-    }, recognizeWith: function (a) {
-      if (f(a, "recognizeWith", this)) return this;var b = this.simultaneous;return (a = Y(a, this), b[a.id] || (b[a.id] = a, a.recognizeWith(this)), this);
-    }, dropRecognizeWith: function (a) {
-      return f(a, "dropRecognizeWith", this) ? this : (a = Y(a, this), delete this.simultaneous[a.id], this);
-    }, requireFailure: function (a) {
-      if (f(a, "requireFailure", this)) return this;var b = this.requireFail;return (a = Y(a, this), -1 === s(b, a) && (b.push(a), a.requireFailure(this)), this);
-    }, dropRequireFailure: function (a) {
-      if (f(a, "dropRequireFailure", this)) return this;a = Y(a, this);var b = s(this.requireFail, a);return (b > -1 && this.requireFail.splice(b, 1), this);
-    }, hasRequireFailures: function () {
-      return this.requireFail.length > 0;
-    }, canRecognizeWith: function (a) {
-      return !!this.simultaneous[a.id];
-    }, emit: function (a) {
-      function b(b) {
-        c.manager.emit(c.options.event + (b ? W(d) : ""), a);
-      }var c = this,
-          d = this.state;hc > d && b(!0), b(), d >= hc && b(!0);
-    }, tryEmit: function (a) {
-      return this.canEmit() ? this.emit(a) : void (this.state = kc);
-    }, canEmit: function () {
-      for (var a = 0; a < this.requireFail.length;) {
-        if (!(this.requireFail[a].state & (kc | ec))) return !1;a++;
-      }return !0;
-    }, recognize: function (a) {
-      var b = h({}, a);return l(this.options.enable, [this, b]) ? (this.state & (ic | jc | kc) && (this.state = ec), this.state = this.process(b), void (this.state & (fc | gc | hc | jc) && this.tryEmit(b))) : (this.reset(), void (this.state = kc));
-    }, process: function () {}, getTouchAction: function () {}, reset: function () {} }, j(Z, V, { defaults: { pointers: 1 }, attrTest: function (a) {
-      var b = this.options.pointers;return 0 === b || a.pointers.length === b;
-    }, process: function (a) {
-      var b = this.state,
-          c = a.eventType,
-          d = b & (fc | gc),
-          e = this.attrTest(a);return d && (c & Bb || !e) ? b | jc : d || e ? c & Ab ? b | hc : b & fc ? b | gc : fc : kc;
-    } }), j($, Z, { defaults: { event: "pan", threshold: 10, pointers: 1, direction: Jb }, getTouchAction: function () {
-      var a = this.options.direction,
-          b = [];return (a & Hb && b.push(dc), a & Ib && b.push(cc), b);
-    }, directionTest: function (a) {
-      var b = this.options,
-          c = !0,
-          d = a.distance,
-          e = a.direction,
-          f = a.deltaX,
-          g = a.deltaY;return (e & b.direction || (b.direction & Hb ? (e = 0 === f ? Cb : 0 > f ? Db : Eb, c = f != this.pX, d = Math.abs(a.deltaX)) : (e = 0 === g ? Cb : 0 > g ? Fb : Gb, c = g != this.pY, d = Math.abs(a.deltaY))), a.direction = e, c && d > b.threshold && e & b.direction);
-    }, attrTest: function (a) {
-      return Z.prototype.attrTest.call(this, a) && (this.state & fc || !(this.state & fc) && this.directionTest(a));
-    }, emit: function (a) {
-      this.pX = a.deltaX, this.pY = a.deltaY;var b = X(a.direction);b && this.manager.emit(this.options.event + b, a), this._super.emit.call(this, a);
-    } }), j(_, Z, { defaults: { event: "pinch", threshold: 0, pointers: 2 }, getTouchAction: function () {
-      return [bc];
-    }, attrTest: function (a) {
-      return this._super.attrTest.call(this, a) && (Math.abs(a.scale - 1) > this.options.threshold || this.state & fc);
-    }, emit: function (a) {
-      if ((this._super.emit.call(this, a), 1 !== a.scale)) {
-        var b = a.scale < 1 ? "in" : "out";this.manager.emit(this.options.event + b, a);
-      }
-    } }), j(ab, V, { defaults: { event: "press", pointers: 1, time: 500, threshold: 5 }, getTouchAction: function () {
-      return [_b];
-    }, process: function (a) {
-      var b = this.options,
-          c = a.pointers.length === b.pointers,
-          d = a.distance < b.threshold,
-          f = a.deltaTime > b.time;if ((this._input = a, !d || !c || a.eventType & (Ab | Bb) && !f)) this.reset();else if (a.eventType & yb) this.reset(), this._timer = e(function () {
-        this.state = ic, this.tryEmit();
-      }, b.time, this);else if (a.eventType & Ab) return ic;return kc;
-    }, reset: function () {
-      clearTimeout(this._timer);
-    }, emit: function (a) {
-      this.state === ic && (a && a.eventType & Ab ? this.manager.emit(this.options.event + "up", a) : (this._input.timeStamp = nb(), this.manager.emit(this.options.event, this._input)));
-    } }), j(bb, Z, { defaults: { event: "rotate", threshold: 0, pointers: 2 }, getTouchAction: function () {
-      return [bc];
-    }, attrTest: function (a) {
-      return this._super.attrTest.call(this, a) && (Math.abs(a.rotation) > this.options.threshold || this.state & fc);
-    } }), j(cb, Z, { defaults: { event: "swipe", threshold: 10, velocity: 0.65, direction: Hb | Ib, pointers: 1 }, getTouchAction: function () {
-      return $.prototype.getTouchAction.call(this);
-    }, attrTest: function (a) {
-      var b,
-          c = this.options.direction;return (c & (Hb | Ib) ? b = a.velocity : c & Hb ? b = a.velocityX : c & Ib && (b = a.velocityY), this._super.attrTest.call(this, a) && c & a.direction && a.distance > this.options.threshold && mb(b) > this.options.velocity && a.eventType & Ab);
-    }, emit: function (a) {
-      var b = X(a.direction);b && this.manager.emit(this.options.event + b, a), this.manager.emit(this.options.event, a);
-    } }), j(db, V, { defaults: { event: "tap", pointers: 1, taps: 1, interval: 300, time: 250, threshold: 2, posThreshold: 10 }, getTouchAction: function () {
-      return [ac];
-    }, process: function (a) {
-      var b = this.options,
-          c = a.pointers.length === b.pointers,
-          d = a.distance < b.threshold,
-          f = a.deltaTime < b.time;if ((this.reset(), a.eventType & yb && 0 === this.count)) return this.failTimeout();if (d && f && c) {
-        if (a.eventType != Ab) return this.failTimeout();var g = this.pTime ? a.timeStamp - this.pTime < b.interval : !0,
-            h = !this.pCenter || I(this.pCenter, a.center) < b.posThreshold;this.pTime = a.timeStamp, this.pCenter = a.center, h && g ? this.count += 1 : this.count = 1, this._input = a;var i = this.count % b.taps;if (0 === i) return this.hasRequireFailures() ? (this._timer = e(function () {
-          this.state = ic, this.tryEmit();
-        }, b.interval, this), fc) : ic;
-      }return kc;
-    }, failTimeout: function () {
-      return (this._timer = e(function () {
-        this.state = kc;
-      }, this.options.interval, this), kc);
-    }, reset: function () {
-      clearTimeout(this._timer);
-    }, emit: function () {
-      this.state == ic && (this._input.tapCount = this.count, this.manager.emit(this.options.event, this._input));
-    } }), eb.VERSION = "2.0.4", eb.defaults = { domEvents: !1, touchAction: $b, enable: !0, inputTarget: null, inputClass: null, preset: [[bb, { enable: !1 }], [_, { enable: !1 }, ["rotate"]], [cb, { direction: Hb }], [$, { direction: Hb }, ["swipe"]], [db], [db, { event: "doubletap", taps: 2 }, ["tap"]], [ab]], cssProps: { userSelect: "none", touchSelect: "none", touchCallout: "none", contentZooming: "none", userDrag: "none", tapHighlightColor: "rgba(0,0,0,0)" } };var lc = 1,
-      mc = 2;fb.prototype = { set: function (a) {
-      return (h(this.options, a), a.touchAction && this.touchAction.update(), a.inputTarget && (this.input.destroy(), this.input.target = a.inputTarget, this.input.init()), this);
-    }, stop: function (a) {
-      this.session.stopped = a ? mc : lc;
-    }, recognize: function (a) {
-      var b = this.session;if (!b.stopped) {
-        this.touchAction.preventDefaults(a);var c,
-            d = this.recognizers,
-            e = b.curRecognizer;(!e || e && e.state & ic) && (e = b.curRecognizer = null);for (var f = 0; f < d.length;) c = d[f], b.stopped === mc || e && c != e && !c.canRecognizeWith(e) ? c.reset() : c.recognize(a), !e && c.state & (fc | gc | hc) && (e = b.curRecognizer = c), f++;
-      }
-    }, get: function (a) {
-      if (a instanceof V) return a;for (var b = this.recognizers, c = 0; c < b.length; c++) if (b[c].options.event == a) return b[c];return null;
-    }, add: function (a) {
-      if (f(a, "add", this)) return this;var b = this.get(a.options.event);return (b && this.remove(b), this.recognizers.push(a), a.manager = this, this.touchAction.update(), a);
-    }, remove: function (a) {
-      if (f(a, "remove", this)) return this;var b = this.recognizers;return (a = this.get(a), b.splice(s(b, a), 1), this.touchAction.update(), this);
-    }, on: function (a, b) {
-      var c = this.handlers;return (g(r(a), function (a) {
-        c[a] = c[a] || [], c[a].push(b);
-      }), this);
-    }, off: function (a, b) {
-      var c = this.handlers;return (g(r(a), function (a) {
-        b ? c[a].splice(s(c[a], b), 1) : delete c[a];
-      }), this);
-    }, emit: function (a, b) {
-      this.options.domEvents && hb(a, b);var c = this.handlers[a] && this.handlers[a].slice();if (c && c.length) {
-        b.type = a, b.preventDefault = function () {
-          b.srcEvent.preventDefault();
-        };for (var d = 0; d < c.length;) c[d](b), d++;
-      }
-    }, destroy: function () {
-      this.element && gb(this, !1), this.handlers = {}, this.session = {}, this.input.destroy(), this.element = null;
-    } }, h(eb, { INPUT_START: yb, INPUT_MOVE: zb, INPUT_END: Ab, INPUT_CANCEL: Bb, STATE_POSSIBLE: ec, STATE_BEGAN: fc, STATE_CHANGED: gc, STATE_ENDED: hc, STATE_RECOGNIZED: ic, STATE_CANCELLED: jc, STATE_FAILED: kc, DIRECTION_NONE: Cb, DIRECTION_LEFT: Db, DIRECTION_RIGHT: Eb, DIRECTION_UP: Fb, DIRECTION_DOWN: Gb, DIRECTION_HORIZONTAL: Hb, DIRECTION_VERTICAL: Ib, DIRECTION_ALL: Jb, Manager: fb, Input: y, TouchAction: T, TouchInput: Q, MouseInput: M, PointerEventInput: N, TouchMouseInput: S, SingleTouchInput: O, Recognizer: V, AttrRecognizer: Z, Tap: db, Pan: $, Swipe: cb, Pinch: _, Rotate: bb, Press: ab, on: n, off: o, each: g, merge: i, extend: h, inherit: j, bindFn: k, prefixed: v }), typeof define == kb && define.amd ? define(function () {
-    return eb;
-  }) : "undefined" != typeof module && module.exports ? module.exports = eb : a[c] = eb;
-})(window, document, "Hammer");
+  })();
+})(typeof module !== "undefined" ? module.exports : window);
 "use strict";
 
 /*!
@@ -4002,24 +3900,6 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     var CANVAS_WIDTH = 720;
     var CANVAS_HEIGHT = 480;
 
-    // Viewport Setup
-    function setStage() {
-        var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        var viewportHight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-        if (viewportWidth < CANVAS_WIDTH) {
-            $("#GameCanvas").attr("width", viewportWidth).attr("height", viewportHight);
-            $(".notifications").css("width", viewportWidth);
-
-            CANVAS_WIDTH = viewportWidth;
-            CANVAS_HEIGHT = viewportHight;
-        } else {
-            $("#GameCanvas").attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
-            $(".notifications").css("width", CANVAS_WIDTH);
-        }
-    }
-    setStage();
-
     //region Game Objects
     var Ship = (function () {
         function Ship(properties) {
@@ -4432,12 +4312,6 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
     });
 
     ENGINE.controls.onkey("enter", function () {
-        if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
-            startNewGame();
-        }
-    });
-
-    $("body").on("click", function () {
         if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         }

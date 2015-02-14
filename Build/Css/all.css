@@ -17,6 +17,7 @@ canvas {
 .notifications {
   margin: 0 auto;
   position: relative;
+  width: 720px;
 }
 
 .label {

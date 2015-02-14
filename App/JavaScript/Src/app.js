@@ -18,26 +18,8 @@
     let ctx = canvas.getContext('2d');
     let gameState = GAME_STATE.START;
 
-    let CANVAS_WIDTH = 720;
-    let CANVAS_HEIGHT = 480;
-
-    // Viewport Setup
-    function setStage() {
-        let viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        let viewportHight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-        if (viewportWidth < CANVAS_WIDTH) {
-            $('#GameCanvas').attr('width', viewportWidth).attr('height', viewportHight);
-            $('.notifications').css('width', viewportWidth);
-
-            CANVAS_WIDTH = viewportWidth;
-            CANVAS_HEIGHT = viewportHight;
-        } else {
-            $('#GameCanvas').attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
-            $('.notifications').css('width', CANVAS_WIDTH);
-        }
-    }
-    setStage();
+    const CANVAS_WIDTH = 720;
+    const CANVAS_HEIGHT = 480;
 
     //region Game Objects
     class Ship {
@@ -365,12 +347,6 @@
     });
 
     ENGINE.controls.onkey('enter', function() {
-        if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
-            startNewGame();
-        }
-    });
-
-    $('body').on('click', function() {
         if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         }

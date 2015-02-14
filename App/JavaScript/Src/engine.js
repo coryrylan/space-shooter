@@ -2,14 +2,45 @@
     'use strict';
 
     let factory = (function() {
-        function GameObject() {
-            this.settings = {
-                color: '#000000',
-                width: 50,
-                height: 50,
-                posX: 0,
-                posY: 0
-            };
+        class Game {
+            constructor(properties) {
+                this._update = properties.update;
+                this._draw = properties.draw;
+            }
+
+            update() {
+                this._update();
+            }
+
+            draw() {
+                this._draw();
+            }
+
+            start() {
+                var gameLoop = function() {
+                    this._update();
+                    this._draw();
+                    requestAnimationFrame(gameLoop);
+                }.bind(this);
+
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        class GameObject {
+            constructor() {
+                this.settings = {
+                    color: '#000000',
+                    width: 50,
+                    height: 50,
+                    posX: 0,
+                    posY: 0
+                };
+            }
+        }
+
+        function createGame(update, draw) {
+            return new Game(update, draw);
         }
 
         function createGameObject() {
@@ -17,6 +48,7 @@
         }
 
         return {
+            createGame: createGame,
             createGameObject: createGameObject
         };
     }());

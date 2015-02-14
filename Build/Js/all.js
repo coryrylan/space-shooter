@@ -3661,12 +3661,59 @@
 })();
 "use strict";
 
+var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
 window.ENGINE = (function () {
     // Temp until we get a module system in place (Convert to a ES6 module)
     "use strict";
 
     var factory = (function () {
-        function GameObject() {
+        var Game = (function () {
+            function Game(properties) {
+                _classCallCheck(this, Game);
+
+                this._update = properties.update;
+                this._draw = properties.draw;
+            }
+
+            _prototypeProperties(Game, null, {
+                update: {
+                    value: function update() {
+                        this._update();
+                    },
+                    writable: true,
+                    configurable: true
+                },
+                draw: {
+                    value: function draw() {
+                        this._draw();
+                    },
+                    writable: true,
+                    configurable: true
+                },
+                start: {
+                    value: function start() {
+                        var gameLoop = (function () {
+                            this._update();
+                            this._draw();
+                            requestAnimationFrame(gameLoop);
+                        }).bind(this);
+
+                        requestAnimationFrame(gameLoop);
+                    },
+                    writable: true,
+                    configurable: true
+                }
+            });
+
+            return Game;
+        })();
+
+        var GameObject = function GameObject() {
+            _classCallCheck(this, GameObject);
+
             this.settings = {
                 color: "#000000",
                 width: 50,
@@ -3674,6 +3721,10 @@ window.ENGINE = (function () {
                 posX: 0,
                 posY: 0
             };
+        };
+
+        function createGame(update, draw) {
+            return new Game(update, draw);
         }
 
         function createGameObject() {
@@ -3681,6 +3732,7 @@ window.ENGINE = (function () {
         }
 
         return {
+            createGame: createGame,
             createGameObject: createGameObject
         };
     })();
@@ -3877,36 +3929,17 @@ window.ENGINE = (function () {
     };
 })();
 "use strict";
-"use strict";
 
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-(function () {
+window.Ship = (function () {
     "use strict";
-
-    // Global Dependencies
-    var Howl = window.Howl;
-    var ENGINE = window.ENGINE;
-    var GAME_STATE = {
-        START: "START",
-        PLAY: "PLAY",
-        PAUSE: "PAUSE",
-        OVER: "OVER"
-    };
-
-    // Game Globals
-    var gameScore = 0;
-    var gameLives = 3;
-    var canvas = document.getElementById("GameCanvas");
-    var ctx = canvas.getContext("2d");
-    var gameState = GAME_STATE.START;
 
     var CANVAS_WIDTH = 720;
     var CANVAS_HEIGHT = 480;
 
-    //region Game Objects
     var Ship = (function () {
         function Ship(properties) {
             _classCallCheck(this, Ship);
@@ -3994,6 +4027,19 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         return Ship;
     })();
 
+    return Ship;
+})();
+"use strict";
+
+var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+window.Laser = (function () {
+    "use strict";
+
+    var Howl = window.Howl;
+
     var Laser = (function () {
         function Laser(originX, originY) {
             _classCallCheck(this, Laser);
@@ -4041,48 +4087,11 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         return Laser;
     })();
 
-    var Asteroid = (function () {
-        function Asteroid() {
-            _classCallCheck(this, Asteroid);
+    return Laser;
+})();
 
-            var range = ENGINE.util.getRandomNumber(30, 100);
-
-            this.settings = {
-                width: range,
-                height: range,
-                speed: ENGINE.util.getRandomNumber(2, 6)
-            };
-
-            this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH);
-            this.settings.posY = this.settings.height * -2;
-
-            this.img = new Image();
-            this.img.src = "App/Content/Images/asteroid-" + ENGINE.util.getRandomNumber(1, 4) + ".png";
-        }
-
-        _prototypeProperties(Asteroid, null, {
-            draw: {
-                value: function draw(context) {
-                    context.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-
-                    //this.img.onload = function() {
-                    //    ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-                    //}.bind(this);
-                },
-                writable: true,
-                configurable: true
-            },
-            update: {
-                value: function update() {
-                    this.settings.posY += this.settings.speed;
-                },
-                writable: true,
-                configurable: true
-            }
-        });
-
-        return Asteroid;
-    })();
+window.LaserCollection = (function () {
+    "use strict";
 
     var LaserCollection = (function () {
         function LaserCollection() {
@@ -4138,18 +4147,77 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         return LaserCollection;
     })();
 
+    return LaserCollection;
+})();
+"use strict";
+
+var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+window.Asteroid = (function () {
+    "use strict";
+
+    var CANVAS_WIDTH = 720;
+    var CANVAS_HEIGHT = 480;
+
+    var Asteroid = (function () {
+        function Asteroid() {
+            _classCallCheck(this, Asteroid);
+
+            var range = ENGINE.util.getRandomNumber(30, 100);
+
+            this.settings = {
+                width: range,
+                height: range,
+                speed: ENGINE.util.getRandomNumber(2, 6)
+            };
+
+            this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH);
+            this.settings.posY = this.settings.height * -2;
+
+            this.img = new Image();
+            this.img.src = "App/Content/Images/asteroid-" + ENGINE.util.getRandomNumber(1, 4) + ".png";
+        }
+
+        _prototypeProperties(Asteroid, null, {
+            draw: {
+                value: function draw(context) {
+                    context.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+
+                    //this.img.onload = function() {
+                    //    ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
+                    //}.bind(this);
+                },
+                writable: true,
+                configurable: true
+            },
+            update: {
+                value: function update() {
+                    this.settings.posY += this.settings.speed;
+                },
+                writable: true,
+                configurable: true
+            }
+        });
+
+        return Asteroid;
+    })();
+
+    return Asteroid;
+})();
+
+window.AsteroidCollection = (function () {
+    "use strict";
+
+    var CANVAS_WIDTH = 720;
+    var CANVAS_HEIGHT = 480;
+
     var AsteroidCollection = (function () {
         function AsteroidCollection() {
             _classCallCheck(this, AsteroidCollection);
 
             this.list = [];
-
-            setInterval((function () {
-                if (gameState === GAME_STATE.PLAY) {
-                    var asteroid = new Asteroid();
-                    this.list.push(asteroid);
-                }
-            }).bind(this), 140 - CANVAS_WIDTH / 100);
         }
 
         _prototypeProperties(AsteroidCollection, null, {
@@ -4187,48 +4255,36 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         return AsteroidCollection;
     })();
 
-    var Game = (function () {
-        function Game(properties) {
-            _classCallCheck(this, Game);
+    return AsteroidCollection;
+})();
+"use strict";
 
-            this._update = properties.update;
-            this._draw = properties.draw;
-        }
+(function () {
+    "use strict";
 
-        _prototypeProperties(Game, null, {
-            update: {
-                value: function update() {
-                    this._update();
-                },
-                writable: true,
-                configurable: true
-            },
-            draw: {
-                value: function draw() {
-                    this._draw();
-                },
-                writable: true,
-                configurable: true
-            },
-            start: {
-                value: function start() {
-                    var gameLoop = (function () {
-                        this._update();
-                        this._draw();
-                        requestAnimationFrame(gameLoop);
-                    }).bind(this);
+    // Dependencies will update to es6 modules
+    var ENGINE = window.ENGINE;
+    var Ship = window.Ship;
+    var LaserCollection = window.LaserCollection;
+    var AsteroidCollection = window.AsteroidCollection;
 
-                    requestAnimationFrame(gameLoop);
-                },
-                writable: true,
-                configurable: true
-            }
-        });
+    // Enums
+    var GAME_STATE = {
+        START: "START",
+        PLAY: "PLAY",
+        PAUSE: "PAUSE",
+        OVER: "OVER"
+    };
 
-        return Game;
-    })();
+    // Game Globals
+    var gameScore = 0;
+    var gameLives = 3;
+    var canvas = document.getElementById("GameCanvas");
+    var ctx = canvas.getContext("2d");
+    var gameState = GAME_STATE.START;
 
-    //endregion
+    var CANVAS_WIDTH = 720;
+    var CANVAS_HEIGHT = 480;
 
     //region Game
     var playerShip = new Ship({
@@ -4264,56 +4320,46 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
         playerShip.lasers.list.forEach(checkLaserCollision);
     };
 
-    var update = function () {
-        if (gameState === GAME_STATE.START) {
-            return;
+    var game = ENGINE.factory.createGame({
+        update: function () {
+            if (gameState === GAME_STATE.START) {
+                return;
+            } else if (gameState === GAME_STATE.PLAY) {
+                asteroids.update();
+                playerShip.update();
+                checkShipAndAsteroidCollision();
+                checkShipLaserAndAsteroidCollision();
+            } else if (gameState === GAME_STATE.PAUSE) {
+                return;
+            } else if (gameState === GAME_STATE.OVER) {
+                return;
+            }
+        },
+        draw: function () {
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            drawScore();
+            drawLives();
+
+            if (gameState === GAME_STATE.START) {
+                drawStartScreen();
+            } else if (gameState === GAME_STATE.PLAY) {
+                playerShip.draw(ctx);
+                asteroids.draw(ctx);
+            } else if (gameState === GAME_STATE.PAUSE) {} else if (gameState === GAME_STATE.OVER) {
+                endGame();
+            } else {
+                drawStartScreen();
+            }
         }
-
-        if (gameState === GAME_STATE.PLAY) {
-            asteroids.update();
-            playerShip.update();
-            checkShipAndAsteroidCollision();
-            checkShipLaserAndAsteroidCollision();
-        }
-
-        if (gameState === GAME_STATE.PAUSE) {
-            return;
-        }
-
-        if (gameState === GAME_STATE.OVER) {
-            return;
-        }
-    };
-
-    var draw = function () {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawScore();
-        drawLives();
-
-        if (gameState === GAME_STATE.START) {
-            drawStartScreen();
-        }
-
-        if (gameState === GAME_STATE.PLAY) {
-            playerShip.draw(ctx);
-            asteroids.draw(ctx);
-        }
-
-        if (gameState === GAME_STATE.PAUSE) {
-            return;
-        }
-
-        if (gameState === GAME_STATE.OVER) {
-            endGame();
-        }
-    };
-
-    var game = new Game({
-        update: update,
-        draw: draw
     });
 
     game.start();
+
+    setInterval(function () {
+        if (gameState === GAME_STATE.PLAY) {
+            asteroids.list.push(new Asteroid());
+        }
+    }, 140 - CANVAS_WIDTH / 100);
     //endregion
 
     //region Game Controls

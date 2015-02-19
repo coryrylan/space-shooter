@@ -1,6 +1,5 @@
 ﻿var gulp = require('gulp');
 var plug = require('gulp-load-plugins')();
-var to5 = require('gulp-6to5');
 
 var jsLibraries = [
     './App/JavaScript/Libraries/requestAnimationFramePolly.js',
@@ -42,7 +41,7 @@ gulp.task('styles', function() {
 gulp.task('js', function() {
     return gulp
         .src(jsLibraries.concat(jsSource))
-        .pipe(to5())
+        .pipe(plug.babel())
         .pipe(plug.concat('all.js'))
         .pipe(gulp.dest('./Build/Js'))
         .pipe(plug.rename({ suffix: '.min' }))

@@ -277,13 +277,27 @@
                         r = 0;while (e[n++] = t[r++]);e.length = n - 1;
                 } };
         }function ot(e, t, r, i) {
-            var o, s, a, u, l, f, g, m, x, w;if (((t ? t.ownerDocument || t : b) !== p && c(t), t = t || p, r = r || [], !e || "string" != typeof e)) return r;if (1 !== (u = t.nodeType) && 9 !== u) return [];if (h && !i) {
+            var o, s, a, u, l, f, g, m, x, w;if (((t ? t.ownerDocument || t : b) !== p && c(t), t = t || p, r = r || [], !e || "string" != typeof e)) {
+                return r;
+            }if (1 !== (u = t.nodeType) && 9 !== u) {
+                return [];
+            }if (h && !i) {
                 if (o = K.exec(e)) if (a = o[1]) {
                     if (9 === u) {
-                        if ((s = t.getElementById(a), !s || !s.parentNode)) return r;if (s.id === a) return (r.push(s), r);
-                    } else if (t.ownerDocument && (s = t.ownerDocument.getElementById(a)) && y(t, s) && s.id === a) return (r.push(s), r);
+                        if ((s = t.getElementById(a), !s || !s.parentNode)) {
+                            return r;
+                        }if (s.id === a) {
+                            return (r.push(s), r);
+                        }
+                    } else if (t.ownerDocument && (s = t.ownerDocument.getElementById(a)) && y(t, s) && s.id === a) {
+                        return (r.push(s), r);
+                    }
                 } else {
-                    if (o[2]) return (O.apply(r, t.getElementsByTagName(e)), r);if ((a = o[3]) && n.getElementsByClassName && t.getElementsByClassName) return (O.apply(r, t.getElementsByClassName(a)), r);
+                    if (o[2]) {
+                        return (O.apply(r, t.getElementsByTagName(e)), r);
+                    }if ((a = o[3]) && n.getElementsByClassName && t.getElementsByClassName) {
+                        return (O.apply(r, t.getElementsByClassName(a)), r);
+                    }
                 }if (n.qsa && (!d || !d.test(e))) {
                     if ((m = g = v, x = t, w = 9 === u && e, 1 === u && "object" !== t.nodeName.toLowerCase())) {
                         f = gt(e), (g = t.getAttribute("id")) ? m = g.replace(tt, "\\$&") : t.setAttribute("id", m), m = "[id='" + m + "'] ", l = f.length;while (l--) f[l] = m + mt(f[l]);x = U.test(e) && t.parentNode || t, w = f.join(",");
@@ -313,7 +327,11 @@
                 r = e.length;while (r--) i.attrHandle[n[r]] = t;
         }function ct(e, t) {
             var n = t && e,
-                r = n && 1 === e.nodeType && 1 === t.nodeType && (~t.sourceIndex || D) - (~e.sourceIndex || D);if (r) return r;if (n) while (n = n.nextSibling) if (n === t) return -1;return e ? 1 : -1;
+                r = n && 1 === e.nodeType && 1 === t.nodeType && (~t.sourceIndex || D) - (~e.sourceIndex || D);if (r) {
+                return r;
+            }if (n) while (n = n.nextSibling) if (n === t) {
+                return -1;
+            }return e ? 1 : -1;
         }function pt(e) {
             return function (t) {
                 var n = t.nodeName.toLowerCase();return "input" === n && t.type === e;
@@ -544,7 +562,9 @@
                 a,
                 u,
                 l,
-                c = k[e + " "];if (c) return t ? 0 : c.slice(0);a = e, u = [], l = i.preFilter;while (a) {
+                c = k[e + " "];if (c) {
+                return t ? 0 : c.slice(0);
+            }a = e, u = [], l = i.preFilter;while (a) {
                 (!n || (r = _.exec(a))) && (r && (a = a.slice(r[0].length) || a), u.push(o = [])), n = !1, (r = X.exec(a)) && (n = r.shift(), o.push({ value: n, type: r[0].replace(z, " ") }), a = a.slice(n.length));for (s in i.filter) !(r = J[s].exec(a)) || l[s] && !(r = l[s](r)) || (n = r.shift(), o.push({ value: n, type: s, matches: r }), a = a.slice(n.length));if (!n) break;
             }return t ? a.length : a ? ot.error(e) : k(e, u).slice(0);
         }function mt(e) {
@@ -662,10 +682,14 @@
                 p,
                 f = gt(e);if (!o && 1 === f.length) {
                 if ((u = f[0] = f[0].slice(0), u.length > 2 && "ID" === (l = u[0]).type && n.getById && 9 === t.nodeType && h && i.relative[u[1].type])) {
-                    if ((t = (i.find.ID(l.matches[0].replace(nt, rt), t) || [])[0], !t)) return r;e = e.slice(u.shift().value.length);
+                    if ((t = (i.find.ID(l.matches[0].replace(nt, rt), t) || [])[0], !t)) {
+                        return r;
+                    }e = e.slice(u.shift().value.length);
                 }s = J.needsContext.test(e) ? 0 : u.length;while (s--) {
                     if ((l = u[s], i.relative[c = l.type])) break;if ((p = i.find[c]) && (o = p(l.matches[0].replace(nt, rt), U.test(u[0].type) && t.parentNode || t))) {
-                        if ((u.splice(s, 1), e = o.length && mt(u), !e)) return (O.apply(r, o), r);break;
+                        if ((u.splice(s, 1), e = o.length && mt(u), !e)) {
+                            return (O.apply(r, o), r);
+                        }break;
                     }
                 }
             }return (a(e, f)(o, t, !h, r, U.test(e)), r);
@@ -1265,12 +1289,18 @@
         }, sibling: function (e, t) {
             var n = [];for (; e; e = e.nextSibling) 1 === e.nodeType && e !== t && n.push(e);return n;
         } });function et(e, t, n) {
-        if (x.isFunction(t)) return x.grep(e, function (e, r) {
-            return !!t.call(e, r, e) !== n;
-        });if (t.nodeType) return x.grep(e, function (e) {
-            return e === t !== n;
-        });if ("string" == typeof t) {
-            if (G.test(t)) return x.filter(t, e, n);t = x.filter(t, e);
+        if (x.isFunction(t)) {
+            return x.grep(e, function (e, r) {
+                return !!t.call(e, r, e) !== n;
+            });
+        }if (t.nodeType) {
+            return x.grep(e, function (e) {
+                return e === t !== n;
+            });
+        }if ("string" == typeof t) {
+            if (G.test(t)) {
+                return x.filter(t, e, n);
+            }t = x.filter(t, e);
         }return x.grep(e, function (e) {
             return g.call(t, e) >= 0 !== n;
         });
@@ -1452,9 +1482,13 @@
         St = { letterSpacing: 0, fontWeight: 400 },
         jt = ["Top", "Right", "Bottom", "Left"],
         Dt = ["Webkit", "O", "Moz", "ms"];function At(e, t) {
-        if (t in e) return t;var n = t.charAt(0).toUpperCase() + t.slice(1),
+        if (t in e) {
+            return t;
+        }var n = t.charAt(0).toUpperCase() + t.slice(1),
             r = t,
-            i = Dt.length;while (i--) if ((t = Dt[i] + n, t in e)) return t;return r;
+            i = Dt.length;while (i--) if ((t = Dt[i] + n, t in e)) {
+            return t;
+        }return r;
     }function Lt(e, t) {
         return (e = t || e, "none" === x.css(e, "display") || !x.contains(e.ownerDocument, e));
     }function qt(t) {
@@ -1517,7 +1551,9 @@
             i = "width" === t ? e.offsetWidth : e.offsetHeight,
             o = qt(e),
             s = x.support.boxSizing && "border-box" === x.css(e, "boxSizing", !1, o);if (0 >= i || null == i) {
-            if ((i = vt(e, t, o), (0 > i || null == i) && (i = e.style[t]), Ct.test(i))) return i;r = s && (x.support.boxSizingReliable || i === e.style[t]), i = parseFloat(i) || 0;
+            if ((i = vt(e, t, o), (0 > i || null == i) && (i = e.style[t]), Ct.test(i))) {
+                return i;
+            }r = s && (x.support.boxSizingReliable || i === e.style[t]), i = parseFloat(i) || 0;
         }return i + Ft(e, t, n || (s ? "border" : "content"), r, o) + "px";
     }function Rt(e) {
         var t = o,
@@ -1809,7 +1845,9 @@
         var r,
             i = (Nn[t] || []).concat(Nn["*"]),
             o = 0,
-            s = i.length;for (; s > o; o++) if (r = i[o].call(n, t, e)) return r;
+            s = i.length;for (; s > o; o++) if (r = i[o].call(n, t, e)) {
+            return r;
+        }
     }function jn(e, t, n) {
         var r,
             i,
@@ -1832,7 +1870,9 @@
                 var n = 0,
                     r = t ? l.tweens.length : 0;if (i) return this;for (i = !0; r > n; n++) l.tweens[n].run(1);return (t ? a.resolveWith(e, [l, t]) : a.rejectWith(e, [l, t]), this);
             } }),
-            c = l.props;for (Dn(c, l.opts.specialEasing); s > o; o++) if (r = kn[o].call(l, e, c, l.opts)) return r;return (x.map(c, Sn, l), x.isFunction(l.opts.start) && l.opts.start.call(e, l), x.fx.timer(x.extend(u, { elem: e, anim: l, queue: l.opts.queue })), l.progress(l.opts.progress).done(l.opts.done, l.opts.complete).fail(l.opts.fail).always(l.opts.always));
+            c = l.props;for (Dn(c, l.opts.specialEasing); s > o; o++) if (r = kn[o].call(l, e, c, l.opts)) {
+            return r;
+        }return (x.map(c, Sn, l), x.isFunction(l.opts.start) && l.opts.start.call(e, l), x.fx.timer(x.extend(u, { elem: e, anim: l, queue: l.opts.queue })), l.progress(l.opts.progress).done(l.opts.done, l.opts.complete).fail(l.opts.fail).always(l.opts.always));
     }function Dn(e, t) {
         var n, r, i, o, s;for (n in e) if ((r = x.camelCase(n), i = t[r], o = e[n], x.isArray(o) && (i = o[1], o = e[n] = o[0]), n !== r && (e[r] = o, delete e[n]), s = x.cssHooks[r], s && "expand" in s)) {
             o = s.expand(o), delete e[r];for (n in o) n in e || (e[n] = o[n], t[n] = i);

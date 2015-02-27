@@ -233,7 +233,7 @@
     }());
 
     let settings = {
-        canvasWidth: 720,
+        canvasWidth: 640,
         canvasHeight: 480
     };
 

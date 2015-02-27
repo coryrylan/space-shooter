@@ -17,6 +17,11 @@ canvas {
   position: relative;
 }
 
+.notifications.large-screen {
+  width: 720px;
+  margin: 0 auto;
+}
+
 .label {
   font-size: 1.2em;
   color: #FFF;

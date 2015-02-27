@@ -21,15 +21,6 @@ import {AsteroidCollection} from './asteroidCollection';
     let ctx = canvas.getContext('2d');
     let gameState = GAME_STATE.START;
 
-    ENGINE.settings.canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    ENGINE.settings.canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    //ctx.canvas.width  = ENGINE.settings.canvasWidth;
-    //ctx.canvas.height = ENGINE.settings.canvasHeight;
-
-    $('#GameCanvas').width(ENGINE.settings.canvasWidth);
-    $('#GameCanvas').height(ENGINE.settings.canvasHeight);
-
-
     //region Game
     let playerShip = new Ship({
         lasers: new LaserCollection()
@@ -205,5 +196,20 @@ import {AsteroidCollection} from './asteroidCollection';
     function drawLives() {
         $('.js-lives').html('Lives:' + gameLives);
     }
+
+    function scaleScreen() {
+        if(Math.max(document.documentElement.clientWidth, window.innerWidth || 0) < 720) {
+            ENGINE.settings.canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            ENGINE.settings.canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            ctx.canvas.width  = ENGINE.settings.canvasWidth;
+            ctx.canvas.height = ENGINE.settings.canvasHeight;
+
+            $('.notifications').removeClass('large-screen');
+            //$('#GameCanvas').width(ENGINE.settings.canvasWidth);
+            //$('#GameCanvas').height(ENGINE.settings.canvasHeight);
+        }
+    }
+
+    scaleScreen();
     //endregion
 }());

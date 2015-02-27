@@ -1,9 +1,10 @@
+//import Laser from './lasers';
+
+
 (function() {
     'use strict';
 
-    let Howl = window.Howl;
-
-    module.exports = class Laser {
+    class Laser {
         constructor (originX, originY) {
             this.settings = {
                 posX: originX,
@@ -15,7 +16,7 @@
 
         draw(context) {
             context.beginPath();
-            context.fillStyle = ENGINE.util.getRandomColor();
+            context.fillStyle = '#00ff00';//ENGINE.util.getRandomColor();
             context.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
             context.fill();
             context.closePath();
@@ -33,10 +34,6 @@
             //sound.play();
         }
     }
-}());
-
-(function() {
-    'use strict';
 
     module.exports = class LaserCollection {
         constructor() {

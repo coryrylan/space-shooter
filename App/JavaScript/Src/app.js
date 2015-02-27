@@ -69,8 +69,8 @@ import ENGINE from './engine';
             } else if (gameState === GAME_STATE.PLAY) {
                 asteroids.update();
                 playerShip.update();
-                checkShipAndAsteroidCollision();
-                checkShipLaserAndAsteroidCollision();
+                //checkShipAndAsteroidCollision();
+                //checkShipLaserAndAsteroidCollision();
             } else if (gameState === GAME_STATE.PAUSE) {
                 return;
             } else if (gameState === GAME_STATE.OVER) {

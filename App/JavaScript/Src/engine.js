@@ -232,10 +232,16 @@
         };
     }());
 
+    let settings = {
+        canvasWidth: 720,
+        canvasHeight: 480
+    };
+
     let ENGINE = {
         util: util,
         factory: factory,
-        controls: controls
+        controls: controls,
+        settings: settings
     };
 
     module.exports = ENGINE;

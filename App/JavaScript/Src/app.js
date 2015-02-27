@@ -1,8 +1,7 @@
-﻿import Ship from './ship';
+﻿import ENGINE from './engine';
+import Ship from './ship';
 import LaserCollection from './laserCollection';
-import Asteroid from './asteroid';
 import AsteroidCollection from './asteroidCollection';
-import ENGINE from './engine';
 
 (function() {
     'use strict';
@@ -21,9 +20,6 @@ import ENGINE from './engine';
     let canvas = document.getElementById('GameCanvas');
     let ctx = canvas.getContext('2d');
     let gameState = GAME_STATE.START;
-
-    const CANVAS_WIDTH = 720;
-    const CANVAS_HEIGHT = 480;
 
     //region Game
     let playerShip = new Ship({
@@ -44,7 +40,6 @@ import ENGINE from './engine';
     };
 
     let checkShipLaserAndAsteroidCollision = function() {
-
         let checkLaserCollision = function(laser, laserIndex) {
             // For every asteroid
             for (let i = 0; i < asteroids.list.length; i++) {
@@ -76,7 +71,7 @@ import ENGINE from './engine';
             }
         },
         draw: function() {
-            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.clearRect(0, 0, ENGINE.settings.canvasWidth, ENGINE.settings.canvasHeight);
             drawScore();
             drawLives();
 
@@ -86,7 +81,7 @@ import ENGINE from './engine';
                 playerShip.draw(ctx);
                 asteroids.draw(ctx);
             } else if (gameState === GAME_STATE.PAUSE) {
-
+                console.log('Paused');
             } else if (gameState === GAME_STATE.OVER) {
                 endGame();
             } else {
@@ -100,9 +95,9 @@ import ENGINE from './engine';
     // Get in collection class and remove import for Asteroid
     setInterval(function() {
         if (gameState === GAME_STATE.PLAY) {
-            asteroids.list.push(new Asteroid());
+            asteroids.addAsteroid();
         }
-    }, 140 - (CANVAS_WIDTH / 100));
+    }, 140 - (ENGINE.settings.canvasWidth / 100));
     //endregion
 
     //region Game Controls

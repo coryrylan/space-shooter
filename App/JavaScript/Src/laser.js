@@ -1,7 +1,6 @@
 (function() {
     'use strict';
 
-
     let Howl = window.Howl;
 
     module.exports = class Laser {
@@ -12,6 +11,10 @@
                 width: 4.5,
                 height: 25
             };
+
+            this.sound = new Howl({
+                urls: ['App/Content/Audio/laser.mp3']
+            });
         }
 
         draw(context) {
@@ -27,11 +30,7 @@
         }
 
         playSound() {
-            let sound = new Howl({
-                urls: ['App/Content/Audio/laser.mp3']
-            });
-
-            //sound.play();
+            this.sound.play();
         }
-    }
+    };
 }());

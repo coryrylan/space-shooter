@@ -3,9 +3,6 @@ import ENGINE from './engine';
 (function() {
     'use strict';
 
-    const CANVAS_WIDTH = 720;
-    const CANVAS_HEIGHT = 480;
-
     module.exports = class Asteroid {
         constructor() {
             let range = ENGINE.util.getRandomNumber(30, 100);
@@ -16,7 +13,7 @@ import ENGINE from './engine';
                 speed: ENGINE.util.getRandomNumber(2, 6)
             };
 
-            this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, CANVAS_WIDTH);
+            this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, ENGINE.settings.canvasWidth);
             this.settings.posY = this.settings.height * -2;
 
             this.img = new Image();
@@ -25,10 +22,6 @@ import ENGINE from './engine';
 
         draw(context) {
             context.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-
-            //this.img.onload = function() {
-            //    ctx.drawImage(this.img, this.settings.posX, this.settings.posY);
-            //}.bind(this);
         }
 
         update() {

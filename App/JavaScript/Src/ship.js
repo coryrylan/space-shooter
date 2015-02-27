@@ -1,8 +1,7 @@
+import ENGINE from './engine';
+
 (function() {
     'use strict';
-
-    const CANVAS_WIDTH = 720;
-    const CANVAS_HEIGHT = 480;
 
     module.exports = class Ship {
         constructor(properties) {
@@ -24,10 +23,6 @@
         draw(context) {
             context.drawImage(this.img, this.settings.posX, this.settings.posY);
             this.lasers.draw(context);
-
-            //this.img.onload = function() {
-            //    context.drawImage(this.img, this.settings.posX, this.settings.posY);
-            //}.bind(this);
         }
 
         update() {
@@ -45,7 +40,7 @@
         }
 
         moveRight() {
-            if (this.settings.posX + this.settings.width < CANVAS_WIDTH + 70) {
+            if (this.settings.posX + this.settings.width < ENGINE.settings.canvasWidth + 70) {
                 this.settings.posX = this.settings.posX + this.settings.speed;
             }
         }
@@ -57,9 +52,9 @@
         }
 
         moveDown() {
-            if (this.settings.posY < CANVAS_HEIGHT - 40) {
+            if (this.settings.posY < ENGINE.settings.canvasHeight - 40) {
                 this.settings.posY = this.settings.posY + this.settings.speed;
             }
         }
-    }
+    };
 }());

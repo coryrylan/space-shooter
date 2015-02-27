@@ -1,36 +1,32 @@
-(function() {
-    'use strict';
+class Laser {
+    constructor (originX, originY) {
+        this.settings = {
+            posX: originX,
+            posY: originY,
+            width: 4.5,
+            height: 25
+        };
 
-    let Howl = window.Howl;
+        this.sound = new window.Howl({
+            urls: ['App/Content/Audio/laser.mp3']
+        });
+    }
 
-    module.exports = class Laser {
-        constructor (originX, originY) {
-            this.settings = {
-                posX: originX,
-                posY: originY,
-                width: 4.5,
-                height: 25
-            };
+    draw(context) {
+        context.beginPath();
+        context.fillStyle = '#00ff00'; //ENGINE.util.getRandomColor();
+        context.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
+        context.fill();
+        context.closePath();
+    }
 
-            this.sound = new Howl({
-                urls: ['App/Content/Audio/laser.mp3']
-            });
-        }
+    update() {
+        this.settings.posY -= 5.05;
+    }
 
-        draw(context) {
-            context.beginPath();
-            context.fillStyle = '#00ff00'; //ENGINE.util.getRandomColor();
-            context.arc(this.settings.posX, this.settings.posY, this.settings.width, this.settings.height, Math.PI * 2, true);
-            context.fill();
-            context.closePath();
-        }
+    playSound() {
+        this.sound.play();
+    }
+}
 
-        update() {
-            this.settings.posY -= 5.05;
-        }
-
-        playSound() {
-            this.sound.play();
-        }
-    };
-}());
+export {Laser}

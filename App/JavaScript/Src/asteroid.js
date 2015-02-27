@@ -1,31 +1,27 @@
-import ENGINE from './engine';
+import {ENGINE} from './engine';
 
-(function() {
-    'use strict';
+class Asteroid {
+    constructor() {
+        this.settings = {
+            speed: ENGINE.util.getRandomNumber(2, 6),
+            width: ENGINE.util.getRandomNumber(30, 100),
+            height: ENGINE.util.getRandomNumber(30, 100)
+        };
 
-    module.exports = class Asteroid {
-        constructor() {
-            let range = ENGINE.util.getRandomNumber(30, 100);
+        this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, ENGINE.settings.canvasWidth);
+        this.settings.posY = this.settings.height * -2;
 
-            this.settings = {
-                width: range,
-                height: range,
-                speed: ENGINE.util.getRandomNumber(2, 6)
-            };
+        this.img = new Image();
+        this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
+    }
 
-            this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, ENGINE.settings.canvasWidth);
-            this.settings.posY = this.settings.height * -2;
+    draw(context) {
+        context.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
+    }
 
-            this.img = new Image();
-            this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
-        }
+    update() {
+        this.settings.posY += this.settings.speed;
+    }
+}
 
-        draw(context) {
-            context.drawImage(this.img, this.settings.posX, this.settings.posY, this.settings.width, this.settings.height);
-        }
-
-        update() {
-            this.settings.posY += this.settings.speed;
-        }
-    };
-}());
+export {Asteroid}

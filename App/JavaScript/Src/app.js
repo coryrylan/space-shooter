@@ -1,7 +1,7 @@
-﻿import ENGINE from './engine';
-import Ship from './ship';
-import LaserCollection from './laserCollection';
-import AsteroidCollection from './asteroidCollection';
+﻿import {ENGINE} from './engine';
+import {Ship} from './ship';
+import {LaserCollection} from './laserCollection';
+import {AsteroidCollection} from './asteroidCollection';
 
 (function() {
     'use strict';

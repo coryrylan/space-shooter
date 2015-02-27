@@ -1,9 +1,8 @@
 ﻿import Ship from './ship';
-import LaserCollection from './lasers';
+import LaserCollection from './laserCollection';
 import Asteroid from './asteroid';
-import AsteroidCollection from './asteroids';
+import AsteroidCollection from './asteroidCollection';
 import ENGINE from './engine';
-
 
 (function() {
     'use strict';
@@ -98,6 +97,7 @@ import ENGINE from './engine';
 
     game.start();
 
+    // Get in collection class and remove import for Asteroid
     setInterval(function() {
         if (gameState === GAME_STATE.PLAY) {
             asteroids.list.push(new Asteroid());

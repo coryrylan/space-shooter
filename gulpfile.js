@@ -15,10 +15,10 @@ var jsSource = [
     //'./App/JavaScript/Src/**/*.js'
     './App/JavaScript/Src/engine.js',
     './App/JavaScript/Src/ship.js',
-    //'./App/JavaScript/Src/laser.js',
-    './App/JavaScript/Src/lasers.js',
+    './App/JavaScript/Src/laser.js',
+    './App/JavaScript/Src/laserCollection.js',
     './App/JavaScript/Src/asteroid.js',
-    './App/JavaScript/Src/asteroids.js',
+    './App/JavaScript/Src/asteroidCollection.js',
     './App/JavaScript/Src/app.js'
 ];
 

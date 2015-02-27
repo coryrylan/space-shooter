@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d929a1d-d905-4100-8e9c-245087016585" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\GitHub\space-shooter\App\JavaScript\Src\asteroids.js" afterPath="" />
-      <change type="DELETED" beforePath="D:\GitHub\space-shooter\App\JavaScript\Src\lasers.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.jshintrc" afterPath="$PROJECT_DIR$/.jshintrc" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/app.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Build/Js/app.js" afterPath="$PROJECT_DIR$/Build/Js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="$PROJECT_DIR$/gulpfile.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/asteroid.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/asteroid.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/asteroidCollection.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/asteroidCollection.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/engine.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/engine.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/laser.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/laser.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/laserCollection.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/laserCollection.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/App/JavaScript/Src/ship.js" afterPath="$PROJECT_DIR$/App/JavaScript/Src/ship.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="space-shooter.iws" />
@@ -35,13 +38,22 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.28995058" vertical-offset="1949" max-vertical-offset="2875">
-              <caret line="87" column="28" selection-start-line="87" selection-start-column="28" selection-end-line="87" selection-end-column="28" />
+            <state vertical-scroll-proportion="-1.0982839" vertical-offset="829" max-vertical-offset="4575">
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
               <folding>
-                <element signature="e#678#723#0" expanded="false" />
-                <element signature="e#3122#3144#0" expanded="false" />
-                <element signature="e#4130#4155#0" expanded="false" />
+                <element signature="e#728#1016#0" expanded="false" />
+                <element signature="e#1075#1600#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ship.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/ship.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.9411764" vertical-offset="0" max-vertical-offset="1625">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -49,8 +61,8 @@
       <file leaf-file-name="asteroidCollection.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/asteroidCollection.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.147059" vertical-offset="0" max-vertical-offset="1050">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+            <state vertical-scroll-proportion="-3.6764705" vertical-offset="0" max-vertical-offset="1100">
+              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -59,8 +71,8 @@
       <file leaf-file-name="asteroid.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/asteroid.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.6764705" vertical-offset="0" max-vertical-offset="1075">
-              <caret line="5" column="8" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -69,8 +81,8 @@
       <file leaf-file-name="laserCollection.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/laserCollection.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="725" max-vertical-offset="1975">
-              <caret line="34" column="7" selection-start-line="5" selection-start-column="6" selection-end-line="34" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1200">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -79,43 +91,8 @@
       <file leaf-file-name="laser.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/laser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1050">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gulpfile.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gulpfile.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
-              <caret line="20" column="44" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
-              <folding>
-                <element signature="e#797#906#0" expanded="false" />
-                <element signature="e#941#1262#0" expanded="false" />
-                <element signature="e#1295#1488#0" expanded="false" />
-                <element signature="e#2053#2100#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.764706" vertical-offset="150" max-vertical-offset="1125">
-              <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.294118" vertical-offset="323" max-vertical-offset="1025">
-              <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1025">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -124,9 +101,10 @@
       <file leaf-file-name="engine.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="184" max-vertical-offset="875">
-              <caret line="240" column="28" selection-start-line="240" selection-start-column="28" selection-end-line="240" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="625">
+              <caret line="233" column="0" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
               <folding>
+                <element signature="e#137#1330#0" expanded="false" />
                 <element signature="e#147#737#0" expanded="false" />
                 <element signature="e#747#1028#0" expanded="false" />
                 <element signature="e#1072#1126#0" expanded="false" />
@@ -142,6 +120,7 @@
                 <element signature="e#5820#6010#0" expanded="false" />
                 <element signature="e#6055#6136#0" expanded="false" />
                 <element signature="e#6172#6418#0" expanded="false" />
+                <element signature="e#6611#6670#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -157,7 +136,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/.jshintrc" />
         <option value="$PROJECT_DIR$/.jscsrc" />
         <option value="$PROJECT_DIR$/App/JavaScript/Libraries/hammer.js" />
         <option value="$PROJECT_DIR$/App/JavaScript/Libraries/GameController.js" />
@@ -166,16 +144,18 @@
         <option value="$PROJECT_DIR$/App/JavaScript/PollyfillsAndShims/es6-module-loader.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/App/JavaScript/Src/q.js" />
-        <option value="$PROJECT_DIR$/App/JavaScript/Src/ship.js" />
-        <option value="$PROJECT_DIR$/App/JavaScript/Src/engine.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/App/JavaScript/Src/asteroids.js" />
-        <option value="$PROJECT_DIR$/App/JavaScript/Src/asteroid.js" />
         <option value="$PROJECT_DIR$/App/JavaScript/Src/lasers.js" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
         <option value="$PROJECT_DIR$/App/JavaScript/Src/laserCollection.js" />
-        <option value="$PROJECT_DIR$/App/JavaScript/Src/laser.js" />
+        <option value="$PROJECT_DIR$/.jshintrc" />
+        <option value="$PROJECT_DIR$/App/JavaScript/Src/engine.js" />
+        <option value="$PROJECT_DIR$/App/JavaScript/Src/asteroid.js" />
+        <option value="$PROJECT_DIR$/App/JavaScript/Src/asteroidCollection.js" />
+        <option value="$PROJECT_DIR$/App/JavaScript/Src/ship.js" />
         <option value="$PROJECT_DIR$/App/JavaScript/Src/app.js" />
+        <option value="$PROJECT_DIR$/App/JavaScript/Src/laser.js" />
       </list>
     </option>
   </component>
@@ -262,24 +242,6 @@
               <option name="myItemId" value="Build" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="space-shooter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="space-shooter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -320,10 +282,6 @@
               <option name="myItemId" value="JavaScript" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -336,10 +294,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="App" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Content" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -474,7 +428,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="27" />
+      <option name="time" value="30" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -484,9 +438,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="125" max-vertical-offset="1725">
           <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -549,9 +502,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="616" max-vertical-offset="1400">
           <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -600,9 +552,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10450">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -644,9 +595,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1632">
           <caret line="322" column="7" selection-start-line="322" selection-start-column="7" selection-end-line="322" selection-end-column="7" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -680,9 +630,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="1921">
           <caret line="41" column="38" selection-start-line="41" selection-start-column="38" selection-end-line="41" selection-end-column="38" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -739,9 +688,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="1921">
           <caret line="41" column="38" selection-start-line="41" selection-start-column="38" selection-end-line="41" selection-end-column="38" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -798,9 +746,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1955">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -834,9 +781,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2525">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -853,9 +799,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10450">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -872,9 +817,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7089">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -891,9 +835,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7242">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -912,26 +855,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.jshintrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="1581">
-          <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App/Content/Sass/all.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-13.970589" vertical-offset="0" max-vertical-offset="1825">
           <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.jscsrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3504" vertical-offset="381" max-vertical-offset="2675">
-          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -947,38 +874,6 @@
         <state vertical-scroll-proportion="-11.764706" vertical-offset="150" max-vertical-offset="1125">
           <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/ship.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1750">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="184" max-vertical-offset="875">
-          <caret line="240" column="28" selection-start-line="240" selection-start-column="28" selection-end-line="240" selection-end-column="28" />
-          <folding>
-            <element signature="e#147#737#0" expanded="false" />
-            <element signature="e#747#1028#0" expanded="false" />
-            <element signature="e#1072#1126#0" expanded="false" />
-            <element signature="e#1164#1212#0" expanded="false" />
-            <element signature="e#1367#4366#0" expanded="false" />
-            <element signature="e#1743#2498#0" expanded="false" />
-            <element signature="e#2543#2989#0" expanded="false" />
-            <element signature="e#3030#3600#0" expanded="false" />
-            <element signature="e#3942#4285#0" expanded="false" />
-            <element signature="e#4399#6586#0" expanded="false" />
-            <element signature="e#4451#5381#0" expanded="false" />
-            <element signature="e#5430#5774#0" expanded="false" />
-            <element signature="e#5820#6010#0" expanded="false" />
-            <element signature="e#6055#6136#0" expanded="false" />
-            <element signature="e#6172#6418#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1006,17 +901,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/asteroid.js">
+    <entry file="file://$PROJECT_DIR$/.jscsrc">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6764705" vertical-offset="0" max-vertical-offset="1075">
-          <caret line="5" column="8" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.7940692" vertical-offset="118" max-vertical-offset="2675">
+          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.jshintrc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.441176" vertical-offset="1718" max-vertical-offset="2400">
+          <caret line="87" column="13" selection-start-line="87" selection-start-column="13" selection-end-line="87" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1450">
+        <state vertical-scroll-proportion="0.7800312" vertical-offset="0" max-vertical-offset="1450">
           <caret line="20" column="44" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
           <folding>
             <element signature="e#797#906#0" expanded="false" />
@@ -1027,38 +930,79 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/asteroidCollection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.6764705" vertical-offset="0" max-vertical-offset="1100">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/asteroid.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/laserCollection.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="725" max-vertical-offset="1975">
-          <caret line="34" column="7" selection-start-line="5" selection-start-column="6" selection-end-line="34" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1200">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="28" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/ship.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.9411764" vertical-offset="0" max-vertical-offset="1625">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="625">
+          <caret line="233" column="0" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+          <folding>
+            <element signature="e#137#1330#0" expanded="false" />
+            <element signature="e#147#737#0" expanded="false" />
+            <element signature="e#747#1028#0" expanded="false" />
+            <element signature="e#1072#1126#0" expanded="false" />
+            <element signature="e#1164#1212#0" expanded="false" />
+            <element signature="e#1367#4366#0" expanded="false" />
+            <element signature="e#1743#2498#0" expanded="false" />
+            <element signature="e#2543#2989#0" expanded="false" />
+            <element signature="e#3030#3600#0" expanded="false" />
+            <element signature="e#3942#4285#0" expanded="false" />
+            <element signature="e#4399#6586#0" expanded="false" />
+            <element signature="e#4451#5381#0" expanded="false" />
+            <element signature="e#5430#5774#0" expanded="false" />
+            <element signature="e#5820#6010#0" expanded="false" />
+            <element signature="e#6055#6136#0" expanded="false" />
+            <element signature="e#6172#6418#0" expanded="false" />
+            <element signature="e#6611#6670#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/laser.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1050">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/asteroidCollection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.147059" vertical-offset="0" max-vertical-offset="1050">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1025">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/JavaScript/Src/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28995058" vertical-offset="1949" max-vertical-offset="2875">
-          <caret line="87" column="28" selection-start-line="87" selection-start-column="28" selection-end-line="87" selection-end-column="28" />
+        <state vertical-scroll-proportion="-1.0982839" vertical-offset="829" max-vertical-offset="4575">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding>
-            <element signature="e#678#723#0" expanded="false" />
-            <element signature="e#3122#3144#0" expanded="false" />
-            <element signature="e#4130#4155#0" expanded="false" />
+            <element signature="e#728#1016#0" expanded="false" />
+            <element signature="e#1075#1600#0" expanded="false" />
           </folding>
         </state>
       </provider>

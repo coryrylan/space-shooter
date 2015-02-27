@@ -2,10 +2,12 @@ import {ENGINE} from './engine';
 
 class Asteroid {
     constructor() {
+        let range = ENGINE.util.getRandomNumber(30, 100);
+
         this.settings = {
-            speed: ENGINE.util.getRandomNumber(2, 6),
-            width: ENGINE.util.getRandomNumber(30, 100),
-            height: ENGINE.util.getRandomNumber(30, 100)
+            width: range,
+            height: range,
+            speed: ENGINE.util.getRandomNumber(2, 6)
         };
 
         this.settings.posX = ENGINE.util.getRandomNumber(0 - this.settings.height, ENGINE.settings.canvasWidth);

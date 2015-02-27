@@ -1,7 +1,6 @@
 ﻿import Ship from './ship';
-//import Laser from './lasers';
 import LaserCollection from './lasers';
-import Asteroid from './asteroids';
+import Asteroid from './asteroid';
 import AsteroidCollection from './asteroids';
 import ENGINE from './engine';
 
@@ -69,8 +68,8 @@ import ENGINE from './engine';
             } else if (gameState === GAME_STATE.PLAY) {
                 asteroids.update();
                 playerShip.update();
-                //checkShipAndAsteroidCollision();
-                //checkShipLaserAndAsteroidCollision();
+                checkShipAndAsteroidCollision();
+                checkShipLaserAndAsteroidCollision();
             } else if (gameState === GAME_STATE.PAUSE) {
                 return;
             } else if (gameState === GAME_STATE.OVER) {

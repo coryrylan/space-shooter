@@ -6,6 +6,7 @@
             constructor(properties) {
                 this._update = properties.update;
                 this._draw = properties.draw;
+                this._init = properties.init;
             }
 
             update() {
@@ -17,6 +18,7 @@
             }
 
             start() {
+                this._init();
                 var gameLoop = function() {
                     this._update();
                     this._draw();
@@ -233,7 +235,7 @@
     }());
 
     let settings = {
-        canvasWidth: 640,
+        canvasWidth: 720,
         canvasHeight: 480
     };
 

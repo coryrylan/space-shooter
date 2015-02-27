@@ -55,7 +55,15 @@ import {AsteroidCollection} from './asteroidCollection';
         playerShip.lasers.list.forEach(checkLaserCollision);
     };
 
+    let init = function() {
+        scaleScreen();
+        touchSetup();
+    };
+
     let game = ENGINE.factory.createGame({
+        init: function() {
+            init();
+        },
         update: function() {
             if (gameState === GAME_STATE.START) {
                 return;
@@ -100,7 +108,42 @@ import {AsteroidCollection} from './asteroidCollection';
     }, 140 - (ENGINE.settings.canvasWidth / 100));
     //endregion
 
-    //region Game Controls
+    //region Touch Game Controls
+    function touchSetup() {
+        let touchable = 'createTouch' in document;
+
+        if (touchable) {
+            canvas.addEventListener('touchstart', onTouchStart, false );
+            canvas.addEventListener('touchmove', onTouchMove, false );
+            canvas.addEventListener('touchend', onTouchEnd, false );
+        }
+    }
+
+    function onTouchStart(event) {
+        console.log('touchstart');
+
+        if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
+            startNewGame();
+        } else {
+            if (event.touches[0].clientX > ENGINE.settings.canvasWidth / 2) {
+                playerShip.fire();
+            }
+        }
+    }
+
+    function onTouchMove(event) {
+        // Prevent the browser from doing its default thing (scroll, zoom)
+        event.preventDefault();
+        console.log('touchmove');
+    }
+
+    function onTouchEnd() {
+        //do stuff
+        console.log('touchend');
+    }
+    //endregion
+
+    //region Key Game Controls
     ENGINE.controls.on('left', function() {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveLeft();
@@ -198,7 +241,7 @@ import {AsteroidCollection} from './asteroidCollection';
     }
 
     function scaleScreen() {
-        if(Math.max(document.documentElement.clientWidth, window.innerWidth || 0) < 720) {
+        if (Math.max(document.documentElement.clientWidth, window.innerWidth || 0) < 720) {
             ENGINE.settings.canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
             ENGINE.settings.canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
             ctx.canvas.width  = ENGINE.settings.canvasWidth;
@@ -209,7 +252,5 @@ import {AsteroidCollection} from './asteroidCollection';
             //$('#GameCanvas').height(ENGINE.settings.canvasHeight);
         }
     }
-
-    scaleScreen();
     //endregion
 }());

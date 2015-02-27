@@ -9,6 +9,7 @@ var jsLibraries = [
     './App/JavaScript/Libraries/requestAnimationFramePolly.js',
     './App/JavaScript/Libraries/jquery.js',
     './App/JavaScript/Libraries/howler.js'
+    //'./App/JavaScript/Libraries/gameController.js'
 ];
 
 var jsSource = [

@@ -100,7 +100,6 @@ import {AsteroidCollection} from './asteroidCollection';
 
     game.start();
 
-    // Get in collection class and remove import for Asteroid
     setInterval(function() {
         if (gameState === GAME_STATE.PLAY) {
             asteroids.addAsteroid();

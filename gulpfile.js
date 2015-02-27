@@ -54,16 +54,15 @@ gulp.task('js', function() {
         .transform(babelify)
         .bundle()
         .on('error', function(err) { console.log('Error: ' + err.message); })
-        .pipe(source('all.js'))
+        .pipe(source('app.js'))
         .pipe(gulp.dest('./Build/Js'));
 
-    //return gulp
-    //    .src(jsLibraries.concat(jsSource))
-    //    .pipe(plug.concat('all.js'))
-    //    .pipe(gulp.dest('./Build/Js'))
-    //    .pipe(plug.rename({ suffix: '.min' }))
-    //    .pipe(plug.uglify({ mangle: true }))
-    //    .pipe(gulp.dest('./Build/Js'));
+    gulp.src(jsLibraries)
+        .pipe(plug.concat('lib.js'))
+        .pipe(gulp.dest('./Build/Js'))
+        .pipe(plug.rename({ suffix: '.min' }))
+        .pipe(plug.uglify({ mangle: true }))
+        .pipe(gulp.dest('./Build/Js'));
 });
 
 var catchError = function(err) {

@@ -35,7 +35,7 @@
     };
 }());
 
-window.AsteroidCollection = (function() {
+(function() {
     'use strict';
 
     const CANVAS_WIDTH = 720;

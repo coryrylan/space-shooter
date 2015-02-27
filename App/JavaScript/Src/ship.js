@@ -1,10 +1,10 @@
-window.Ship = (function() {
+(function() {
     'use strict';
 
     const CANVAS_WIDTH = 720;
     const CANVAS_HEIGHT = 480;
 
-    class Ship {
+    module.exports = class Ship {
         constructor(properties) {
             this.lasers = properties.lasers;
 
@@ -62,6 +62,4 @@ window.Ship = (function() {
             }
         }
     }
-
-    return Ship;
 }());

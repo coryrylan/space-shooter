@@ -1,4 +1,4 @@
-﻿window.ENGINE = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
+﻿(function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';
 
     let factory = (function() {
@@ -232,9 +232,11 @@
         };
     }());
 
-    return {
+    let ENGINE = {
         util: util,
         factory: factory,
         controls: controls
     };
+
+    module.exports = ENGINE;
 }());

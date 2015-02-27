@@ -1,11 +1,13 @@
-﻿(function() {
-    'use strict';
+﻿import Ship from './ship';
+//import Laser from './lasers';
+import LaserCollection from './lasers';
+import Asteroid from './asteroids';
+import AsteroidCollection from './asteroids';
+import ENGINE from './engine';
 
-    // Dependencies will update to es6 modules
-    let ENGINE = window.ENGINE;
-    let Ship = window.Ship;
-    let LaserCollection = window.LaserCollection;
-    let AsteroidCollection = window.AsteroidCollection;
+
+(function() {
+    'use strict';
 
     // Enums
     const GAME_STATE = {

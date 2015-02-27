@@ -1,9 +1,9 @@
-window.Laser = (function() {
+(function() {
     'use strict';
 
     let Howl = window.Howl;
 
-    class Laser {
+    module.exports = class Laser {
         constructor (originX, originY) {
             this.settings = {
                 posX: originX,
@@ -33,14 +33,12 @@ window.Laser = (function() {
             //sound.play();
         }
     }
-
-    return Laser;
 }());
 
-window.LaserCollection = (function() {
+(function() {
     'use strict';
 
-    class LaserCollection {
+    module.exports = class LaserCollection {
         constructor() {
             this.maxLasers = 10;
             this.list = [];
@@ -77,6 +75,4 @@ window.LaserCollection = (function() {
             }
         }
     }
-
-    return LaserCollection;
 }());

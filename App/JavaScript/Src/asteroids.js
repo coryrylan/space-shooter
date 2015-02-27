@@ -1,10 +1,10 @@
-window.Asteroid = (function() {
+(function() {
     'use strict';
 
     const CANVAS_WIDTH = 720;
     const CANVAS_HEIGHT = 480;
 
-    class Asteroid {
+    module.exports = class Asteroid {
         constructor() {
             let range = ENGINE.util.getRandomNumber(30, 100);
 
@@ -32,9 +32,7 @@ window.Asteroid = (function() {
         update() {
             this.settings.posY += this.settings.speed;
         }
-    }
-
-    return Asteroid;
+    };
 }());
 
 window.AsteroidCollection = (function() {
@@ -43,7 +41,7 @@ window.AsteroidCollection = (function() {
     const CANVAS_WIDTH = 720;
     const CANVAS_HEIGHT = 480;
 
-    class AsteroidCollection {
+    module.exports = class AsteroidCollection {
         constructor() {
             this.list = [];
         }
@@ -70,7 +68,5 @@ window.AsteroidCollection = (function() {
 
             this.list.forEach(draw);
         }
-    }
-
-    return AsteroidCollection;
+    };
 }());

@@ -34,4 +34,4 @@ class AsteroidCollection {
     }
 }
 
-export {AsteroidCollection}
+export {AsteroidCollection};

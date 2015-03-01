@@ -26,4 +26,4 @@ class Asteroid {
     }
 }
 
-export {Asteroid}
+export {Asteroid};

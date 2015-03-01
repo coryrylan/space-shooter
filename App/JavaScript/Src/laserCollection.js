@@ -38,4 +38,4 @@ class LaserCollection {
     }
 }
 
-export {LaserCollection}
+export {LaserCollection};

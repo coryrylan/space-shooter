@@ -15,7 +15,7 @@ var jsSource = [
 ];
 
 var specSource = [
-    './Specs/specs.js'
+    './Specs/*.js'
 ];
 
 var sassSource = [

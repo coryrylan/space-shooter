@@ -29,4 +29,4 @@ class Laser {
     }
 }
 
-export {Laser}
+export {Laser};

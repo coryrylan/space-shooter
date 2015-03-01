@@ -86,7 +86,11 @@
     "globals"       : {
       "angular": false,
       "module": true,
+
+      // Jasmine Globals
       "if": true,
-      "expect": true
-    }  // additional predefined global variables
+      "expect": true,
+      "describe": true,
+      "it": true
+    }
 }

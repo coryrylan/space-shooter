@@ -1,6 +1,5 @@
 ﻿var gulp = require('gulp');
 var plug = require('gulp-load-plugins')();
-
 var babelify = require('babelify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -9,18 +8,14 @@ var jsLibraries = [
     './App/JavaScript/Libraries/requestAnimationFramePolly.js',
     './App/JavaScript/Libraries/jquery.js',
     './App/JavaScript/Libraries/howler.js'
-    //'./App/JavaScript/Libraries/gameController.js'
 ];
 
 var jsSource = [
-    //'./App/JavaScript/Src/**/*.js'
-    './App/JavaScript/Src/engine.js',
-    './App/JavaScript/Src/ship.js',
-    './App/JavaScript/Src/laser.js',
-    './App/JavaScript/Src/laserCollection.js',
-    './App/JavaScript/Src/asteroid.js',
-    './App/JavaScript/Src/asteroidCollection.js',
-    './App/JavaScript/Src/app.js'
+    './App/JavaScript/Src/*.js'
+];
+
+var specSource = [
+    './Specs/specs.js'
 ];
 
 var sassSource = [
@@ -30,6 +25,7 @@ var sassSource = [
 gulp.task('watch', function() {
     gulp.watch(sassSource, ['styles']).on('error', catchError);
     gulp.watch(jsSource, ['hint', 'js']);
+    gulp.watch(specSource, ['hint', 'js']);
 });
 
 gulp.task('styles', function() {
@@ -53,6 +49,7 @@ gulp.task('hint', function() {
 
 gulp.task('js', function() {
 
+    // App
     browserify('./App/JavaScript/Src/app.js', { debug: true })
         .transform(babelify)
         .bundle()
@@ -60,6 +57,15 @@ gulp.task('js', function() {
         .pipe(source('app.js'))
         .pipe(gulp.dest('./Build/Js'));
 
+    // Specs
+    browserify('./Specs/specs.js', { debug: true })
+        .transform(babelify)
+        .bundle()
+        .on('error', function(err) { console.log('Error: ' + err.message); })
+        .pipe(source('specs.js'))
+        .pipe(gulp.dest('./Build/Js'));
+
+    // Libraries
     gulp.src(jsLibraries)
         .pipe(plug.concat('lib.js'))
         .pipe(gulp.dest('./Build/Js'))

@@ -85,6 +85,8 @@
     // Custom Globals
     "globals"       : {
       "angular": false,
-      "module": true
+      "module": true,
+      "if": true,
+      "expect": true
     }  // additional predefined global variables
 }

@@ -41,7 +41,7 @@ gulp.task('styles', function() {
 
 gulp.task('hint', function() {
     return gulp
-        .src(jsSource)
+        .src(jsSource.concat(specSource))
         .pipe(plug.jscs({ esnext: true })).on('error', catchError)
         .pipe(plug.jshint())
         .pipe(plug.jshint.reporter('jshint-stylish'));

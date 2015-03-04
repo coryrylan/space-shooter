@@ -3,6 +3,7 @@ var plug = require('gulp-load-plugins')();
 var babelify = require('babelify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var karma = require('karma').server;
 
 var jsLibraries = [
     './App/JavaScript/Libraries/requestAnimationFramePolly.js',
@@ -72,6 +73,13 @@ gulp.task('js', function() {
         .pipe(plug.rename({ suffix: '.min' }))
         .pipe(plug.uglify({ mangle: true }))
         .pipe(gulp.dest('./Build/Js'));
+});
+
+gulp.task('test', function (done) {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done);
 });
 
 var catchError = function(err) {

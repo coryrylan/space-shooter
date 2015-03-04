@@ -25,8 +25,8 @@ var sassSource = [
 
 gulp.task('watch', function() {
     gulp.watch(sassSource, ['styles']).on('error', catchError);
-    gulp.watch(jsSource, ['hint', 'js']);
-    gulp.watch(specSource, ['hint', 'js']);
+    gulp.watch(jsSource, ['hint', 'js', 'tdd']);
+    gulp.watch(specSource, ['hint', 'js', 'tdd']);
 });
 
 gulp.task('styles', function() {
@@ -75,10 +75,16 @@ gulp.task('js', function() {
         .pipe(gulp.dest('./Build/Js'));
 });
 
-gulp.task('test', function(done) {
+gulp.task('test', function (done) {
     karma.start({
-        configFile: 'karma.conf.js',
+        configFile: __dirname + '/karma.conf.js',
         singleRun: true
+    }, done);
+});
+
+gulp.task('tdd', function (done) {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js'
     }, done);
 });
 

@@ -37,7 +37,7 @@ var ShipSpec = (function() {   // Temp until we get a module system in place (Co
             });
 
             it('testShip contains a draw method', function() {
-                expect(testShip.draw).toBeDefined();
+                expect(testShip.draw2).toBeDefined();
             });
         });
     }

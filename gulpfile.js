@@ -75,9 +75,9 @@ gulp.task('js', function() {
         .pipe(gulp.dest('./Build/Js'));
 });
 
-gulp.task('test', function (done) {
+gulp.task('test', function(done) {
     karma.start({
-        configFile: __dirname + '/karma.conf.js',
+        configFile: 'karma.conf.js',
         singleRun: true
     }, done);
 });

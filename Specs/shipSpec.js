@@ -1,23 +1,5 @@
-import {Ship} from '../App/JavaScript/Src/ship.js';
-
-class LaserCollectionMock {
-    constructor() {
-        this.maxLasers = 10;
-        this.list = [];
-    }
-
-    update() {
-
-    }
-
-    draw() {
-
-    }
-
-    fire() {
-
-    }
-}
+import {Ship} from '../App/Src/ship.js';
+import {LaserCollectionMock} from './Mocks/laserCollectionMock.js';
 
 var ShipSpec = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';

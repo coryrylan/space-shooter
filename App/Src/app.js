@@ -112,9 +112,9 @@ import {AsteroidCollection} from './asteroidCollection';
         let touchable = 'createTouch' in document;
 
         if (touchable) {
-            canvas.addEventListener('touchstart', onTouchStart, false );
-            canvas.addEventListener('touchmove', onTouchMove, false );
-            canvas.addEventListener('touchend', onTouchEnd, false );
+            canvas.addEventListener('touchstart', onTouchStart, false);
+            canvas.addEventListener('touchmove', onTouchMove, false);
+            canvas.addEventListener('touchend', onTouchEnd, false);
         }
     }
 

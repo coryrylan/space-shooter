@@ -1,4 +1,4 @@
-﻿var ENGINE = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
+﻿var ENGINE = (function() {
     'use strict';
 
     let factory = (function() {

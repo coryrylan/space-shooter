@@ -1,4 +1,4 @@
-import {ENGINE} from '../App/JavaScript/Src/engine.js';
+import {ENGINE} from '../App/Src/engine.js';
 
 var EngineSpec = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';

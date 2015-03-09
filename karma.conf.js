@@ -2,7 +2,7 @@
 // Generated on Tue Mar 03 2015 20:38:55 GMT-0600 (Central Standard Time)
 
 module.exports = function(config) {
-  config.set({
+    config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -20,11 +20,9 @@ module.exports = function(config) {
         __dirname + '/Build/Js/specs.js'
     ],
 
-
     // list of files to exclude
     exclude: [
     ],
-
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor

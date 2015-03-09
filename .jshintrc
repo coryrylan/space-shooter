@@ -85,7 +85,10 @@
     // Custom Globals
     "globals"       : {
       "angular": false,
+
+      // NodeJS
       "module": true,
+      "__dirname": true,
 
       // Jasmine Globals
       "if": true,

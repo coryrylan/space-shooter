@@ -6,13 +6,13 @@ var source = require('vinyl-source-stream');
 var karma = require('karma').server;
 
 var jsLibraries = [
-    './App/JavaScript/Libraries/requestAnimationFramePolly.js',
-    './App/JavaScript/Libraries/jquery.js',
-    './App/JavaScript/Libraries/howler.js'
+    './App/Libraries/requestAnimationFramePolly.js',
+    './App/Libraries/jquery.js',
+    './App/Libraries/howler.js'
 ];
 
 var jsSource = [
-    './App/JavaScript/Src/*.js'
+    './App/Src/*.js'
 ];
 
 var specSource = [

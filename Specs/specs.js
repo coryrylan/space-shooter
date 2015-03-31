@@ -1,10 +1,12 @@
 ﻿// Import all tests
-import {EngineSpec} from './engineSpec.js';
-import {ShipSpec} from './shipSpec.js';
+import {engineSpec} from './engineSpec.js';
+import {shipSpec} from './shipSpec.js';
+import {asteroidSpec} from './asteroidSpec.js';
 
 (function() {
     'use strict';
 
-    EngineSpec.run();
-    ShipSpec.run();
+    engineSpec.run();
+    shipSpec.run();
+    asteroidSpec.run();
 }());

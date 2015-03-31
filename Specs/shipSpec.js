@@ -1,7 +1,7 @@
 import {Ship} from '../App/Src/ship.js';
 import {LaserCollectionMock} from './Mocks/laserCollectionMock.js';
 
-var ShipSpec = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
+let shipSpec = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';
 
     function run() {
@@ -19,7 +19,7 @@ var ShipSpec = (function() {   // Temp until we get a module system in place (Co
             });
 
             it('testShip contains a draw method', function() {
-                expect(testShip.draw2).toBeDefined();
+                expect(testShip.draw).toBeDefined();
             });
         });
     }
@@ -29,4 +29,4 @@ var ShipSpec = (function() {   // Temp until we get a module system in place (Co
     };
 }());
 
-export {ShipSpec};
+export {shipSpec};

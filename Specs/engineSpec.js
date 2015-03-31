@@ -1,6 +1,6 @@
 import {ENGINE} from '../App/Src/engine.js';
 
-var EngineSpec = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
+let engineSpec = (function() {   // Temp until we get a module system in place (Convert to a ES6 module)
     'use strict';
 
     function run() {
@@ -33,4 +33,4 @@ var EngineSpec = (function() {   // Temp until we get a module system in place (
     };
 }());
 
-export {EngineSpec};
+export {engineSpec};

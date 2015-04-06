@@ -5,7 +5,7 @@ import {AsteroidCollection} from './asteroidCollection';
 
 (function() {
     'use strict';
-
+    console.log('12');
     // Enums
     const GAME_STATE = {
         START: 'START',

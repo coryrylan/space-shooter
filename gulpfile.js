@@ -51,7 +51,7 @@ gulp.task('hint', function() {
 gulp.task('js', function() {
 
     // App
-    browserify('./App/JavaScript/Src/app.js', { debug: true })
+    browserify('./App/Src/app.js', { debug: true })
         .transform(babelify)
         .bundle()
         .on('error', function(err) { console.log('Error: ' + err.message); })

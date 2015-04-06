@@ -13,20 +13,12 @@ class AsteroidCollection {
             }
         }.bind(this);
 
-        let update = function(asteroid) {
-            asteroid.update();
-        };
-
         this.list.forEach(checkAsteroidBounds);
-        this.list.forEach(update);
+        this.list.forEach(asteroid => asteroid.update());
     }
 
     draw(context) {
-        let draw = function(asteroid) {
-            asteroid.draw(context);
-        };
-
-        this.list.forEach(draw);
+        this.list.forEach(asteroid => asteroid.draw(context));
     }
 
     addAsteroid() {

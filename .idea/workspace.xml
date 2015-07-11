@@ -21,12 +21,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.7463768">
-              <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
+            <state vertical-scroll-proportion="-5.275862">
+              <caret line="61" column="10" selection-start-line="61" selection-start-column="10" selection-end-line="61" selection-end-column="10" />
               <folding>
+                <element signature="e#3105#3133#0" expanded="false" />
                 <element signature="e#5163#5208#0" expanded="false" />
                 <element signature="e#5241#5286#0" expanded="false" />
                 <element signature="e#5316#5475#0" expanded="false" />
@@ -37,16 +38,51 @@
                 <element signature="e#5930#5988#0" expanded="false" />
                 <element signature="e#6016#6148#0" expanded="false" />
                 <element signature="e#6175#6233#0" expanded="false" />
+                <element signature="e#6262#6919#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="engine.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/engine/engine.js">
+      <file leaf-file-name="laser.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/laser.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.793103">
+              <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ship.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/ship.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.448276">
+              <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="collision-detection.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/engine/collision-detection.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+              <caret line="49" column="1" selection-start-line="49" selection-start-column="1" selection-end-line="49" selection-end-column="1" />
+              <folding>
+                <element signature="n#!!block;n#check#0;n#CollisionDetection#0" expanded="false" />
+                <element signature="n#!!block;n#_horizontalCollision#0;n#CollisionDetection#0" expanded="false" />
+                <element signature="n#!!block;n#_verticalPosition#0;n#CollisionDetection#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="engine.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/engine/engine.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.40194714">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -55,8 +91,8 @@
       <file leaf-file-name="laser-collection.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/laser-collection.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+            <state vertical-scroll-proportion="-8.793103">
+              <caret line="15" column="37" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -81,14 +117,15 @@
         <option value="$PROJECT_DIR$/app/content/sass/all.scss" />
         <option value="$PROJECT_DIR$/app/src/engine/input-controler.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/app/src/ship.js" />
         <option value="$PROJECT_DIR$/app/src/collision-detection.js" />
         <option value="$PROJECT_DIR$/app/src/engine/collision-detection.js" />
         <option value="$PROJECT_DIR$/app/src/engine.js" />
         <option value="$PROJECT_DIR$/app/src/app.js" />
         <option value="$PROJECT_DIR$/app/src/engine/utilities.js" />
-        <option value="$PROJECT_DIR$/app/src/engine/engine.js" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
+        <option value="$PROJECT_DIR$/app/src/ship.js" />
+        <option value="$PROJECT_DIR$/app/src/laser.js" />
+        <option value="$PROJECT_DIR$/app/src/engine/engine.js" />
       </list>
     </option>
   </component>
@@ -302,10 +339,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15052083" sideWeight="0.30120483" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15052083" sideWeight="0.6987952" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15052083" sideWeight="0.6987952" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -347,6 +384,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="178" column="7" selection-start-line="178" selection-start-column="7" selection-end-line="178" selection-end-column="7" />
           <folding>
+            <element signature="e#3105#3133#0" expanded="false" />
             <element signature="e#5163#5208#0" expanded="false" />
             <element signature="e#5241#5286#0" expanded="false" />
             <element signature="e#5316#5475#0" expanded="false" />
@@ -357,6 +395,7 @@
             <element signature="e#5930#5988#0" expanded="false" />
             <element signature="e#6016#6148#0" expanded="false" />
             <element signature="e#6175#6233#0" expanded="false" />
+            <element signature="e#6262#6919#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -399,14 +438,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/laser.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/engine/input-controler.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -423,30 +454,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/engine/collision-detection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="1" selection-start-line="49" selection-start-column="1" selection-end-line="49" selection-end-column="1" />
-          <folding>
-            <element signature="n#!!block;n#check#0;n#CollisionDetection#0" expanded="false" />
-            <element signature="n#!!block;n#_horizontalCollision#0;n#CollisionDetection#0" expanded="false" />
-            <element signature="n#!!block;n#_verticalPosition#0;n#CollisionDetection#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/engine/utilities.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0945758">
           <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/ship.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3310153">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -459,27 +470,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/engine/engine.js">
+    <entry file="file://$PROJECT_DIR$/app/src/engine/collision-detection.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+          <caret line="49" column="1" selection-start-line="49" selection-start-column="1" selection-end-line="49" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!block;n#check#0;n#CollisionDetection#0" expanded="false" />
+            <element signature="n#!!block;n#_horizontalCollision#0;n#CollisionDetection#0" expanded="false" />
+            <element signature="n#!!block;n#_verticalPosition#0;n#CollisionDetection#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/laser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.793103">
+          <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/laser-collection.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        <state vertical-scroll-proportion="-8.793103">
+          <caret line="15" column="37" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/ship.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.448276">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7463768">
-          <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
+        <state vertical-scroll-proportion="-5.275862">
+          <caret line="61" column="10" selection-start-line="61" selection-start-column="10" selection-end-line="61" selection-end-column="10" />
           <folding>
+            <element signature="e#3105#3133#0" expanded="false" />
             <element signature="e#5163#5208#0" expanded="false" />
             <element signature="e#5241#5286#0" expanded="false" />
             <element signature="e#5316#5475#0" expanded="false" />
@@ -490,7 +522,16 @@
             <element signature="e#5930#5988#0" expanded="false" />
             <element signature="e#6016#6148#0" expanded="false" />
             <element signature="e#6175#6233#0" expanded="false" />
+            <element signature="e#6262#6919#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/engine/engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.40194714">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>

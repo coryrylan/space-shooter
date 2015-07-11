@@ -1,6 +1,4 @@
-import {ENGINE} from './engine';
-
-class Ship {
+export class Ship {
     constructor(properties) {
         this.lasers = properties.lasers;
 
@@ -54,5 +52,3 @@ class Ship {
         }
     }
 }
-
-export {Ship};

@@ -33,13 +33,8 @@
             return new Game(update, draw);
         }
 
-        function createGameObject() {
-            return new GameObject();
-        }
-
         return {
-            createGame: createGame,
-            createGameObject: createGameObject
+            createGame: createGame
         };
     }());
 

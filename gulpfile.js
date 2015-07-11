@@ -12,7 +12,7 @@ var jsLibraries = [
 ];
 
 var jsSource = [
-    './app/src/*.js'
+    './app/src/**/*.js'
 ];
 
 var specSource = [
@@ -69,7 +69,7 @@ gulp.task('js', function() {
     // Libraries
     gulp.src(jsLibraries)
         .pipe(plug.concat('lib.js'))
-        .pipe(gulp.dest('./build/Js'))
+        .pipe(gulp.dest('./build/js'))
         .pipe(plug.rename({ suffix: '.min' }))
         .pipe(plug.uglify({ mangle: true }))
         .pipe(gulp.dest('./build/js'));

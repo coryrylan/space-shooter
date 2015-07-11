@@ -1,7 +1,8 @@
-﻿import {ENGINE} from './engine';
+﻿import {Engine} from './engine/engine';
+import {CollisionDetection} from './engine/collision-detection';
 import {Ship} from './ship';
-import {LaserCollection} from './laserCollection';
-import {AsteroidCollection} from './asteroidCollection';
+import {LaserCollection} from './laser-collection';
+import {AsteroidCollection} from './asteroid-collection';
 
 (function() {
     'use strict';
@@ -30,7 +31,7 @@ import {AsteroidCollection} from './asteroidCollection';
 
     let checkShipAndAsteroidCollision = function() {
         asteroids.list.forEach((asteroid, index) => {
-            if (ENGINE.util.checkCollision(playerShip, asteroid)) {
+            if (CollisionDetection.check(playerShip, asteroid)) {
                 asteroids.list.splice(index, 1);
                 removeLife();
             }
@@ -39,14 +40,14 @@ import {AsteroidCollection} from './asteroidCollection';
 
     let checkShipLaserAndAsteroidCollision = function() {
         playerShip.lasers.list.forEach((laser, laserIndex) => {
-            for (let i = 0; i < asteroids.list.length; i++) {
-                if (ENGINE.util.checkCollision(laser, asteroids.list[i])) {
+            asteroids.list.forEach((asteroid, asteroidIndex) => {
+                if (CollisionDetection.check(laser, asteroid)) {
                     playerShip.lasers.list.splice(laserIndex, 1);
-                    asteroids.list.splice(i, 1);
+                    asteroids.list.splice(asteroidIndex, 1);
                     addScore();
                     return 0;
                 }
-            }
+            });
         });
     };
 
@@ -55,7 +56,7 @@ import {AsteroidCollection} from './asteroidCollection';
         touchSetup();
     };
 
-    let game = ENGINE.factory.createGame({
+    let game = Engine.factory.createGame({
         init: function() {
             init();
         },
@@ -74,7 +75,7 @@ import {AsteroidCollection} from './asteroidCollection';
             }
         },
         draw: function() {
-            ctx.clearRect(0, 0, ENGINE.settings.canvasWidth, ENGINE.settings.canvasHeight);
+            ctx.clearRect(0, 0, Engine.settings.canvasWidth, Engine.settings.canvasHeight);
             drawScore();
             drawLives();
 
@@ -99,7 +100,7 @@ import {AsteroidCollection} from './asteroidCollection';
         if (gameState === GAME_STATE.PLAY) {
             asteroids.addAsteroid();
         }
-    }, 140 - (ENGINE.settings.canvasWidth / 100));
+    }, 140 - (Engine.settings.canvasWidth / 100));
     //endregion
 
     //region Touch Game Controls
@@ -119,7 +120,7 @@ import {AsteroidCollection} from './asteroidCollection';
         if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         } else {
-            if (event.touches[0].clientX > ENGINE.settings.canvasWidth / 2) {
+            if (event.touches[0].clientX > Engine.settings.canvasWidth / 2) {
                 playerShip.fire();
             }
         }
@@ -138,41 +139,41 @@ import {AsteroidCollection} from './asteroidCollection';
     //endregion
 
     //region Key Game Controls
-    ENGINE.controls.on('left', function() {
+    Engine.controls.on('left', function() {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveLeft();
         }
     });
 
-    ENGINE.controls.on('right', function() {
+    Engine.controls.on('right', function() {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveRight();
         }
     });
 
-    ENGINE.controls.on('up', function() {
+    Engine.controls.on('up', function() {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveUp();
         }
     });
 
-    ENGINE.controls.on('down', function() {
+    Engine.controls.on('down', function() {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveDown();
         }
     });
 
-    ENGINE.controls.onkey('space', function() {
+    Engine.controls.onkey('space', function() {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.fire();
         }
     });
 
-    ENGINE.controls.onkey('pause', function() {
+    Engine.controls.onkey('pause', function() {
         pauseGame();
     });
 
-    ENGINE.controls.onkey('enter', function() {
+    Engine.controls.onkey('enter', function() {
         if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         }
@@ -236,14 +237,14 @@ import {AsteroidCollection} from './asteroidCollection';
 
     function scaleScreen() {
         if (Math.max(document.documentElement.clientWidth, window.innerWidth || 0) < 720) {
-            ENGINE.settings.canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-            ENGINE.settings.canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-            ctx.canvas.width  = ENGINE.settings.canvasWidth;
-            ctx.canvas.height = ENGINE.settings.canvasHeight;
+            Engine.settings.canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            Engine.settings.canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            ctx.canvas.width  = Engine.settings.canvasWidth;
+            ctx.canvas.height = Engine.settings.canvasHeight;
 
             $('.notifications').removeClass('large-screen');
-            $('#GameCanvas').width(ENGINE.settings.canvasWidth);
-            $('#GameCanvas').height(ENGINE.settings.canvasHeight);
+            $('#GameCanvas').width(Engine.settings.canvasWidth);
+            $('#GameCanvas').height(Engine.settings.canvasHeight);
         }
     }
     //endregion

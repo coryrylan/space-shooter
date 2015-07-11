@@ -1,4 +1,4 @@
-﻿var ENGINE = (function() {
+﻿var Engine = (function() {
     'use strict';
 
     let factory = (function() {
@@ -26,18 +26,6 @@
                 }.bind(this);
 
                 requestAnimationFrame(gameLoop);
-            }
-        }
-
-        class GameObject {
-            constructor() {
-                this.settings = {
-                    color: '#000000',
-                    width: 50,
-                    height: 50,
-                    posX: 0,
-                    posY: 0
-                };
             }
         }
 
@@ -162,89 +150,16 @@
         };
     }());
 
-    let util = (function() {
-        function _horizontalCollision(obj1, obj2) {
-            let obj1RightSide = obj1.settings.posX + obj1.settings.width;
-            let obj1LeftSide = obj1.settings.posX;
-            let obj2RightSide = obj2.settings.posX + obj2.settings.width;
-            let obj2LeftSide = obj2.settings.posX;
-
-            if (leftSideCollision() || rightSideCollision()) {
-                return true;
-            } else {
-                return false;
-            }
-
-            function leftSideCollision() {
-                if ((obj1LeftSide >= obj2LeftSide && obj1LeftSide <= obj2RightSide)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            function rightSideCollision() {
-                if (obj1RightSide >= obj2LeftSide && obj1RightSide <= obj2RightSide) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        function _verticalPosition(obj1, obj2) {
-            if (checkTopSideCollision()) {
-                return true;
-            } else {
-                return false;
-            }
-
-            function checkTopSideCollision() {
-                return (obj1.settings.posY >= obj2.settings.posY && obj1.settings.posY <= obj2.settings.posY + obj2.settings.height);
-            }
-        }
-
-        function checkCollision(obj1, obj2) {
-            if (_horizontalCollision(obj1, obj2) && _verticalPosition(obj1, obj2)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        function getRandomNumber(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
-        function getRandomColor() {
-            let letters = '0123456789ABCDEF'.split('');
-            let color = '#';
-
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.round(Math.random() * 15)];
-            }
-
-            return color;
-        }
-
-        return {
-            checkCollision: checkCollision,
-            getRandomNumber: getRandomNumber,
-            getRandomColor: getRandomColor
-        };
-    }());
-
     let settings = {
         canvasWidth: 720,
         canvasHeight: 480
     };
 
     return {
-        util: util,
         factory: factory,
         controls: controls,
         settings: settings
     };
 }());
 
-export {ENGINE};
+export {Engine};

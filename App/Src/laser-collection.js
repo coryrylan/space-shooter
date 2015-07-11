@@ -7,13 +7,12 @@ class LaserCollection {
     }
 
     update() {
-        let checkLaserBounds = function(laser, index) {
-            if (this.list[index].settings.posY < -5) {
-                this.list.shift(); // If laser outside of top bounds remove from array
+        this.list.forEach((laser, index) => {
+            if (this._isLaserOutOfTopBounds(index)) {
+                this.list.shift();
             }
-        }.bind(this);
+        });
 
-        this.list.forEach(checkLaserBounds);
         this.list.forEach(laser => laser.update());
     }
 
@@ -24,9 +23,13 @@ class LaserCollection {
     fire(posX, posY) {
         if (this.list.length < this.maxLasers) {
             let laser = new Laser(posX, posY);
-            laser.playSound();
             this.list.push(laser);
+            laser.playSound();
         }
+    }
+
+    _isLaserOutOfTopBounds(index) {
+        return this.list[index].settings.posY < -5;
     }
 }
 

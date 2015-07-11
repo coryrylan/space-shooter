@@ -1,4 +1,4 @@
-export class Laser {
+class Laser {
     constructor (originX, originY) {
         this.settings = {
             posX: originX,
@@ -27,3 +27,5 @@ export class Laser {
         this.sound.play();
     }
 }
+
+export {Laser};

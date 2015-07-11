@@ -1,4 +1,6 @@
-export class Ship {
+import {Engine} from './engine/engine';
+
+class Ship {
     constructor(properties) {
         this.lasers = properties.lasers;
 
@@ -35,7 +37,7 @@ export class Ship {
     }
 
     moveRight() {
-        if (this.settings.posX + this.settings.width < ENGINE.settings.canvasWidth + 70) {
+        if (this.settings.posX + this.settings.width < Engine.settings.canvasWidth + 70) {
             this.settings.posX = this.settings.posX + this.settings.speed;
         }
     }
@@ -47,8 +49,10 @@ export class Ship {
     }
 
     moveDown() {
-        if (this.settings.posY < ENGINE.settings.canvasHeight - 40) {
+        if (this.settings.posY < Engine.settings.canvasHeight - 40) {
             this.settings.posY = this.settings.posY + this.settings.speed;
         }
     }
 }
+
+export {Ship};

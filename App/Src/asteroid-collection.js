@@ -1,5 +1,5 @@
-import {ENGINE} from './engine';
 import {Asteroid} from './asteroid';
+import {Engine} from './engine/engine';
 
 class AsteroidCollection {
     constructor() {
@@ -8,7 +8,7 @@ class AsteroidCollection {
 
     update() {
         let checkAsteroidBounds = function(asteroid, index) {
-            if (asteroid.settings.posY > ENGINE.settings.canvasHeight + 30) {
+            if (asteroid.settings.posY > Engine.settings.canvasHeight + 30) {
                 this.list.splice(index, 1);
             }
         }.bind(this);

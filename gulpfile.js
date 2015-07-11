@@ -26,7 +26,7 @@ var sassSource = [
 gulp.task('watch', function() {
     gulp.watch(sassSource, ['styles']).on('error', catchError);
     gulp.watch(jsSource, ['hint', 'js', 'tdd']);
-    gulp.watch(specSource, ['hint', 'js', 'tdd']);
+    //gulp.watch(specSource, ['hint', 'js', 'tdd']);
 });
 
 gulp.task('styles', function() {
@@ -59,12 +59,12 @@ gulp.task('js', function() {
         .pipe(gulp.dest('./build/js'));
 
     // Specs
-    browserify('./specs/specs.js', { debug: true })
-        .transform(babelify)
-        .bundle()
-        .on('error', function(err) { console.log('Error: ' + err.message); })
-        .pipe(source('specs.js'))
-        .pipe(gulp.dest('./build/js'));
+    //browserify('./specs/specs.js', { debug: true })
+    //    .transform(babelify)
+    //    .bundle()
+    //    .on('error', function(err) { console.log('Error: ' + err.message); })
+    //    .pipe(source('specs.js'))
+    //    .pipe(gulp.dest('./build/js'));
 
     // Libraries
     gulp.src(jsLibraries)

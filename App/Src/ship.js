@@ -14,7 +14,7 @@ class Ship {
         };
 
         this.img = new Image();
-        this.img.src = 'App/Content/Images/spaceship.png';
+        this.img.src = 'app/Content/Images/spaceship.png';
     }
 
     draw(context) {

@@ -6,21 +6,21 @@ var source = require('vinyl-source-stream');
 var karma = require('karma').server;
 
 var jsLibraries = [
-    './App/Libraries/requestAnimationFramePolly.js',
-    './App/Libraries/jquery.js',
-    './App/Libraries/howler.js'
+    './app/libraries/requestAnimationFramePolly.js',
+    './app/libraries/jquery.js',
+    './app/libraries/howler.js'
 ];
 
 var jsSource = [
-    './App/Src/*.js'
+    './app/src/*.js'
 ];
 
 var specSource = [
-    './Specs/*.js'
+    './specs/*.js'
 ];
 
 var sassSource = [
-    './App/Content/Sass/**/*.scss'
+    './app/content/sass/**/*.scss'
 ];
 
 gulp.task('watch', function() {
@@ -34,10 +34,10 @@ gulp.task('styles', function() {
         .src(sassSource)
         .pipe(plug.rubySass({ style: 'expanded' }))
         .pipe(plug.autoprefixer('last 2 version', 'ie8', 'ie9'))
-        .pipe(gulp.dest('./Build/Css'))
+        .pipe(gulp.dest('./build/css'))
         .pipe(plug.rename({ suffix: '.min' }))
         .pipe(plug.minifyCss())
-        .pipe(gulp.dest('./Build/Css'));
+        .pipe(gulp.dest('./build/Css'));
 });
 
 gulp.task('hint', function() {
@@ -51,28 +51,28 @@ gulp.task('hint', function() {
 gulp.task('js', function() {
 
     // App
-    browserify('./App/Src/app.js', { debug: true })
+    browserify('./app/src/app.js', { debug: true })
         .transform(babelify)
         .bundle()
         .on('error', function(err) { console.log('Error: ' + err.message); })
         .pipe(source('app.js'))
-        .pipe(gulp.dest('./Build/Js'));
+        .pipe(gulp.dest('./build/js'));
 
     // Specs
-    browserify('./Specs/specs.js', { debug: true })
+    browserify('./specs/specs.js', { debug: true })
         .transform(babelify)
         .bundle()
         .on('error', function(err) { console.log('Error: ' + err.message); })
         .pipe(source('specs.js'))
-        .pipe(gulp.dest('./Build/Js'));
+        .pipe(gulp.dest('./build/js'));
 
     // Libraries
     gulp.src(jsLibraries)
         .pipe(plug.concat('lib.js'))
-        .pipe(gulp.dest('./Build/Js'))
+        .pipe(gulp.dest('./build/Js'))
         .pipe(plug.rename({ suffix: '.min' }))
         .pipe(plug.uglify({ mangle: true }))
-        .pipe(gulp.dest('./Build/Js'));
+        .pipe(gulp.dest('./build/js'));
 });
 
 gulp.task('test', function (done) {

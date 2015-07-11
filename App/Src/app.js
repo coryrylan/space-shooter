@@ -5,7 +5,7 @@ import {AsteroidCollection} from './asteroidCollection';
 
 (function() {
     'use strict';
-    console.log('12');
+
     // Enums
     const GAME_STATE = {
         START: 'START',
@@ -29,19 +29,16 @@ import {AsteroidCollection} from './asteroidCollection';
     let asteroids = new AsteroidCollection();
 
     let checkShipAndAsteroidCollision = function() {
-        asteroids.list.forEach(_checkShipCollision);
-
-        function _checkShipCollision(asteroid, index) {
+        asteroids.list.forEach((asteroid, index) => {
             if (ENGINE.util.checkCollision(playerShip, asteroid)) {
                 asteroids.list.splice(index, 1);
                 removeLife();
             }
-        }
+        });
     };
 
     let checkShipLaserAndAsteroidCollision = function() {
-        let checkLaserCollision = function(laser, laserIndex) {
-            // For every asteroid
+        playerShip.lasers.list.forEach((laser, laserIndex) => {
             for (let i = 0; i < asteroids.list.length; i++) {
                 if (ENGINE.util.checkCollision(laser, asteroids.list[i])) {
                     playerShip.lasers.list.splice(laserIndex, 1);
@@ -50,9 +47,7 @@ import {AsteroidCollection} from './asteroidCollection';
                     return 0;
                 }
             }
-        };
-
-        playerShip.lasers.list.forEach(checkLaserCollision);
+        });
     };
 
     let init = function() {
@@ -100,7 +95,7 @@ import {AsteroidCollection} from './asteroidCollection';
 
     game.start();
 
-    setInterval(function() {
+    setInterval(() => {
         if (gameState === GAME_STATE.PLAY) {
             asteroids.addAsteroid();
         }
@@ -247,8 +242,8 @@ import {AsteroidCollection} from './asteroidCollection';
             ctx.canvas.height = ENGINE.settings.canvasHeight;
 
             $('.notifications').removeClass('large-screen');
-            //$('#GameCanvas').width(ENGINE.settings.canvasWidth);
-            //$('#GameCanvas').height(ENGINE.settings.canvasHeight);
+            $('#GameCanvas').width(ENGINE.settings.canvasWidth);
+            $('#GameCanvas').height(ENGINE.settings.canvasHeight);
         }
     }
     //endregion

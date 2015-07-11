@@ -9,7 +9,7 @@
 
 canvas {
     background: #000;
-    background-image: url('../../App/Content/Images/stars.jpg');
+    background-image: url('../../app/content/images/stars.jpg');
     background-repeat: repeat;
     //cursor: none;
 }
@@ -56,49 +56,4 @@ canvas {
 
 .start-screen {
     display: block;
-}
-
-.direction-pad {
-  position: absolute;
-  bottom: 110px;
-  left: 20px;
-  z-index: 99;
-  width: 90px;
-  height: 90px;
-  position: relative;
-
-  button {
-    width: 30px;
-    height: 30px;
-    position: absolute;
-  }
-
-  &__up {
-    top: 0;
-    left: 30px;
-  }
-
-  &__right {
-    top: 30px;
-    left: 60px;
-  }
-
-  &__down {
-    top: 60px;
-    left: 30px;
-  }
-
-  &__left {
-    top: 30px;
-    left: 0;
-  }
-}
-
-.fire-btn {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  bottom: 121px;
-  right: 40px;
-  border-radius: 50%;
 }

@@ -14,7 +14,7 @@ class Asteroid {
         this.settings.posY = this.settings.height * -2;
 
         this.img = new Image();
-        this.img.src = 'App/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
+        this.img.src = 'app/Content/Images/asteroid-' + ENGINE.util.getRandomNumber(1, 4) + '.png';
     }
 
     draw(context) {

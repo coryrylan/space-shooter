@@ -21,6 +21,10 @@ var jsSource = [
     './app/src/**/*.js'
 ];
 
+var jsSpecSrc = [
+
+];
+
 var sassSrc = [
     './styles/**/*.scss'
 ];
@@ -37,7 +41,7 @@ gulp.task('build.sass', function () {
 
 gulp.task('js-hint', function() {
     return gulp
-        .src(jsSource.concat(specSource))
+        .src(jsSource.concat(jsSpecSrc))
         .pipe(jscs({ esnext: true })).on('error', swallowError)
         .pipe(jshint());
 });

@@ -8,9 +8,10 @@ class Laser {
         };
 
         this.sound = new window.Howl({
-            urls: ['app/Content/Audio/laser.mp3']
+            urls: ['app/content/audio/laser.mp3']
         });
     }
+
     draw(context) {
         context.beginPath();
         context.fillStyle = '#00ff00';

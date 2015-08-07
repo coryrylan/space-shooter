@@ -139,41 +139,41 @@ import {AsteroidCollection} from './asteroid-collection';
     //endregion
 
     //region Key Game Controls
-    Engine.controls.on('left', function() {
+    Engine.controls.on('left', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveLeft();
         }
     });
 
-    Engine.controls.on('right', function() {
+    Engine.controls.on('right', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveRight();
         }
     });
 
-    Engine.controls.on('up', function() {
+    Engine.controls.on('up', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveUp();
         }
     });
 
-    Engine.controls.on('down', function() {
+    Engine.controls.on('down', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveDown();
         }
     });
 
-    Engine.controls.onkey('space', function() {
+    Engine.controls.onkey('space', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.fire();
         }
     });
 
-    Engine.controls.onkey('pause', function() {
+    Engine.controls.onkey('pause', () => {
         pauseGame();
     });
 
-    Engine.controls.onkey('enter', function() {
+    Engine.controls.onkey('enter', () => {
         if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         }

@@ -27,8 +27,9 @@
     <script src="assets/javascript/system.js"></script>
     <script>
         System.config({
+            transpiler: 'typescript',
             paths: {
-                'app/*': 'build/app/*.js?v=1.0'
+                'app/*': 'build/js/app/*.js?v=1.0'
             }
         });
         System.import('app/app');

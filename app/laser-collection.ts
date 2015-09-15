@@ -1,6 +1,9 @@
 import {Laser} from './laser';
 
 class LaserCollection {
+    maxLasers: number;
+    list: Array<Laser>;
+    
     constructor() {
         this.maxLasers = 10;
         this.list = [];

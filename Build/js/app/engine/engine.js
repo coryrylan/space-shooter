@@ -1,58 +1,46 @@
-﻿class Game {
-    _update: any;
-    _draw: any;
-    _init: any;
-    
-    constructor(options) {
+var Game = (function () {
+    function Game(options) {
         this._update = options.update;
         this._draw = options.draw;
         this._init = options.init;
     }
-
-    update() {
+    Game.prototype.update = function () {
         this._update();
-    }
-
-    draw() {
+    };
+    Game.prototype.draw = function () {
         this._draw();
-    }
-
-    start() {
+    };
+    Game.prototype.start = function () {
+        var _this = this;
         this._init();
-        let gameLoop = () => {
-            this._update();
-            this._draw();
+        var gameLoop = function () {
+            _this._update();
+            _this._draw();
             requestAnimationFrame(gameLoop);
         };
-
         requestAnimationFrame(gameLoop);
-    }
-}
-
-var Engine = (function() {
+    };
+    return Game;
+})();
+var Engine = (function () {
     'use strict';
-
-    let factory = (function() {
-
+    var factory = (function () {
         function createGame(options) {
             return new Game(options);
         }
-
         return {
             createGame: createGame
         };
     }());
-
-    let controls = (function() {
-        let eventActions = {};
-        let keyState = {};
-        let keyAction = {
-            space: function() { console.log('Key action space not defined'); },
-            pause: function() { console.log('Key action pause not defined'); },
-            enter: function() { console.log('Key action enter not defined'); }
+    var controls = (function () {
+        var eventActions = {};
+        var keyState = {};
+        var keyAction = {
+            space: function () { console.log('Key action space not defined'); },
+            pause: function () { console.log('Key action pause not defined'); },
+            enter: function () { console.log('Key action enter not defined'); }
         };
-
-        let on = function(event, func) {
+        var on = function (event, func) {
             switch (event) {
                 case 'left':
                     eventActions.left = func;
@@ -76,8 +64,7 @@ var Engine = (function() {
                     console.log('unknown control event fired');
             }
         };
-
-        let onkey = function(event, func) {
+        var onkey = function (event, func) {
             switch (event) {
                 case 'space':
                     keyAction.space = func;
@@ -92,74 +79,59 @@ var Engine = (function() {
                     console.log('unknown control event fired');
             }
         };
-
-        let controlsLoop = function() {
+        var controlsLoop = function () {
             // (Up Arrow)
             if (keyState[38] || keyState[87]) {
                 eventActions.up();
             }
-
             // (Left Arrow)
             if (keyState[37] || keyState[65]) {
                 eventActions.left();
             }
-
             // (Right Arrow)
             if (keyState[39] || keyState[68]) {
                 eventActions.right();
             }
-
             // (Down Arrow)
             if (keyState[40] || keyState[83]) {
                 eventActions.down();
             }
-
             requestAnimationFrame(controlsLoop);
         };
-
         requestAnimationFrame(controlsLoop);
-
-        window.addEventListener('keydown', function(e) {
+        window.addEventListener('keydown', function (e) {
             keyState[e.keyCode || e.which] = true;
         }, true);
-
-        window.addEventListener('keyup', function(e) {
+        window.addEventListener('keyup', function (e) {
             keyState[e.keyCode || e.which] = false;
         }, true);
-
-        $(document).keydown(function(e) {
+        $(document).keydown(function (e) {
             // Enter key
             if (e.keyCode === 13) {
                 keyAction.enter();
             }
-
             // (p) Pause
             if (e.keyCode === 80) {
                 keyAction.pause();
             }
-
             // Space bar
             if (e.keyCode === 32) {
                 keyAction.space();
             }
         });
-
         return {
-            on:on,
+            on: on,
             onkey: onkey
         };
     }());
-
-    let settings = {
+    var settings = {
         canvasWidth: 720,
         canvasHeight: 480
     };
-
     return {
         factory: factory,
         controls: controls,
         settings: settings
     };
 }());
-
-export {Engine};
+exports.Engine = Engine;

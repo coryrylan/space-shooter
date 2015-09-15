@@ -2,6 +2,8 @@ import {Asteroid} from './asteroid';
 import {Engine} from './engine/engine';
 
 class AsteroidCollection {
+    list: Array<Asteroid>;
+    
     constructor() {
         this.list = [];
     }

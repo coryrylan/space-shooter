@@ -2,6 +2,9 @@ import {Utilities} from './engine/utilities';
 import {Engine} from './engine/engine';
 
 class Asteroid {
+    settings: any;
+    img: HTMLImageElement;
+    
     constructor() {
         const range = Utilities.getRandomNumber(30, 100);
 

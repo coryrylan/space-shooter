@@ -25,7 +25,7 @@ const CONFIG = {
         './assets/javascript/jquery.js',
         './assets/javascript/howler.js'
     ],
-    tsSource: './app/src/**/*.ts',
+    tsSource: './app/**/*.ts',
     sassSrc: [
         './styles/**/*.scss'
     ]
@@ -47,7 +47,7 @@ gulp.task('build.typescript', DOCS.typescriptBuild, () => {
                       }));
 
     return tsResult.js
-            .pipe(gulp.dest('./build/js'));
+            .pipe(gulp.dest('./build/js/app'));
 });
 
 gulp.task('build.sass', DOCS.sassBuild, () => {

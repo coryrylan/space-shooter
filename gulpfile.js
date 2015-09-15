@@ -1,72 +1,80 @@
-﻿var gulp = require('gulp');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var jscs = require('gulp-jscs');
-var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var concat = require('gulp-concat');
+﻿'use strict';
 
-var babelify = require('babelify');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
+let gulp = require('gulp-help')(require('gulp'));
+let sass = require('gulp-sass');
+let rename = require('gulp-rename');
+let tsc = require('gulp-typescript');
+let tslint = require('gulp-tslint');
+let del = require('del');
+let connect = require('connect');
+let serveStatic = require('serve-static');
+let open = require('open');
+let http = require('http');
 
-var jsLibraries = [
-    './app/libraries/requestAnimationFramePolly.js',
-    './app/libraries/jquery.js',
-    './app/libraries/howler.js'
-];
+const DOCS = {
+    sassBuild: 'Build Sass and compile out to CSS',
+    typescriptBuild: 'Build TypeScript and compile out ES5 JavaScript',
+    typescriptLint: 'Lint TypeScript to check for style and syntax errors.',
+    watch: 'Start watching files for compilation and linting.',
+    runDev: 'Start dev server and watch tasks.'
+};
 
-var jsSource = [
-    './app/src/**/*.js'
-];
+const CONFIG = {
+    jsLib: [
+        './assets/javascript/requestAnimationFramePolly.js',
+        './assets/javascript/jquery.js',
+        './assets/javascript/howler.js'
+    ],
+    tsSource: './app/src/**/*.ts',
+    sassSrc: [
+        './styles/**/*.scss'
+    ]
+};
 
-var jsSpecSrc = [
+gulp.task('lint.typescript', DOCS.typescriptLint, () => {
+    return gulp.src(CONFIG.tsSource).pipe(tslint()).pipe(tslint.report('prose'));
+});
 
-];
+gulp.task('build.typescript', DOCS.typescriptBuild, () => {
+    let tsResult = gulp.src([CONFIG.tsSource, './typings/**/*.d.ts'])
+                      .pipe(tsc({
+                          typescript: require('typescript'),
+                          target: 'ES5',
+                          declarationFiles: false,
+                          experimentalDecorators: true,
+                          emitDecoratorMetadata: true,
+                          module: 'commonjs'
+                      }));
 
-var sassSrc = [
-    './styles/**/*.scss'
-];
+    return tsResult.js
+            .pipe(gulp.dest('./build/js'));
+});
 
-gulp.task('build.sass', function () {
-    return gulp.src('./styles/app.scss')
-        .pipe(sourcemaps.init())
+gulp.task('build.sass', DOCS.sassBuild, () => {
+    return gulp.src(CONFIG.sassSrc)
         .pipe(sass({ outputStyle: 'compressed' }))
         .on('error', swallowError)
-        .pipe(sourcemaps.write('./'))
         .pipe(rename('app.min.css'))
-        .pipe(gulp.dest('build'));
+        .pipe(gulp.dest('./build/css'));
 });
 
-gulp.task('js-hint', function() {
-    return gulp
-        .src(jsSource.concat(jsSpecSrc))
-        .pipe(jscs({ esnext: true })).on('error', swallowError)
-        .pipe(jshint());
+gulp.task('watch', () => {
+    gulp.watch(CONFIG.sassSrc, ['build.sass']);
+    gulp.watch(CONFIG.tsSource, ['lint.typescript', 'build.typescript']);
 });
 
-gulp.task('build.js', function() {
-    // App
-    browserify('./app/src/app.js', { debug: true })
-        .transform(babelify)
-        .bundle()
-        .on('error', function(err) { console.log('Error: ' + err.message); })
-        .pipe(source('app.js'))
-        .pipe(gulp.dest('./build/js'));
+gulp.task('run.dev', DOCS.runDev, ['watch', 'build.typescript'], function () {
+    let port = 9000, app;
 
-    // Libraries
-    gulp.src(jsLibraries)
-        .pipe(concat('lib.js'))
-        .pipe(gulp.dest('./build/js'))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify({ mangle: true }))
-        .pipe(gulp.dest('./build/js'));
+    app = connect().use(serveStatic(__dirname));  // serve everything that is static
+
+    http.createServer(app).listen(port, function () {
+        open('http://localhost:' + port);
+    });
 });
 
-gulp.task('watch', function () {
-    gulp.watch(sassSrc, ['build.sass']);
-    gulp.watch(jsSource, ['js-hint', 'build.js']);
+gulp.task('clean', () => {
+    del(['build/**/*']);
 });
 
 function swallowError(error) {

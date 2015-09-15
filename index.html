@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Game 1</title>
-    <link href="build/css/all.min.css" rel="stylesheet" />
+    <link href="build/css/app.min.css?v=1.0" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body>
@@ -21,7 +21,17 @@
         </section>
     </main>
 
-    <script src="build/js/lib.min.js"></script>
-    <script src="build/js/app.js"></script>
+    <script src="assets/javascript/requestAnimationFramePolly.js"></script>
+    <script src="assets/javascript/jquery.js"></script>
+    <script src="assets/javascript/howler.js"></script>
+    <script src="assets/javascript/system.js"></script>
+    <script>
+        System.config({
+            paths: {
+                'app/*': 'build/app/*.js?v=1.0'
+            }
+        });
+        System.import('app/app');
+    </script>
 </body>
 </html>

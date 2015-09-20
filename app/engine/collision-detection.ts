@@ -1,3 +1,5 @@
+import {GameObject} from 'app/engine/interfaces';
+
 export class CollisionDetection {
     static check(obj1, obj2) {
         if (this._horizontalCollision(obj1, obj2) && this._verticalPosition(obj1, obj2)) {
@@ -7,7 +9,7 @@ export class CollisionDetection {
         }
     }
 
-    static _horizontalCollision(obj1, obj2) {
+    static _horizontalCollision(obj1 : GameObject, obj2 : GameObject) {
         let obj1RightSide = obj1.settings.posX + obj1.settings.width;
         let obj1LeftSide = obj1.settings.posX;
         let obj2RightSide = obj2.settings.posX + obj2.settings.width;

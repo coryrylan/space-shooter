@@ -1,8 +1,8 @@
-﻿import {Engine} from './engine/engine';
-import {CollisionDetection} from './engine/collision-detection';
-import {Ship} from './ship';
-import {LaserCollection} from './laser-collection';
-import {AsteroidCollection} from './asteroid-collection';
+﻿import {Engine} from 'app/engine/engine';
+import {CollisionDetection} from 'app/engine/collision-detection';
+import {Ship} from 'app/ship';
+import {LaserCollection} from 'app/laser-collection';
+import {AsteroidCollection} from 'app/asteroid-collection';
 
 declare let $; // jQuery global, need d.ts file
 
@@ -16,7 +16,6 @@ declare let $; // jQuery global, need d.ts file
         PAUSE: 'PAUSE',
         OVER: 'OVER'
     };
-    
 
     // Game Globals
     let gameScore = 0;

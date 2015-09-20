@@ -1,4 +1,4 @@
-System.register(['./engine/engine', './engine/collision-detection', './ship', './laser-collection', './asteroid-collection'], function(exports_1) {
+System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/ship', 'app/laser-collection', 'app/asteroid-collection'], function(exports_1) {
     var engine_1, collision_detection_1, ship_1, laser_collection_1, asteroid_collection_1;
     return {
         setters:[

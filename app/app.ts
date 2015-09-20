@@ -1,5 +1,4 @@
-﻿import {Engine, Game} from 'app/engine/engine';
-import {CollisionDetection} from 'app/engine/collision-detection';
+﻿import {Engine, Game, CollisionDetection} from 'app/engine/engine';
 import {Ship} from 'app/ship';
 import {LaserCollection} from 'app/laser-collection';
 import {AsteroidCollection} from 'app/asteroid-collection';
@@ -23,6 +22,11 @@ declare let $; // jQuery global, need d.ts file
     let canvas = document.getElementById('GameCanvas');
     let ctx = canvas.getContext('2d');
     let gameState = GAME_STATE.START;
+    let canvasSettings = {
+        width: 720,
+        height: 480
+    };
+
 
     //region Game
     let playerShip = new Ship({
@@ -72,7 +76,7 @@ declare let $; // jQuery global, need d.ts file
             }
         },
         draw: function() {
-            ctx.clearRect(0, 0, Engine.settings.canvasWidth, Engine.settings.canvasHeight);
+            ctx.clearRect(0, 0, canvasSettings.width, canvasSettings.height);
             drawScore();
             drawLives();
 
@@ -97,7 +101,7 @@ declare let $; // jQuery global, need d.ts file
         if (gameState === GAME_STATE.PLAY) {
             asteroids.addAsteroid();
         }
-    }, 140 - (Engine.settings.canvasWidth / 100));
+    }, 140 - (canvasSettings.width / 100));
     //endregion
 
     //region Key Game Controls

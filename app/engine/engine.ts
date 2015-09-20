@@ -1,4 +1,6 @@
-﻿export class Game {
+﻿import {CollisionDetection} from 'app/engine/collision-detection';
+
+class Game {
     _update: any;
     _draw: any;
     _init: any;
@@ -138,16 +140,10 @@ var Engine = (function() {
             onkey: onkey
         };
     }());
-
-    let settings = {
-        canvasWidth: 720,
-        canvasHeight: 480
-    };
-
+    
     return {
-        controls: controls,
-        settings: settings
+        controls: controls
     };
 }());
 
-export {Engine};
+export {Engine, Game, CollisionDetection};

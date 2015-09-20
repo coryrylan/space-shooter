@@ -1,12 +1,9 @@
-System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/ship', 'app/laser-collection', 'app/asteroid-collection'], function(exports_1) {
-    var engine_1, collision_detection_1, ship_1, laser_collection_1, asteroid_collection_1;
+System.register(['app/engine/engine', 'app/ship', 'app/laser-collection', 'app/asteroid-collection'], function(exports_1) {
+    var engine_1, ship_1, laser_collection_1, asteroid_collection_1;
     return {
         setters:[
             function (_engine_1) {
                 engine_1 = _engine_1;
-            },
-            function (_collision_detection_1) {
-                collision_detection_1 = _collision_detection_1;
             },
             function (_ship_1) {
                 ship_1 = _ship_1;
@@ -33,6 +30,10 @@ System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/shi
                 var canvas = document.getElementById('GameCanvas');
                 var ctx = canvas.getContext('2d');
                 var gameState = GAME_STATE.START;
+                var canvasSettings = {
+                    width: 720,
+                    height: 480
+                };
                 //region Game
                 var playerShip = new ship_1.Ship({
                     lasers: new laser_collection_1.LaserCollection()
@@ -40,7 +41,7 @@ System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/shi
                 var asteroids = new asteroid_collection_1.AsteroidCollection();
                 function checkShipAndAsteroidCollision() {
                     asteroids.list.forEach(function (asteroid, index) {
-                        if (collision_detection_1.CollisionDetection.check(playerShip, asteroid)) {
+                        if (engine_1.CollisionDetection.check(playerShip, asteroid)) {
                             asteroids.list.splice(index, 1);
                             removeLife();
                         }
@@ -50,7 +51,7 @@ System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/shi
                 function checkShipLaserAndAsteroidCollision() {
                     playerShip.lasers.list.forEach(function (laser, laserIndex) {
                         asteroids.list.forEach(function (asteroid, asteroidIndex) {
-                            if (collision_detection_1.CollisionDetection.check(laser, asteroid)) {
+                            if (engine_1.CollisionDetection.check(laser, asteroid)) {
                                 playerShip.lasers.list.splice(laserIndex, 1);
                                 asteroids.list.splice(asteroidIndex, 1);
                                 addScore();
@@ -81,7 +82,7 @@ System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/shi
                         }
                     },
                     draw: function () {
-                        ctx.clearRect(0, 0, engine_1.Engine.settings.canvasWidth, engine_1.Engine.settings.canvasHeight);
+                        ctx.clearRect(0, 0, canvasSettings.width, canvasSettings.height);
                         drawScore();
                         drawLives();
                         if (gameState === GAME_STATE.START) {
@@ -107,7 +108,7 @@ System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/shi
                     if (gameState === GAME_STATE.PLAY) {
                         asteroids.addAsteroid();
                     }
-                }, 140 - (engine_1.Engine.settings.canvasWidth / 100));
+                }, 140 - (canvasSettings.width / 100));
                 //endregion
                 //region Key Game Controls
                 engine_1.Engine.controls.on('left', function () {

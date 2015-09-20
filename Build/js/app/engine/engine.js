@@ -1,7 +1,12 @@
-System.register([], function(exports_1) {
+System.register(['app/engine/collision-detection'], function(exports_1) {
+    var collision_detection_1;
     var Game, Engine;
     return {
-        setters:[],
+        setters:[
+            function (_collision_detection_1) {
+                collision_detection_1 = _collision_detection_1;
+                exports_1("CollisionDetection", collision_detection_1.CollisionDetection);
+            }],
         execute: function() {
             Game = (function () {
                 function Game(options) {
@@ -122,13 +127,8 @@ System.register([], function(exports_1) {
                         onkey: onkey
                     };
                 }());
-                var settings = {
-                    canvasWidth: 720,
-                    canvasHeight: 480
-                };
                 return {
-                    controls: controls,
-                    settings: settings
+                    controls: controls
                 };
             }());
             exports_1("Engine", Engine);

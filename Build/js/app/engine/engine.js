@@ -27,16 +27,9 @@ System.register([], function(exports_1) {
                 };
                 return Game;
             })();
+            exports_1("Game", Game);
             Engine = (function () {
                 'use strict';
-                var factory = (function () {
-                    function createGame(options) {
-                        return new Game(options);
-                    }
-                    return {
-                        createGame: createGame
-                    };
-                }());
                 var controls = (function () {
                     var eventActions = {};
                     var keyState = {};
@@ -134,7 +127,6 @@ System.register([], function(exports_1) {
                     canvasHeight: 480
                 };
                 return {
-                    factory: factory,
                     controls: controls,
                     settings: settings
                 };

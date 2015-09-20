@@ -1,4 +1,4 @@
-﻿class Game {
+﻿export class Game {
     _update: any;
     _draw: any;
     _init: any;
@@ -31,17 +31,6 @@
 
 var Engine = (function() {
     'use strict';
-
-    let factory = (function() {
-
-        function createGame(options) {
-            return new Game(options);
-        }
-
-        return {
-            createGame: createGame
-        };
-    }());
 
     let controls = (function() {
         let eventActions = {};
@@ -156,7 +145,6 @@ var Engine = (function() {
     };
 
     return {
-        factory: factory,
         controls: controls,
         settings: settings
     };

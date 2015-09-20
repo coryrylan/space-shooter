@@ -1,4 +1,4 @@
-﻿import {Engine} from 'app/engine/engine';
+﻿import {Engine, Game} from 'app/engine/engine';
 import {CollisionDetection} from 'app/engine/collision-detection';
 import {Ship} from 'app/ship';
 import {LaserCollection} from 'app/laser-collection';
@@ -6,7 +6,7 @@ import {AsteroidCollection} from 'app/asteroid-collection';
 
 declare let $; // jQuery global, need d.ts file
 
-(function() {
+(function main() {
     'use strict';
 
     // Enums
@@ -53,7 +53,7 @@ declare let $; // jQuery global, need d.ts file
         });
     };
 
-    let game = Engine.factory.createGame({
+    let game = new Game({
         init: function() {
 
         },

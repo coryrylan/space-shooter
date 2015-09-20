@@ -18,7 +18,7 @@ System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/shi
                 asteroid_collection_1 = _asteroid_collection_1;
             }],
         execute: function() {
-            (function () {
+            (function main() {
                 'use strict';
                 // Enums
                 var GAME_STATE = {
@@ -60,7 +60,7 @@ System.register(['app/engine/engine', 'app/engine/collision-detection', 'app/shi
                     });
                 }
                 ;
-                var game = engine_1.Engine.factory.createGame({
+                var game = new engine_1.Game({
                     init: function () {
                     },
                     update: function () {

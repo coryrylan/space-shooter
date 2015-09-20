@@ -4,6 +4,8 @@ import {Ship} from './ship';
 import {LaserCollection} from './laser-collection';
 import {AsteroidCollection} from './asteroid-collection';
 
+declare let $; // jQuery global, need d.ts file
+
 (function() {
     'use strict';
 
@@ -14,6 +16,7 @@ import {AsteroidCollection} from './asteroid-collection';
         PAUSE: 'PAUSE',
         OVER: 'OVER'
     };
+    
 
     // Game Globals
     let gameScore = 0;

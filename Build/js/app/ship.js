@@ -19,7 +19,7 @@ System.register(['./engine/engine'], function(exports_1) {
                         speed: 4
                     };
                     this.img = new Image();
-                    this.img.src = 'app/content/images/spaceship.png';
+                    this.img.src = 'assets/images/spaceship.png';
                 }
                 Ship.prototype.draw = function (context) {
                     context.drawImage(this.img, this.settings.posX, this.settings.posY);

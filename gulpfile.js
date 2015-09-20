@@ -60,7 +60,7 @@ gulp.task('build.sass', DOCS.sassBuild, () => {
 
 gulp.task('watch', () => {
     gulp.watch(CONFIG.sassSrc, ['build.sass']);
-    gulp.watch(CONFIG.tsSource, ['lint.typescript', 'build.typescript']);
+    gulp.watch(CONFIG.tsSource, ['build.typescript']); // 'lint.typescript', 
 });
 
 gulp.task('run.dev', DOCS.runDev, ['watch', 'build.typescript'], function () {

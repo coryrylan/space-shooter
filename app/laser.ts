@@ -13,7 +13,7 @@ export class Laser {
         };
 
         this.sound = new Howl({
-            urls: ['app/content/audio/laser.mp3']
+            urls: ['assets/audio/laser.mp3']
         });
     }
 

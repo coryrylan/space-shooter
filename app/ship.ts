@@ -22,7 +22,7 @@ export class Ship {
         };
 
         this.img = new Image();
-        this.img.src = 'app/content/images/spaceship.png';
+        this.img.src = 'assets/images/spaceship.png';
     }
 
     draw(context) {

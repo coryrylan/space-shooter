@@ -1,4 +1,4 @@
-import {Laser} from './laser';
+import {Laser} from 'app/laser';
 
 class LaserCollection {
     maxLasers: number;

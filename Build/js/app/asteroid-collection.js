@@ -1,4 +1,4 @@
-System.register(['./asteroid', './engine/engine'], function(exports_1) {
+System.register(['app/asteroid', 'app/engine/engine'], function(exports_1) {
     var asteroid_1, engine_1;
     var AsteroidCollection;
     return {
@@ -15,12 +15,12 @@ System.register(['./asteroid', './engine/engine'], function(exports_1) {
                     this.list = [];
                 }
                 AsteroidCollection.prototype.update = function () {
-                    var checkAsteroidBounds = function (asteroid, index) {
+                    var _this = this;
+                    this.list.forEach(function (asteroid, index) {
                         if (asteroid.settings.posY > engine_1.Engine.settings.canvasHeight + 30) {
-                            this.list.splice(index, 1);
+                            _this.list.splice(index, 1);
                         }
-                    }.bind(this);
-                    this.list.forEach(checkAsteroidBounds);
+                    });
                     this.list.forEach(function (asteroid) { return asteroid.update(); });
                 };
                 AsteroidCollection.prototype.draw = function (context) {

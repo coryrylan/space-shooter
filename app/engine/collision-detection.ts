@@ -38,7 +38,7 @@ export class CollisionDetection {
         }
     }
 
-    static _verticalPosition(obj1, obj2) {
+    static _verticalPosition(obj1 : GameObject, obj2 : GameObject) {
         if (checkTopSideCollision()) {
             return true;
         } else {

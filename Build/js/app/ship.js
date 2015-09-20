@@ -1,4 +1,4 @@
-System.register(['./engine/engine'], function(exports_1) {
+System.register(['app/engine/engine'], function(exports_1) {
     var engine_1;
     var Ship;
     return {

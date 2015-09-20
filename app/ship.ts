@@ -1,5 +1,5 @@
-import {Engine} from './engine/engine';
-import {LaserCollection} from './laser-collection';
+import {Engine} from 'app/engine/engine';
+import {LaserCollection} from 'app/laser-collection';
 
 export class Ship {
     lasers: LaserCollection;

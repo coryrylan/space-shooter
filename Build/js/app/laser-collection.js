@@ -1,4 +1,4 @@
-System.register(['./laser'], function(exports_1) {
+System.register(['app/laser'], function(exports_1) {
     var laser_1;
     var LaserCollection;
     return {

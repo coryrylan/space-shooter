@@ -1,9 +1,11 @@
 ﻿import {CollisionDetection} from 'app/engine/collision-detection';
 
+declare let $;
+
 class Game {
-    _update: any;
-    _draw: any;
-    _init: any;
+    _update: Function;
+    _draw: Function;
+    _init: Function;
     
     constructor(options) {
         this._update = options.update;
@@ -31,119 +33,126 @@ class Game {
     }
 }
 
-var Engine = (function() {
-    'use strict';
-
-    let controls = (function() {
-        let eventActions = {};
-        let keyState = {};
-        let keyAction = {
-            space: function() { console.log('Key action space not defined'); },
-            pause: function() { console.log('Key action pause not defined'); },
-            enter: function() { console.log('Key action enter not defined'); }
+class Controls {
+    eventActions: any;
+    keyAction: any;
+    keyState: any;
+    
+    constructor() {
+        this.eventActions = {
+            left: null,
+            right: null,
+            up: null,
+            down: null
         };
-
-        let on = function(event, func) {
-            switch (event) {
-                case 'left':
-                    eventActions.left = func;
-                    break;
-                case 'right':
-                    eventActions.right = func;
-                    break;
-                case 'up':
-                    eventActions.up = func;
-                    break;
-                case 'down':
-                    eventActions.down = func;
-                    break;
-                case 'space':
-                    eventActions.down = func;
-                    break;
-                case 'pause':
-                    eventActions.down = func;
-                    break;
-                default:
-                    console.log('unknown control event fired');
-            }
+        
+        this.keyAction = {
+            space: null,
+            pause: null,
+            enter: null
         };
-
-        let onkey = function(event, func) {
-            switch (event) {
-                case 'space':
-                    keyAction.space = func;
-                    break;
-                case 'pause':
-                    keyAction.pause = func;
-                    break;
-                case 'enter':
-                    keyAction.enter = func;
-                    break;
-                default:
-                    console.log('unknown control event fired');
-            }
-        };
-
-        let controlsLoop = function() {
-            // (Up Arrow)
-            if (keyState[38] || keyState[87]) {
-                eventActions.up();
-            }
-
-            // (Left Arrow)
-            if (keyState[37] || keyState[65]) {
-                eventActions.left();
-            }
-
-            // (Right Arrow)
-            if (keyState[39] || keyState[68]) {
-                eventActions.right();
-            }
-
-            // (Down Arrow)
-            if (keyState[40] || keyState[83]) {
-                eventActions.down();
-            }
-
+        
+        this.keyState = {};
+        
+        this._init();
+        
+        let controlsLoop = () => {
+            this._loop();
             requestAnimationFrame(controlsLoop);
         };
 
         requestAnimationFrame(controlsLoop);
-
-        window.addEventListener('keydown', function(e) {
-            keyState[e.keyCode || e.which] = true;
+    }
+    
+    private _init() {
+        window.addEventListener('keydown', e => {
+            this.keyState[e.keyCode || e.which] = true;
         }, true);
 
-        window.addEventListener('keyup', function(e) {
-            keyState[e.keyCode || e.which] = false;
+        window.addEventListener('keyup', e => {
+            this.keyState[e.keyCode || e.which] = false;
         }, true);
 
-        $(document).keydown(function(e) {
+        $(document).keydown(e => {
             // Enter key
             if (e.keyCode === 13) {
-                keyAction.enter();
+                this.keyAction.enter();
             }
 
             // (p) Pause
             if (e.keyCode === 80) {
-                keyAction.pause();
+                this.keyAction.pause();
             }
 
             // Space bar
             if (e.keyCode === 32) {
-                keyAction.space();
+                this.keyAction.space();
             }
         });
-
-        return {
-            on:on,
-            onkey: onkey
-        };
-    }());
+    }
     
-    return {
-        controls: controls
-    };
-}());
+    on(event: string, func: Function) {
+        switch (event) {
+            case 'left':
+                this.eventActions.left = func;
+                break;
+            case 'right':
+                this.eventActions.right = func;
+                break;
+            case 'up':
+                this.eventActions.up = func;
+                break;
+            case 'down':
+                this.eventActions.down = func;
+                break;
+            case 'space':
+                this.eventActions.down = func;
+                break;
+            case 'pause':
+                this.eventActions.down = func;
+                break;
+            default:
+                console.log('unknown control event fired');
+        }
+    }
+    
+    onKey(event: string, func: Function) {
+        switch (event) {
+            case 'space':
+                this.keyAction.space = func;
+                break;
+            case 'pause':
+                this.keyAction.pause = func;
+                break;
+            case 'enter':
+                this.keyAction.enter = func;
+                break;
+            default:
+                console.log('unknown control event fired');
+        }
+    }
+    
+    private _loop() {
+        // (Up Arrow)
+        if (this.keyState[38] || this.keyState[87]) {
+            this.eventActions.up();
+        }
 
-export {Engine, Game, CollisionDetection};
+        // (Left Arrow)
+        if (this.keyState[37] || this.keyState[65]) {
+            this.eventActions.left();
+        }
+
+        // (Right Arrow)
+        if (this.keyState[39] || this.keyState[68]) {
+            this.eventActions.right();
+        }
+
+        // (Down Arrow)
+        if (this.keyState[40] || this.keyState[83]) {
+            this.eventActions.down();
+        }
+    }
+}
+
+export {Game, Controls, CollisionDetection};

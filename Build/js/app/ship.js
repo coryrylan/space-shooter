@@ -1,15 +1,12 @@
-System.register(['app/engine/engine'], function(exports_1) {
-    var engine_1;
+System.register([], function(exports_1) {
     var Ship;
     return {
-        setters:[
-            function (_engine_1) {
-                engine_1 = _engine_1;
-            }],
+        setters:[],
         execute: function() {
             Ship = (function () {
-                function Ship(properties) {
-                    this.lasers = properties.lasers;
+                function Ship(options) {
+                    this.lasers = options.lasers;
+                    this._options = options;
                     this.settings = {
                         color: 'rgba(0, 0, 0, 1)',
                         posX: 25,
@@ -37,7 +34,7 @@ System.register(['app/engine/engine'], function(exports_1) {
                     }
                 };
                 Ship.prototype.moveRight = function () {
-                    if (this.settings.posX + this.settings.width < engine_1.Engine.settings.canvasWidth + 70) {
+                    if (this.settings.posX + this.settings.width < this._options.viewPort.width + 70) {
                         this.settings.posX = this.settings.posX + this.settings.speed;
                     }
                 };
@@ -47,7 +44,7 @@ System.register(['app/engine/engine'], function(exports_1) {
                     }
                 };
                 Ship.prototype.moveDown = function () {
-                    if (this.settings.posY < engine_1.Engine.settings.canvasHeight - 40) {
+                    if (this.settings.posY < this._options.viewPort.height - 40) {
                         this.settings.posY = this.settings.posY + this.settings.speed;
                     }
                 };

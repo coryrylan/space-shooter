@@ -1,16 +1,18 @@
-import {Engine} from 'app/engine/engine';
 import {LaserCollection} from 'app/laser-collection';
+import {ViewPort, GameObject} from 'app/engine/interfaces';
 
-export class Ship {
+export class Ship implements GameObject {
     lasers: LaserCollection;
     settings: any;
     img: HTMLImageElement;
-    properties: {
+    private _options: {
+        viewPort: ViewPort,
         lasers: LaserCollection
     };
     
-    constructor(properties) {
-        this.lasers = properties.lasers;
+    constructor(options) {
+        this.lasers = options.lasers;
+        this._options = options;
 
         this.settings = {
             color: 'rgba(0, 0, 0, 1)',
@@ -45,7 +47,7 @@ export class Ship {
     }
 
     moveRight() {
-        if (this.settings.posX + this.settings.width < Engine.settings.canvasWidth + 70) {
+        if (this.settings.posX + this.settings.width < this._options.viewPort.width + 70) {
             this.settings.posX = this.settings.posX + this.settings.speed;
         }
     }
@@ -57,7 +59,7 @@ export class Ship {
     }
 
     moveDown() {
-        if (this.settings.posY < Engine.settings.canvasHeight - 40) {
+        if (this.settings.posY < this._options.viewPort.height - 40) {
             this.settings.posY = this.settings.posY + this.settings.speed;
         }
     }

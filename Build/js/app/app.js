@@ -30,15 +30,17 @@ System.register(['app/engine/engine', 'app/ship', 'app/laser-collection', 'app/a
                 var canvas = document.getElementById('GameCanvas');
                 var ctx = canvas.getContext('2d');
                 var gameState = GAME_STATE.START;
-                var canvasSettings = {
+                var viewPort = {
                     width: 720,
                     height: 480
                 };
                 //region Game
                 var playerShip = new ship_1.Ship({
+                    viewPort: viewPort,
                     lasers: new laser_collection_1.LaserCollection()
                 });
-                var asteroids = new asteroid_collection_1.AsteroidCollection();
+                var asteroids = new asteroid_collection_1.AsteroidCollection({ viewPort: viewPort });
+                var controls = new engine_1.Controls();
                 function checkShipAndAsteroidCollision() {
                     asteroids.list.forEach(function (asteroid, index) {
                         if (engine_1.CollisionDetection.check(playerShip, asteroid)) {
@@ -82,7 +84,7 @@ System.register(['app/engine/engine', 'app/ship', 'app/laser-collection', 'app/a
                         }
                     },
                     draw: function () {
-                        ctx.clearRect(0, 0, canvasSettings.width, canvasSettings.height);
+                        ctx.clearRect(0, 0, viewPort.width, viewPort.height);
                         drawScore();
                         drawLives();
                         if (gameState === GAME_STATE.START) {
@@ -108,38 +110,38 @@ System.register(['app/engine/engine', 'app/ship', 'app/laser-collection', 'app/a
                     if (gameState === GAME_STATE.PLAY) {
                         asteroids.addAsteroid();
                     }
-                }, 140 - (canvasSettings.width / 100));
+                }, 140 - (viewPort.width / 100));
                 //endregion
                 //region Key Game Controls
-                engine_1.Engine.controls.on('left', function () {
+                controls.on('left', function () {
                     if (gameState === GAME_STATE.PLAY) {
                         playerShip.moveLeft();
                     }
                 });
-                engine_1.Engine.controls.on('right', function () {
+                controls.on('right', function () {
                     if (gameState === GAME_STATE.PLAY) {
                         playerShip.moveRight();
                     }
                 });
-                engine_1.Engine.controls.on('up', function () {
+                controls.on('up', function () {
                     if (gameState === GAME_STATE.PLAY) {
                         playerShip.moveUp();
                     }
                 });
-                engine_1.Engine.controls.on('down', function () {
+                controls.on('down', function () {
                     if (gameState === GAME_STATE.PLAY) {
                         playerShip.moveDown();
                     }
                 });
-                engine_1.Engine.controls.onkey('space', function () {
+                controls.onKey('space', function () {
                     if (gameState === GAME_STATE.PLAY) {
                         playerShip.fire();
                     }
                 });
-                engine_1.Engine.controls.onkey('pause', function () {
+                controls.onKey('pause', function () {
                     pauseGame();
                 });
-                engine_1.Engine.controls.onkey('enter', function () {
+                controls.onKey('enter', function () {
                     if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
                         startNewGame();
                     }

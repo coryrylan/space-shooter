@@ -1,6 +1,6 @@
 System.register(['app/engine/collision-detection'], function(exports_1) {
     var collision_detection_1;
-    var Game, Engine;
+    var Game, Controls;
     return {
         setters:[
             function (_collision_detection_1) {
@@ -33,105 +33,111 @@ System.register(['app/engine/collision-detection'], function(exports_1) {
                 return Game;
             })();
             exports_1("Game", Game);
-            Engine = (function () {
-                'use strict';
-                var controls = (function () {
-                    var eventActions = {};
-                    var keyState = {};
-                    var keyAction = {
-                        space: function () { console.log('Key action space not defined'); },
-                        pause: function () { console.log('Key action pause not defined'); },
-                        enter: function () { console.log('Key action enter not defined'); }
+            Controls = (function () {
+                function Controls() {
+                    var _this = this;
+                    this.eventActions = {
+                        left: null,
+                        right: null,
+                        up: null,
+                        down: null
                     };
-                    var on = function (event, func) {
-                        switch (event) {
-                            case 'left':
-                                eventActions.left = func;
-                                break;
-                            case 'right':
-                                eventActions.right = func;
-                                break;
-                            case 'up':
-                                eventActions.up = func;
-                                break;
-                            case 'down':
-                                eventActions.down = func;
-                                break;
-                            case 'space':
-                                eventActions.down = func;
-                                break;
-                            case 'pause':
-                                eventActions.down = func;
-                                break;
-                            default:
-                                console.log('unknown control event fired');
-                        }
+                    this.keyAction = {
+                        space: null,
+                        pause: null,
+                        enter: null
                     };
-                    var onkey = function (event, func) {
-                        switch (event) {
-                            case 'space':
-                                keyAction.space = func;
-                                break;
-                            case 'pause':
-                                keyAction.pause = func;
-                                break;
-                            case 'enter':
-                                keyAction.enter = func;
-                                break;
-                            default:
-                                console.log('unknown control event fired');
-                        }
-                    };
+                    this.keyState = {};
+                    this._init();
                     var controlsLoop = function () {
-                        // (Up Arrow)
-                        if (keyState[38] || keyState[87]) {
-                            eventActions.up();
-                        }
-                        // (Left Arrow)
-                        if (keyState[37] || keyState[65]) {
-                            eventActions.left();
-                        }
-                        // (Right Arrow)
-                        if (keyState[39] || keyState[68]) {
-                            eventActions.right();
-                        }
-                        // (Down Arrow)
-                        if (keyState[40] || keyState[83]) {
-                            eventActions.down();
-                        }
+                        _this._loop();
                         requestAnimationFrame(controlsLoop);
                     };
                     requestAnimationFrame(controlsLoop);
+                }
+                Controls.prototype._init = function () {
+                    var _this = this;
                     window.addEventListener('keydown', function (e) {
-                        keyState[e.keyCode || e.which] = true;
+                        _this.keyState[e.keyCode || e.which] = true;
                     }, true);
                     window.addEventListener('keyup', function (e) {
-                        keyState[e.keyCode || e.which] = false;
+                        _this.keyState[e.keyCode || e.which] = false;
                     }, true);
                     $(document).keydown(function (e) {
                         // Enter key
                         if (e.keyCode === 13) {
-                            keyAction.enter();
+                            _this.keyAction.enter();
                         }
                         // (p) Pause
                         if (e.keyCode === 80) {
-                            keyAction.pause();
+                            _this.keyAction.pause();
                         }
                         // Space bar
                         if (e.keyCode === 32) {
-                            keyAction.space();
+                            _this.keyAction.space();
                         }
                     });
-                    return {
-                        on: on,
-                        onkey: onkey
-                    };
-                }());
-                return {
-                    controls: controls
                 };
-            }());
-            exports_1("Engine", Engine);
+                Controls.prototype.on = function (event, func) {
+                    switch (event) {
+                        case 'left':
+                            this.eventActions.left = func;
+                            break;
+                        case 'right':
+                            this.eventActions.right = func;
+                            break;
+                        case 'up':
+                            this.eventActions.up = func;
+                            break;
+                        case 'down':
+                            this.eventActions.down = func;
+                            break;
+                        case 'space':
+                            this.eventActions.down = func;
+                            break;
+                        case 'pause':
+                            this.eventActions.down = func;
+                            break;
+                        default:
+                            console.log('unknown control event fired');
+                    }
+                };
+                Controls.prototype.onKey = function (event, func) {
+                    switch (event) {
+                        case 'space':
+                            this.keyAction.space = func;
+                            break;
+                        case 'pause':
+                            this.keyAction.pause = func;
+                            break;
+                        case 'enter':
+                            this.keyAction.enter = func;
+                            break;
+                        default:
+                            console.log('unknown control event fired');
+                    }
+                };
+                Controls.prototype._loop = function () {
+                    // (Up Arrow)
+                    if (this.keyState[38] || this.keyState[87]) {
+                        this.eventActions.up();
+                    }
+                    // (Left Arrow)
+                    if (this.keyState[37] || this.keyState[65]) {
+                        this.eventActions.left();
+                    }
+                    // (Right Arrow)
+                    if (this.keyState[39] || this.keyState[68]) {
+                        this.eventActions.right();
+                    }
+                    // (Down Arrow)
+                    if (this.keyState[40] || this.keyState[83]) {
+                        this.eventActions.down();
+                    }
+                };
+                return Controls;
+            })();
+            exports_1("Controls", Controls);
         }
     }
 });

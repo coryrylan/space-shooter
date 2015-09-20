@@ -1,23 +1,21 @@
-System.register(['app/asteroid', 'app/engine/engine'], function(exports_1) {
-    var asteroid_1, engine_1;
+System.register(['app/asteroid'], function(exports_1) {
+    var asteroid_1;
     var AsteroidCollection;
     return {
         setters:[
             function (_asteroid_1) {
                 asteroid_1 = _asteroid_1;
-            },
-            function (_engine_1) {
-                engine_1 = _engine_1;
             }],
         execute: function() {
             AsteroidCollection = (function () {
-                function AsteroidCollection() {
+                function AsteroidCollection(options) {
                     this.list = [];
+                    this._options = options;
                 }
                 AsteroidCollection.prototype.update = function () {
                     var _this = this;
                     this.list.forEach(function (asteroid, index) {
-                        if (asteroid.settings.posY > engine_1.Engine.settings.canvasHeight + 30) {
+                        if (asteroid.settings.posY > _this._options.viewPort.height + 30) {
                             _this.list.splice(index, 1);
                         }
                     });
@@ -27,7 +25,7 @@ System.register(['app/asteroid', 'app/engine/engine'], function(exports_1) {
                     this.list.forEach(function (asteroid) { return asteroid.draw(context); });
                 };
                 AsteroidCollection.prototype.addAsteroid = function () {
-                    this.list.push(new asteroid_1.Asteroid());
+                    this.list.push(new asteroid_1.Asteroid({ viewPort: this._options.viewPort }));
                 };
                 return AsteroidCollection;
             })();

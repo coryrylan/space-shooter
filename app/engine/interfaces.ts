@@ -6,3 +6,8 @@ export interface GameObject {
 		height: number;
 	}
 }
+
+export interface ViewPort {
+	width: number;
+	height: number;
+}

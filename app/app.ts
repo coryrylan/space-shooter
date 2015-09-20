@@ -1,4 +1,4 @@
-﻿import {Engine, Game, CollisionDetection} from 'app/engine/engine';
+﻿import {Game, Controls, CollisionDetection} from 'app/engine/engine';
 import {Ship} from 'app/ship';
 import {LaserCollection} from 'app/laser-collection';
 import {AsteroidCollection} from 'app/asteroid-collection';
@@ -22,18 +22,20 @@ declare let $; // jQuery global, need d.ts file
     let canvas = document.getElementById('GameCanvas');
     let ctx = canvas.getContext('2d');
     let gameState = GAME_STATE.START;
-    let canvasSettings = {
+    let viewPort = {
         width: 720,
         height: 480
     };
 
-
     //region Game
     let playerShip = new Ship({
+        viewPort,
         lasers: new LaserCollection()
     });
 
-    let asteroids = new AsteroidCollection();
+    let asteroids = new AsteroidCollection({viewPort: viewPort});
+
+    let controls = new Controls();
 
     function checkShipAndAsteroidCollision() {
         asteroids.list.forEach((asteroid, index) => {
@@ -76,7 +78,7 @@ declare let $; // jQuery global, need d.ts file
             }
         },
         draw: function() {
-            ctx.clearRect(0, 0, canvasSettings.width, canvasSettings.height);
+            ctx.clearRect(0, 0, viewPort.width, viewPort.height);
             drawScore();
             drawLives();
 
@@ -101,45 +103,45 @@ declare let $; // jQuery global, need d.ts file
         if (gameState === GAME_STATE.PLAY) {
             asteroids.addAsteroid();
         }
-    }, 140 - (canvasSettings.width / 100));
+    }, 140 - (viewPort.width / 100));
     //endregion
 
     //region Key Game Controls
-    Engine.controls.on('left', () => {
+    controls.on('left', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveLeft();
         }
     });
 
-    Engine.controls.on('right', () => {
+    controls.on('right', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveRight();
         }
     });
 
-    Engine.controls.on('up', () => {
+    controls.on('up', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveUp();
         }
     });
 
-    Engine.controls.on('down', () => {
+    controls.on('down', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.moveDown();
         }
     });
 
-    Engine.controls.onkey('space', () => {
+    controls.onKey('space', () => {
         if (gameState === GAME_STATE.PLAY) {
             playerShip.fire();
         }
     });
 
-    Engine.controls.onkey('pause', () => {
+    controls.onKey('pause', () => {
         pauseGame();
     });
 
-    Engine.controls.onkey('enter', () => {
+    controls.onKey('enter', () => {
         if (gameState === GAME_STATE.START || gameState === GAME_STATE.OVER) {
             startNewGame();
         }

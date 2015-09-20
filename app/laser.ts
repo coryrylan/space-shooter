@@ -1,6 +1,7 @@
+import {GameObject} from './engine/interfaces';
 declare let Howl;
 
-export class Laser {
+export class Laser implements GameObject {
     settings: any;
     sound: any;
     

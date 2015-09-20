@@ -1,20 +1,24 @@
 import {Utilities} from './engine/utilities';
-import {Engine} from './engine/engine';
+import {ViewPort, GameObject} from './engine/interfaces';
 
-class Asteroid {
-    settings: any;
+class Asteroid implements GameObject {
     img: HTMLImageElement;
+    settings: any;
+    private _options: {
+        viewPort: ViewPort
+    };
     
-    constructor() {
+    constructor(options) {
         const range = Utilities.getRandomNumber(30, 100);
 
+        this._options = options;
         this.settings = {
             width: range,
             height: range,
             speed: Utilities.getRandomNumber(2, 6)
         };
 
-        this.settings.posX = Utilities.getRandomNumber(0 - this.settings.height, Engine.settings.canvasWidth);
+        this.settings.posX = Utilities.getRandomNumber(0 - this.settings.height, this._options.viewPort.width);
         this.settings.posY = this.settings.height * -2;
 
         this.img = new Image();

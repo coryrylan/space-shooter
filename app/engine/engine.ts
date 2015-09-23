@@ -2,12 +2,18 @@
 
 declare let $;
 
+export interface GameOptions {
+    update: Function;
+    draw: Function;
+    init: Function;
+}
+
 class Game {
-    _update: Function;
-    _draw: Function;
-    _init: Function;
+    private _update: Function;
+    private _draw: Function;
+    private _init: Function;
     
-    constructor(options) {
+    constructor(options: GameOptions) {
         this._update = options.update;
         this._draw = options.draw;
         this._init = options.init;

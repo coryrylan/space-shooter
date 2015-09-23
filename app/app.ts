@@ -1,42 +1,69 @@
 ﻿import {Game, Controls, CollisionDetection} from 'app/engine/engine';
-import {Ship} from 'app/ship';
-import {LaserCollection} from 'app/laser-collection';
 import {AsteroidCollection} from 'app/asteroid-collection';
+import {LaserCollection} from 'app/laser-collection';
+import {Ship} from 'app/ship';
 
 declare let $; // jQuery global, need d.ts file
 
 (function main() {
     'use strict';
 
-    // Enums
-    const GAME_STATE = {
-        START: 'START',
-        PLAY: 'PLAY',
-        PAUSE: 'PAUSE',
-        OVER: 'OVER'
-    };
-
     // Game Globals
+    const GAME_STATE = { START: 'START', PLAY: 'PLAY', PAUSE: 'PAUSE', OVER: 'OVER' };
+    let canvasContext = document.getElementById('GameCanvas').getContext('2d');
+    let gameState = GAME_STATE.START;
     let gameScore = 0;
     let gameLives = 3;
-    let canvas = document.getElementById('GameCanvas');
-    let ctx = canvas.getContext('2d');
-    let gameState = GAME_STATE.START;
     let viewPort = {
         width: 720,
         height: 480
     };
 
     //region Game
-    let playerShip = new Ship({
-        viewPort,
-        lasers: new LaserCollection()
-    });
-
+    let playerShip = new Ship({viewPort, lasers: new LaserCollection()});
     let asteroids = new AsteroidCollection({viewPort: viewPort});
-
     let controls = new Controls();
+    let game = new Game({init, update, draw});
+    game.start();
+    
+    function init() {
+        window.setInterval(() => {
+            if (gameState === GAME_STATE.PLAY) {
+                asteroids.addAsteroid();
+            }
+        }, 140 - (viewPort.width / 100));
+    }
+    
+    function update() {
+        if (gameState === GAME_STATE.PLAY) {
+            asteroids.update();
+            playerShip.update();
+            checkShipAndAsteroidCollision();
+            checkShipLaserAndAsteroidCollision();
+        } else {
+            return;
+        }
+    }
+    
+    function draw() {
+        canvasContext.clearRect(0, 0, viewPort.width, viewPort.height);
+        drawScore();
+        drawLives();
 
+        if (gameState === GAME_STATE.START) {
+            drawStartScreen();
+        } else if (gameState === GAME_STATE.PLAY) {
+            playerShip.draw(canvasContext);
+            asteroids.draw(canvasContext);
+        } else if (gameState === GAME_STATE.PAUSE) {
+            console.log('Paused');
+        } else if (gameState === GAME_STATE.OVER) {
+            endGame();
+        } else {
+            drawStartScreen();
+        }
+    }
+    
     function checkShipAndAsteroidCollision() {
         asteroids.list.forEach((asteroid, index) => {
             if (CollisionDetection.check(playerShip, asteroid)) {
@@ -53,57 +80,10 @@ declare let $; // jQuery global, need d.ts file
                     playerShip.lasers.list.splice(laserIndex, 1);
                     asteroids.list.splice(asteroidIndex, 1);
                     addScore();
-                    return 0;
                 }
             });
         });
     };
-
-    let game = new Game({
-        init: function() {
-
-        },
-        update: function() {
-            if (gameState === GAME_STATE.START) {
-                return;
-            } else if (gameState === GAME_STATE.PLAY) {
-                asteroids.update();
-                playerShip.update();
-                checkShipAndAsteroidCollision();
-                checkShipLaserAndAsteroidCollision();
-            } else if (gameState === GAME_STATE.PAUSE) {
-                return;
-            } else if (gameState === GAME_STATE.OVER) {
-                return;
-            }
-        },
-        draw: function() {
-            ctx.clearRect(0, 0, viewPort.width, viewPort.height);
-            drawScore();
-            drawLives();
-
-            if (gameState === GAME_STATE.START) {
-                drawStartScreen();
-            } else if (gameState === GAME_STATE.PLAY) {
-                playerShip.draw(ctx);
-                asteroids.draw(ctx);
-            } else if (gameState === GAME_STATE.PAUSE) {
-                console.log('Paused');
-            } else if (gameState === GAME_STATE.OVER) {
-                endGame();
-            } else {
-                drawStartScreen();
-            }
-        }
-    });
-
-    game.start();
-
-    setInterval(() => {
-        if (gameState === GAME_STATE.PLAY) {
-            asteroids.addAsteroid();
-        }
-    }, 140 - (viewPort.width / 100));
     //endregion
 
     //region Key Game Controls

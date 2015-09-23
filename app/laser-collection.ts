@@ -23,7 +23,7 @@ class LaserCollection {
         this.list.forEach(laser => laser.draw(context));
     }
 
-    fire(posX, posY) {
+    fire(posX: number, posY: number) {
         if (this.list.length < this.maxLasers) {
             let laser = new Laser(posX, posY);
             this.list.push(laser);
@@ -31,7 +31,7 @@ class LaserCollection {
         }
     }
 
-    _isLaserOutOfTopBounds(index) {
+    _isLaserOutOfTopBounds(index: number) {
         return this.list[index].settings.posY < -5;
     }
 }

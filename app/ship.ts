@@ -5,6 +5,11 @@ export class Ship implements GameObject {
     lasers: LaserCollection;
     settings: any;
     img: HTMLImageElement;
+    options: {
+        viewPort: ViewPort,
+        lasers: LaserCollection
+    };
+    
     private _options: {
         viewPort: ViewPort,
         lasers: LaserCollection

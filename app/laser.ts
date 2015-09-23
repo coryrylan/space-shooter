@@ -2,10 +2,15 @@ import {GameObject} from './engine/interfaces';
 declare let Howl;
 
 export class Laser implements GameObject {
-    settings: any;
+    settings: {
+        posX: number;
+        posY: number;
+        width: number;
+        height: number;
+    };
     sound: any;
     
-    constructor (originX, originY) {
+    constructor (originX: number, originY: number) {
         this.settings = {
             posX: originX,
             posY: originY,

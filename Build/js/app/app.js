@@ -1,46 +1,77 @@
-System.register(['app/engine/engine', 'app/ship', 'app/laser-collection', 'app/asteroid-collection'], function(exports_1) {
-    var engine_1, ship_1, laser_collection_1, asteroid_collection_1;
+System.register(['app/engine/engine', 'app/asteroid-collection', 'app/laser-collection', 'app/ship'], function(exports_1) {
+    var engine_1, asteroid_collection_1, laser_collection_1, ship_1;
     return {
         setters:[
             function (_engine_1) {
                 engine_1 = _engine_1;
             },
-            function (_ship_1) {
-                ship_1 = _ship_1;
+            function (_asteroid_collection_1) {
+                asteroid_collection_1 = _asteroid_collection_1;
             },
             function (_laser_collection_1) {
                 laser_collection_1 = _laser_collection_1;
             },
-            function (_asteroid_collection_1) {
-                asteroid_collection_1 = _asteroid_collection_1;
+            function (_ship_1) {
+                ship_1 = _ship_1;
             }],
         execute: function() {
             (function main() {
                 'use strict';
-                // Enums
-                var GAME_STATE = {
-                    START: 'START',
-                    PLAY: 'PLAY',
-                    PAUSE: 'PAUSE',
-                    OVER: 'OVER'
-                };
                 // Game Globals
+                var GAME_STATE = { START: 'START', PLAY: 'PLAY', PAUSE: 'PAUSE', OVER: 'OVER' };
+                var canvasContext = document.getElementById('GameCanvas').getContext('2d');
+                var gameState = GAME_STATE.START;
                 var gameScore = 0;
                 var gameLives = 3;
-                var canvas = document.getElementById('GameCanvas');
-                var ctx = canvas.getContext('2d');
-                var gameState = GAME_STATE.START;
                 var viewPort = {
                     width: 720,
                     height: 480
                 };
                 //region Game
-                var playerShip = new ship_1.Ship({
-                    viewPort: viewPort,
-                    lasers: new laser_collection_1.LaserCollection()
-                });
+                var playerShip = new ship_1.Ship({ viewPort: viewPort, lasers: new laser_collection_1.LaserCollection() });
                 var asteroids = new asteroid_collection_1.AsteroidCollection({ viewPort: viewPort });
                 var controls = new engine_1.Controls();
+                var game = new engine_1.Game({ init: init, update: update, draw: draw });
+                game.start();
+                function init() {
+                    window.setInterval(function () {
+                        if (gameState === GAME_STATE.PLAY) {
+                            asteroids.addAsteroid();
+                        }
+                    }, 140 - (viewPort.width / 100));
+                }
+                function update() {
+                    if (gameState === GAME_STATE.PLAY) {
+                        asteroids.update();
+                        playerShip.update();
+                        checkShipAndAsteroidCollision();
+                        checkShipLaserAndAsteroidCollision();
+                    }
+                    else {
+                        return;
+                    }
+                }
+                function draw() {
+                    canvasContext.clearRect(0, 0, viewPort.width, viewPort.height);
+                    drawScore();
+                    drawLives();
+                    if (gameState === GAME_STATE.START) {
+                        drawStartScreen();
+                    }
+                    else if (gameState === GAME_STATE.PLAY) {
+                        playerShip.draw(canvasContext);
+                        asteroids.draw(canvasContext);
+                    }
+                    else if (gameState === GAME_STATE.PAUSE) {
+                        console.log('Paused');
+                    }
+                    else if (gameState === GAME_STATE.OVER) {
+                        endGame();
+                    }
+                    else {
+                        drawStartScreen();
+                    }
+                }
                 function checkShipAndAsteroidCollision() {
                     asteroids.list.forEach(function (asteroid, index) {
                         if (engine_1.CollisionDetection.check(playerShip, asteroid)) {
@@ -57,60 +88,11 @@ System.register(['app/engine/engine', 'app/ship', 'app/laser-collection', 'app/a
                                 playerShip.lasers.list.splice(laserIndex, 1);
                                 asteroids.list.splice(asteroidIndex, 1);
                                 addScore();
-                                return 0;
                             }
                         });
                     });
                 }
                 ;
-                var game = new engine_1.Game({
-                    init: function () {
-                    },
-                    update: function () {
-                        if (gameState === GAME_STATE.START) {
-                            return;
-                        }
-                        else if (gameState === GAME_STATE.PLAY) {
-                            asteroids.update();
-                            playerShip.update();
-                            checkShipAndAsteroidCollision();
-                            checkShipLaserAndAsteroidCollision();
-                        }
-                        else if (gameState === GAME_STATE.PAUSE) {
-                            return;
-                        }
-                        else if (gameState === GAME_STATE.OVER) {
-                            return;
-                        }
-                    },
-                    draw: function () {
-                        ctx.clearRect(0, 0, viewPort.width, viewPort.height);
-                        drawScore();
-                        drawLives();
-                        if (gameState === GAME_STATE.START) {
-                            drawStartScreen();
-                        }
-                        else if (gameState === GAME_STATE.PLAY) {
-                            playerShip.draw(ctx);
-                            asteroids.draw(ctx);
-                        }
-                        else if (gameState === GAME_STATE.PAUSE) {
-                            console.log('Paused');
-                        }
-                        else if (gameState === GAME_STATE.OVER) {
-                            endGame();
-                        }
-                        else {
-                            drawStartScreen();
-                        }
-                    }
-                });
-                game.start();
-                setInterval(function () {
-                    if (gameState === GAME_STATE.PLAY) {
-                        asteroids.addAsteroid();
-                    }
-                }, 140 - (viewPort.width / 100));
                 //endregion
                 //region Key Game Controls
                 controls.on('left', function () {

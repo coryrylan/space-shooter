@@ -1,94 +1,83 @@
-﻿var gulp = require('gulp');
-var plug = require('gulp-load-plugins')();
-var babelify = require('babelify');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var karma = require('karma').server;
+﻿'use strict';
 
-var jsLibraries = [
-    './App/Libraries/requestAnimationFramePolly.js',
-    './App/Libraries/jquery.js',
-    './App/Libraries/howler.js'
-];
+let gulp = require('gulp-help')(require('gulp'));
+let sass = require('gulp-sass');
+let rename = require('gulp-rename');
+let tsc = require('gulp-typescript');
+let tslint = require('gulp-tslint');
+let del = require('del');
+let connect = require('connect');
+let serveStatic = require('serve-static');
+let open = require('open');
+let http = require('http');
 
-var jsSource = [
-    './App/Src/*.js'
-];
-
-var specSource = [
-    './Specs/*.js'
-];
-
-var sassSource = [
-    './App/Content/Sass/**/*.scss'
-];
-
-gulp.task('watch', function() {
-    gulp.watch(sassSource, ['styles']).on('error', catchError);
-    gulp.watch(jsSource, ['hint', 'js', 'tdd']);
-    gulp.watch(specSource, ['hint', 'js', 'tdd']);
-});
-
-gulp.task('styles', function() {
-    return gulp
-        .src(sassSource)
-        .pipe(plug.rubySass({ style: 'expanded' }))
-        .pipe(plug.autoprefixer('last 2 version', 'ie8', 'ie9'))
-        .pipe(gulp.dest('./Build/Css'))
-        .pipe(plug.rename({ suffix: '.min' }))
-        .pipe(plug.minifyCss())
-        .pipe(gulp.dest('./Build/Css'));
-});
-
-gulp.task('hint', function() {
-    return gulp
-        .src(jsSource.concat(specSource))
-        .pipe(plug.jscs({ esnext: true })).on('error', catchError)
-        .pipe(plug.jshint())
-        .pipe(plug.jshint.reporter('jshint-stylish'));
-});
-
-gulp.task('js', function() {
-
-    // App
-    browserify('./App/Src/app.js', { debug: true })
-        .transform(babelify)
-        .bundle()
-        .on('error', function(err) { console.log('Error: ' + err.message); })
-        .pipe(source('app.js'))
-        .pipe(gulp.dest('./Build/Js'));
-
-    // Specs
-    browserify('./Specs/specs.js', { debug: true })
-        .transform(babelify)
-        .bundle()
-        .on('error', function(err) { console.log('Error: ' + err.message); })
-        .pipe(source('specs.js'))
-        .pipe(gulp.dest('./Build/Js'));
-
-    // Libraries
-    gulp.src(jsLibraries)
-        .pipe(plug.concat('lib.js'))
-        .pipe(gulp.dest('./Build/Js'))
-        .pipe(plug.rename({ suffix: '.min' }))
-        .pipe(plug.uglify({ mangle: true }))
-        .pipe(gulp.dest('./Build/Js'));
-});
-
-gulp.task('test', function (done) {
-    karma.start({
-        configFile: __dirname + '/karma.conf.js',
-        singleRun: true
-    }, done);
-});
-
-gulp.task('tdd', function (done) {
-    //karma.start({
-    //    configFile: __dirname + '/karma.conf.js'
-    //}, done);
-});
-
-var catchError = function(err) {
-    console.log(err);
-    this.emit('end');
+const DOCS = {
+    sassBuild: 'Build Sass and compile out to CSS',
+    typescriptBuild: 'Build TypeScript and compile out ES5 JavaScript',
+    typescriptLint: 'Lint TypeScript to check for style and syntax errors.',
+    watch: 'Start watching files for compilation and linting.',
+    runDev: 'Start dev server and watch tasks.'
 };
+
+const CONFIG = {
+    jsLib: [
+        './assets/javascript/requestAnimationFramePolly.js',
+        './assets/javascript/jquery.js',
+        './assets/javascript/howler.js'
+    ],
+    tsSource: './app/**/*.ts',
+    sassSrc: [
+        './styles/**/*.scss'
+    ]
+};
+
+gulp.task('lint.typescript', DOCS.typescriptLint, () => {
+    return gulp.src(CONFIG.tsSource).pipe(tslint()).pipe(tslint.report('prose'));
+});
+
+gulp.task('build.typescript', DOCS.typescriptBuild, () => {
+    let tsResult = gulp.src([CONFIG.tsSource, './typings/**/*.d.ts'])
+                      .pipe(tsc({
+                          typescript: require('typescript'),
+                          target: 'ES5',
+                          declarationFiles: false,
+                          experimentalDecorators: true,
+                          emitDecoratorMetadata: true,
+                          module: 'system'
+                      }));
+
+    return tsResult.js
+            .pipe(gulp.dest('./build/js/app'));
+});
+
+gulp.task('build.sass', DOCS.sassBuild, () => {
+    return gulp.src(CONFIG.sassSrc)
+        .pipe(sass({ outputStyle: 'compressed' }))
+        .on('error', swallowError)
+        .pipe(rename('app.min.css'))
+        .pipe(gulp.dest('./build/css'));
+});
+
+gulp.task('watch', () => {
+    gulp.watch(CONFIG.sassSrc, ['build.sass']);
+    gulp.watch(CONFIG.tsSource, ['build.typescript']); // 'lint.typescript', 
+});
+
+gulp.task('run.dev', DOCS.runDev, ['watch', 'build.typescript'], function () {
+    let port = 9000, app;
+
+    app = connect().use(serveStatic(__dirname));  // serve everything that is static
+
+    http.createServer(app).listen(port, function () {
+        open('http://localhost:' + port);
+    });
+});
+
+gulp.task('clean', () => {
+    del(['build/**/*']);
+});
+
+function swallowError(error) {
+    console.log(error.toString());
+    this.emit('end');
+}
